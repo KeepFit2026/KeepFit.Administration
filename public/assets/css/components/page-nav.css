@@ -1,0 +1,28 @@
+.page-trail {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: var(--gray);
+    margin-bottom: 1rem;
+}
+
+.page-trail-link {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.page-trail-link:hover {
+    text-decoration: underline;
+}
+
+.page-trail-current {
+    color: var(--dark);
+    font-weight: 600;
+}
+
+.page-trail-separator {
+    color: var(--gray);
+    font-size: 0.8rem;
+}
