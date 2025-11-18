@@ -1,47 +1,34 @@
-@extends('Layouts.CRUD.index')
+@include('Layouts.CRUD.index', [
+    'pageTitle' => 'Programmes',
+    'headerTitle' => 'Gestion des programmes',
+    'headerIcon' => 'bi bi-journal-text',
 
-@section('title', 'Les programmes')
+    'createButton' => [
+        'route' => 'admin.programs.create',
+        'label' => 'Nouveau programme'
+    ],
 
-@section('header-title', 'Gestion des programmes')
-@section('header')
-    <x-create-button 
-        route='admin.programs.create' 
-        name='Nouveau programme'
-    />
-@endsection
+    'table' => [
+        'title' => 'Liste des programmes',
+        'columns' => ['Name', 'Description', 'Actions'],
+        'routeShow' => 'admin.programs.show',
+        'routeDelete' => 'admin.programs.destroy'
+    ],
 
-@section('statistiques')
-    <x-card-information
-        name="Total des programmes"
-        :data="count($programs)"
-        subname="Exercices créés"
-    />
+    'stats' => [
+        [
+            'name' => 'Total des programmes',
+            'data' => count($programs),
+            'subname' => 'programmes créés'
+        ],
+        [
+            'name' => 'programmes terminés',
+            'data' => 0,
+            'subname' => 'Terminés',
+            'class' => 'success'
+        ]
+    ],
 
-    <x-card-information
-        name="Programmes terminés"
-        :data="0"
-        subname="Programmes terminées"
-        class="success"
-    />
-@endsection
-
-
-@section('content')
-    @if(!empty($errorMessage))
-        <x-alert-message :errorMessage="$errorMessage" />
-    @else
-        @if(empty($programs))
-            <div class="empty-state">
-                <i class="bi bi-journal-x"></i>
-                <h3>Aucun Programme trouvé</h3>
-                <p>Commencez par créer votre premier programme</p>
-            </div>
-        @else
-            <x-table
-                tableTitle="Liste des programmes"
-                :rows="['Name', 'Description', 'Actions']"
-                :data="$programs"
-            />
-        @endif
-    @endif
-@endsection
+    'items' => $programs,
+    'errorMessage' => $errorMessage ?? null,
+])

@@ -1,13 +1,13 @@
 @include('Layouts.CRUD.show', [
-    'pageTitle' => $exercises['name'],
+    'pageTitle' => $programs['name'],
     'customCss' => ['assets/css/exercises/show.css'],
 
     'breadcrumb' => [
-        ['route' => 'admin.exercises.index', 'label' => 'Gestion des exercices', 'icon' => 'bi bi-house-door'],
-        ['label' => $exercises['name']]
+        ['route' => 'admin.programs.index', 'label' => 'Gestion des exercices', 'icon' => 'bi bi-house-door'],
+        ['label' => $programs['name']]
     ],
 
-    'entity' => $exercises, 
+    'entity' => $programs, 
 
     'sidebar' => [
         [
@@ -20,12 +20,12 @@
                 ],
                 [
                     'label' => 'Catégorie',
-                    'value' => $exercises['category'] ?? 'Non définie',
+                    'value' => $programs['category'] ?? 'Non définie',
                     'icon' => 'bi bi-diagram-3'
                 ],
                 [
                     'label' => 'Difficulté',
-                    'value' => $exercises['difficulty'] ?? 'Non définie',
+                    'value' => $programs['difficulty'] ?? 'Non définie',
                     'icon' => 'bi bi-speedometer2'
                 ]
             ]

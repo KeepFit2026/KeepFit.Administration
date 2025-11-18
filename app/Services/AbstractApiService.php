@@ -39,7 +39,7 @@ abstract class AbstractApiService implements ApiServiceInterface
         return $this->post('', $data);
     }
 
-    public function DeleteAsync(string $id): JsonResponse|array 
+    public function DeleteAsync(string $id): JsonResponse|array|bool 
     {
         return $this->delete("/$id");
     }
@@ -79,7 +79,7 @@ abstract class AbstractApiService implements ApiServiceInterface
     /**
      * Méthode interne pour faire le DELETE et gérer les exceptions
     */
-    protected function delete(string $path): JsonResponse|array
+    protected function delete(string $path): JsonResponse|array|bool
     {
         try {
             $url = rtrim($this->baseUrl . '/' . $this->endpoint() . $path, '/');

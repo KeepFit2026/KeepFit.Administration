@@ -197,7 +197,7 @@
     background: white;
     border-radius: 0.75rem;
     padding: 1.5rem;
-    box-shadow: var(--shadow-md)
+    box-shadow: var(--shadow-md);
 }
 
 .info-card-title {
@@ -283,6 +283,7 @@
     font-weight: 500;
     text-decoration: none;
     transition: all 0.2s ease;
+    width: 400px;
 }
 
 .action-btn:hover {

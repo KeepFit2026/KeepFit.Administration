@@ -1,46 +1,34 @@
-@extends('Layouts.CRUD.index')
+@include('Layouts.CRUD.index', [
+    'pageTitle' => 'Exercices',
+    'headerTitle' => 'Gestion des exercices',
+    'headerIcon' => 'bi bi-journal-text',
 
-@section('title', 'Les exercices')
+    'createButton' => [
+        'route' => 'admin.exercises.create',
+        'label' => 'Nouvel exercice'
+    ],
 
-@section("header-title", "Gestion des Exercices")
-@section('header')
-    <x-create-button 
-        route='admin.exercises.create' 
-        name='Nouvel exercice'
-    />
-@endsection
+    'table' => [
+        'title' => 'Liste des exercices',
+        'columns' => ['Name', 'Description', 'Actions'],
+        'routeShow' => 'admin.exercises.show',
+        'routeDelete' => 'admin.exercises.destroy'
+    ],
 
-@section('statistiques')
-    <x-card-information 
-        name="Total des exercices" 
-        :data="count($exercises)"
-        subname="Exercices créés"
-    />
+    'stats' => [
+        [
+            'name' => 'Total des exercices',
+            'data' => count($exercises),
+            'subname' => 'Exercices créés'
+        ],
+        [
+            'name' => 'Exercices terminés',
+            'data' => 0,
+            'subname' => 'Terminés',
+            'class' => 'success'
+        ]
+    ],
 
-    <x-card-information 
-        name="Exercices Terminés" 
-        :data="0"
-        class="success"
-        subname="Exercices terminées"
-    />
-@endsection
-
-@section("content")
-    @if(!empty($errorMessage))
-        <x-alert-message :errorMessage="$errorMessage" />
-    @else    
-        @if(empty($exercises))
-            <div class="empty-state">
-                <i class="bi bi-journal-x"></i>
-                <h3>Aucun exercice trouvé</h3>
-                <p>Commencez par créer votre premier exercice</p>
-            </div>
-        @else
-            <x-table
-                tableTitle="Liste des exercices"
-                :rows="['Name', 'Description', 'Actions']"
-                :data="$exercises"
-            />
-        @endif
-    @endif
-@endsection
+    'items' => $exercises,
+    'errorMessage' => $errorMessage ?? null,
+])

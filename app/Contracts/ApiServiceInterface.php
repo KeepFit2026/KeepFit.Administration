@@ -36,5 +36,5 @@ interface ApiServiceInterface
      * @param string $id Id de l'entité.
      * @return JsonResponse|array
      */
-    public function DeleteAsync(string $id): JsonResponse|array;
+    public function DeleteAsync(string $id): JsonResponse|array|bool;
 }

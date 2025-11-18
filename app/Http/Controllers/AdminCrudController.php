@@ -49,7 +49,7 @@ abstract class AdminCrudController extends Controller
 
         return $this->render("{$this->getViewFolder()}.index", [
             $this->getDataKey() => $response['data'] ?? [],
-            'errorMessage'      => $response['error'] ?? null
+            'errorMessage'      => $response['error'] ?? null,
         ]);
     }
 

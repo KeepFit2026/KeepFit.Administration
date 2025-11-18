@@ -43,16 +43,16 @@
                         </td>
                         <td>
                             <div class="entity-actions">
-                                <a href="{{ route('admin.exercises.show', $d['id']) }}" class="btn-action btn-view" title="Voir">
+                                <a href="{{ route($routeShow, $d['id']) }}" class="btn-action btn-view" title="Voir">
                                     <i class="bi bi-eye"></i>
                                 </a>
                                 <a href="" class="btn-action btn-edit" title="Modifier">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
-                                <form action="{{ route('admin.exercises.destroy', $d['id']) }}" method="POST" class="d-inline">
+                                <form action="{{ route($routeDelete, $d['id']) }}" method="POST" class="d-inline">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="submit" class="btn-action btn-delete" title="Supprimer" onclick="return confirm('Supprimer cet exercice ?')">
+                                    <button type="submit" class="btn-action btn-delete" title="Supprimer" onclick="return confirm('Supprimer cet élément ?')">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
@@ -66,7 +66,6 @@
 </div>
 
 <style>
-    /* Tableau des exercices */
 .table-container {
     background: white;
     border-radius: 0.75rem;

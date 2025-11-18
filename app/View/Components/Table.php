@@ -11,15 +11,19 @@ class Table extends Component
     public string $tableTitle;
     public array $rows;
     public array $data;
+    public string $routeShow;
+    public string $routeDelete;
 
     /**
      * Create a new component instance.
      */
-    public function __construct(string $tableTitle, array $rows, array $data)
+    public function __construct(string $tableTitle, array $rows, array $data, string $routeShow, string $routeDelete)
     {
         $this->tableTitle = $tableTitle;
         $this->rows = $rows;
         $this->data = $data;
+        $this->routeShow = $routeShow;
+        $this->routeDelete = $routeDelete;
     }
 
     /**
@@ -28,9 +32,11 @@ class Table extends Component
     public function render(): View|Closure|string
     {
         return view('components.table', [
-            'tableTitle' => $this->tableTitle,
-            'rows' => $this->rows,
-            'data' => $this->data
+            'tableTitle'    => $this->tableTitle,
+            'rows'          => $this->rows,
+            'data'          => $this->data,
+            'routeShow'     => $this->routeShow,
+            'routeDelete'   => $this->routeDelete
         ]);
     }
 }
