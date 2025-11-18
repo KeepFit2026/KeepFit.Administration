@@ -1,6 +1,6 @@
 @extends('Layouts.admin')
 
-@section('title', $exercise['name'])
+@section('title', $exercises['name'])
 
 @section('link')
     <link rel="stylesheet" href="{{ asset('assets/css/exercises/show.css') }}">
@@ -15,11 +15,11 @@
                 
                 <x-page-nav :items="[
                     ['route' => 'admin.exercises.index', 'label' => 'Gestion des exercices', 'icon' => 'bi bi-house-door'],
-                    ['label' => $exercise['name']]
+                    ['label' => $exercises['name']]
                 ]" />
 
             </div>
-            <h1 class="page-title">{{ $exercise['name'] }}</h1>
+            <h1 class="page-title">{{ $exercises['name'] }}</h1>
         </div>
     </div>
 
@@ -27,15 +27,15 @@
         
         <div class="exercise-main-card">
             <div class="exercise-card-header">
-                <h2 class="exercise-name">{{ $exercise['name'] }}</h2>
+                <h2 class="exercise-name">{{ $exercises['name'] }}</h2>
                 <div class="exercise-meta-info">
                     <div class="meta-info-item">
                         <i class="bi bi-calendar-plus"></i>
-                        <span>Créé le {{ $exercise['created_at'] ?? 'N/A' }}</span>
+                        <span>Créé le {{ $exercises['created_at'] ?? 'N/A' }}</span>
                     </div>
                     <div class="meta-info-item">
                         <i class="bi bi-clock-history"></i>
-                        <span>Modifié le {{ $exercise['updated_at'] ?? 'N/A' }}</span>
+                        <span>Modifié le {{ $exercises['updated_at'] ?? 'N/A' }}</span>
                     </div>
                 </div>
             </div>
@@ -47,7 +47,7 @@
                         Description
                     </div>
                     <div class="section-content">
-                        <div class="description-text">{{ $exercise['description'] ?? 'Aucune description disponible' }}</div>
+                        <div class="description-text">{{ $exercises['description'] ?? 'Aucune description disponible' }}</div>
                     </div>
                 </div>
 
@@ -57,7 +57,7 @@
                         Instructions
                     </div>
                     <div class="section-content">
-                        {{ $exercise['instructions'] ?? 'Aucune instruction disponible' }}
+                        {{ $exercises['instructions'] ?? 'Aucune instruction disponible' }}
                     </div>
                 </div>
             </div>
@@ -81,14 +81,14 @@
                             <i class="bi bi-diagram-3"></i>
                             Catégorie
                         </span>
-                        <span class="info-item-value">{{ $exercise['category'] ?? 'Non définie' }}</span>
+                        <span class="info-item-value">{{ $exercises['category'] ?? 'Non définie' }}</span>
                     </div>
                     <div class="info-item">
                         <span class="info-item-label">
                             <i class="bi bi-speedometer2"></i>
                             Difficulté
                         </span>
-                        <span class="info-item-value">{{ $exercise['difficulty'] ?? 'Non définie' }}</span>
+                        <span class="info-item-value">{{ $exercises['difficulty'] ?? 'Non définie' }}</span>
                     </div>
                 </div>
             </div>
