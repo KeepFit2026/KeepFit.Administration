@@ -1,7 +1,7 @@
 <nav class="page-trail">
     @foreach($items as $item)
         @if(isset($item['route']) && Route::has($item['route']))
-            <a href="{{ route($item['route']) }}" class="page-trail-link">
+            <a href="{{ $getRouteUrl($item) }}" class="page-trail-link">
                 @if(!empty($item['icon']))
                     <i class="{{ $item['icon'] }}"></i>
                 @endif

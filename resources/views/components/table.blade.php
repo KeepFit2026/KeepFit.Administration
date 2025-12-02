@@ -213,6 +213,6 @@
     display: flex;
     gap: 0.5rem;
     padding: 0.75rem;
-    justify-content: flex-end;
+    justify-content: flex-start;
 }
 </style>

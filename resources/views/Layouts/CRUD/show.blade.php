@@ -84,9 +84,18 @@
                                             {{ $item['label'] }}
                                         </span>
                                     @endif
-                                    <span class="{{ $item['valueClass'] ?? 'info-item-value' }}">
-                                        {!! $item['value'] ?? '' !!}
-                                    </span>
+
+                                    @if(!empty($item['text']))
+                                        <a href="{{ $item['value'] }}" class="action-btn">
+                                            @if(!empty($item['icon']))<i class="{{ $item['icon'] }}"></i>@endif
+                                            {{ $item['text'] }}
+                                        </a>
+                                    @else
+                                        <span class="{{ $item['valueClass'] ?? 'info-item-value' }}">
+                                            {!! $item['value'] ?? '' !!}
+                                        </span>
+                                    @endif
+
                                 </div>
                             @endforeach
                         </div>

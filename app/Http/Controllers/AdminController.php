@@ -4,22 +4,17 @@ namespace App\Http\Controllers;
 
 use App\Constants\AdminMenu;
 use App\Contracts\AdminServiceInterface;
-use App\Contracts\AuthServiceInterface;
-use App\Models\User;
 use Illuminate\Http\Request;
 
 class AdminController extends Controller
 {
     public $Items;
-    private $Token;
 
     public function __construct(
         private AdminServiceInterface $adminService,
-        private AuthServiceInterface $authService,
         )
     {
         $this->Items = AdminMenu::all();
-        $this->Token = session('auth');
     }
 
     /**
@@ -27,10 +22,7 @@ class AdminController extends Controller
     */
     public function index()
     {
-        $user = $this->authService->getTokenPayload($this->Token)['AccountId'];
-
         return view('Admin.index', [
-            'user' => User::findNameByAccountId($user),
             'items' => $this->Items,
         ]);
     }

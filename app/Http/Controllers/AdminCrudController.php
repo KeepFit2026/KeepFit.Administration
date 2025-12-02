@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Constants\AdminMenu;
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Contracts\AuthServiceInterface;
 
 abstract class AdminCrudController extends Controller
@@ -27,19 +25,10 @@ abstract class AdminCrudController extends Controller
         $this->userAccountId = $payload['AccountId'] ?? null;
     }
 
-    protected function adminUser()
-    {
-        if (!$this->userAccountId) {
-            return null;
-        }
-        return User::findNameByAccountId($this->userAccountId);
-    }
-
     protected function render(string $view, array $data = [])
     {
         return view($view, array_merge([
-            'items' => $this->items,
-            'user'  => $this->adminUser()
+            'items' => $this->items
         ], $data));
     }
 
@@ -58,7 +47,7 @@ abstract class AdminCrudController extends Controller
         return $this->render("{$this->getViewFolder()}.create");
     }
 
-    public function store(Request $request)
+    public function store()
     {
         $requestClass = $this->getRequestClass();
         $validated = app($requestClass)->validated();

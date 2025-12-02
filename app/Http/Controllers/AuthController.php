@@ -62,7 +62,7 @@ class AuthController extends Controller
 
     /**
      * Enregistre le nouveau compte et redirige vers la page de connexion.
-     */
+     */ 
     public function loginWebPortalWithNewAccount(FirstLoginRequest $request)
     {
         // Récupère les données validées depuis le formulaire

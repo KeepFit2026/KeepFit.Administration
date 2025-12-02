@@ -8,6 +8,7 @@
     ],
 
     'entity' => $exercises, 
+    'showAddToProgram' => true,
 
     'sidebar' => [
         [
@@ -36,15 +37,21 @@
             'items' => [
                 [
                     'label' => '',
-                    'value' => '<a href="#" class="action-btn"><i class="bi bi-files"></i> Modifier l\'exercice</a>'
+                    'value' => '',
+                    'icon' => 'bi bi-files',
+                    'text' => "Modifier l'exercice"
                 ],
                 [
                     'label' => '',
-                    'value' => '<a href="#" class="action-btn"><i class="bi bi-printer"></i> Exporter en PDF</a>'
+                    'value' => '',
+                    'icon' => 'bi bi-printer',
+                    'text' => "Exporter en PDF"
                 ],
                 [
                     'label' => '',
-                    'value' => '<a href="#" class="action-btn"><i class="bi bi-share"></i> Supprimer l\'exercice</a>'
+                    'value' => route('admin.exercises.addToProgramPage', $exercises['id']),
+                    'icon' => 'bi bi-share',
+                    'text' => "Ajouter à un programme"
                 ]
             ]
         ]

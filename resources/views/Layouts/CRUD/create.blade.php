@@ -7,9 +7,6 @@
         @foreach($customCss as $cssFile)
             <link rel="stylesheet" href="{{ asset($cssFile) }}">
         @endforeach
-    @else
-        {{-- fallback si aucun CSS spécifique --}}
-        <link rel="stylesheet" href="{{ asset('assets/css/exercises/create.css') }}">
     @endif
 @endsection
 
@@ -76,7 +73,6 @@
                         </div>
                     @endforeach
 
-                    {{-- Actions --}}
                     <div class="form-actions">
                         <a href="{{ $cancelRoute ?? '#' }}" class="btn btn-cancel">
                             <i class="bi bi-arrow-left"></i>
