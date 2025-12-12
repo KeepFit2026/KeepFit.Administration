@@ -20,7 +20,13 @@ Route::controller(AuthController::class)->name('login.')->group(function() {
     });
 });
 
+Route::get('/admin/requestChangePassword', [AdminController::class, 'requestChangePasswordPage'])
+    ->name('admin.requestChangePassword');
 
+Route::post('/admin/requestChangePassword', [AdminController::class, 'postRequestChangePasswordPage'])
+    ->name('post.admin.requestChangePassword');
+
+    
 Route::prefix('/admin')
     ->controller(AdminController::class)
     ->name('admin.')

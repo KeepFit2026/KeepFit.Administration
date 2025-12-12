@@ -10,9 +10,9 @@
 
     'table' => [
         'title' => 'Liste des exercices',
-        'columns' => ['Name', 'Description', 'Actions'],
+        'columns' => ['Name', 'Description'],
         'routeShow' => 'admin.exercises.show',
-        'routeDelete' => 'admin.exercises.destroy'
+        'routeDelete' => 'admin.exercises.destroy',
     ],
 
     'stats' => [

@@ -117,7 +117,7 @@ class AuthService implements AuthServiceInterface
     /**
      * Vérifie si le login existe dans la base PGSQL.
      */
-    private function findLogin(string $email): ?Login
+    public function findLogin(string $email): ?Login
     {
         return Login::where('email', $email)->first();
     }

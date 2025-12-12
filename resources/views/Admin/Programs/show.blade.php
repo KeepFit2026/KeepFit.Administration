@@ -3,11 +3,28 @@
     'customCss' => ['assets/css/exercises/show.css'],
 
     'breadcrumb' => [
-        ['route' => 'admin.programs.index', 'label' => 'Gestion des exercices', 'icon' => 'bi bi-house-door'],
+        ['route' => 'admin.programs.index', 'label' => 'Gestion des programmes', 'icon' => 'bi bi-house-door'],
         ['label' => $programs['name']]
     ],
 
     'entity' => $programs, 
+
+    'relations' => [
+        'title' => 'Exercices inclus dans ce programme',
+        'icon' => 'bi bi-list-check',
+        'headers' => ['Nom de l\'exercice', 'Catégorie', 'Difficulté'],
+        'fields' => ['name', 'category', 'difficulty'],
+        'data' => $programs['exercises'] ?? [],
+        'base_route' => 'admin.exercises.show'
+    ],
+
+    'tableTitle' => 'EXERCICES ASSOCIÉS',
+
+    'table' => [
+        'title' => 'Liste des exercices',
+        'columns' => ['Name', 'Description'],
+        'routeShow' => 'admin.programs.show',
+    ],
 
     'sidebar' => [
         [
@@ -24,9 +41,14 @@
                     'icon' => 'bi bi-diagram-3'
                 ],
                 [
-                    'label' => 'Difficulté',
-                    'value' => $programs['difficulty'] ?? 'Non définie',
-                    'icon' => 'bi bi-speedometer2'
+                    'label' => 'Niveau',
+                    'value' => $programs['level'] ?? 'Non défini',
+                    'icon' => 'bi bi-bar-chart'
+                ],
+                [
+                    'label' => 'Durée',
+                    'value' => $programs['duration'] ?? 'Non définie',
+                    'icon' => 'bi bi-clock'
                 ]
             ]
         ],
@@ -36,7 +58,7 @@
             'items' => [
                 [
                     'label' => '',
-                    'value' => '<a href="#" class="action-btn"><i class="bi bi-files"></i> Modifier l\'exercice</a>'
+                    'value' => '<a href="#" class="action-btn"><i class="bi bi-files"></i> Modifier le programme</a>'
                 ],
                 [
                     'label' => '',
@@ -44,7 +66,7 @@
                 ],
                 [
                     'label' => '',
-                    'value' => '<a href="#" class="action-btn"><i class="bi bi-share"></i> Supprimer l\'exercice</a>'
+                    'value' => '<a href="#" class="action-btn"><i class="bi bi-trash"></i> Supprimer le programme</a>'
                 ]
             ]
         ]

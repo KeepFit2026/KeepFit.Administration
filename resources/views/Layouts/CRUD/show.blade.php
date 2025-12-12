@@ -66,10 +66,29 @@
                     </div>
                 </div>
                 @endif
+
+
+                @if(!empty($programsFromExercise))
+                    <div class="info-section">
+                        <div class="section-label">
+                            <i class="bi bi-list-check"></i>{{ $tableTitle }}
+                        </div>
+                        <div class="section-content">
+                            <div class="table-responsive">
+                                <x-table
+                                    :tableTitle="$table['title']"
+                                    :rows="$table['columns']"
+                                    :data="$programsFromExercise['data']"
+                                    :routeShow="$table['routeShow']"
+                                    variant="autre"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 
-        {{-- Sidebar --}}
         <div class="exercise-info-sidebar">
             @if(!empty($sidebar))
                 @foreach($sidebar as $card)
@@ -103,7 +122,6 @@
                 @endforeach
             @endif
         </div>
-
     </div>
 </div>
 @endsection

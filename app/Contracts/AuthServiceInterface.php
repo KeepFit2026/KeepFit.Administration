@@ -2,6 +2,7 @@
 
 namespace App\Contracts;
 
+use App\Models\Login;
 use App\Models\User;
 
 interface AuthServiceInterface
@@ -36,4 +37,10 @@ interface AuthServiceInterface
      * @return array
      */
     public function getTokenPayload(string $token): array;
+
+
+    /**
+     * Vérifie si un compte Login existe.
+     */
+    public function findLogin(string $email): ?Login;
 }

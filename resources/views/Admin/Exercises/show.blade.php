@@ -1,6 +1,5 @@
 @include('Layouts.CRUD.show', [
     'pageTitle' => $exercises['name'],
-    'customCss' => ['assets/css/exercises/show.css'],
 
     'breadcrumb' => [
         ['route' => 'admin.exercises.index', 'label' => 'Gestion des exercices', 'icon' => 'bi bi-house-door'],
@@ -9,6 +8,24 @@
 
     'entity' => $exercises, 
     'showAddToProgram' => true,
+
+    'relations' => [
+        'title' => 'Programmes incluant cet exercice',
+        'icon' => 'bi bi-journal-bookmark-fill',
+        'headers' => ['Nom du programme', 'Niveau', 'Durée'],
+        'fields' => ['name', 'level', 'duration'],
+        'data' => $exercises['programs'] ?? [],
+        'base_route' => 'admin.programs.show'
+    ],
+
+    'tableTitle' => 'PROGRAMMES ASSOCIÉS',
+
+    'table' => [
+        'title' => 'Liste des exercices',
+        'columns' => ['Name', 'Description'],
+        'routeShow' => 'admin.programs.show',
+    ],
+
 
     'sidebar' => [
         [

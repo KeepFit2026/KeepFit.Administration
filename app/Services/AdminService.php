@@ -15,8 +15,8 @@ class AdminService implements AdminServiceInterface
     public function CreateAccount(): void
     {
         Login::create([
-            'email' => 'root@gmail.com',
-            'password' => bcrypt('rootroot')
+            'email' => 'test@gmail.com',
+            'password' => bcrypt('password1234')
         ]);
     }
 }

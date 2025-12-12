@@ -78,10 +78,6 @@
                                 <p>Commencez par en créer un</p>
                             </div>
                         @else
-                            @php
-                                $table = $table ?? ['title' => 'Liste', 'columns' => []];
-                            @endphp
-
                             <x-table
                                 :tableTitle="$table['title']"
                                 :rows="$table['columns']"

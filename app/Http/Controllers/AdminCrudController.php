@@ -59,14 +59,27 @@ abstract class AdminCrudController extends Controller
             : redirect()->back()->with('success', 'Création réussie.');
     }
 
-    public function show(string $id)
+    public function show(string $id, $details = null)
     {
-        $response = $this->getService()->GetByIdAsync($id);
+        $service = $this->getService();
+        $response = $service->GetByIdAsync($id);
+
+        $optionalMethods = [
+            'GetProgramsFromExercise',
+            'getExercisesFromProgram'
+        ];
+
+        foreach($optionalMethods as $method) {
+            if(method_exists($service, $method)) {
+                $details = $service->$method($id);
+                break;
+            }
+        }
 
         return $this->render("{$this->getViewFolder()}.show", [
             $this->getDataKey()     => $response['data'] ?? null,
             'errorMessage'          => $response['error'] ?? null,
-
+            'programsFromExercise'  => $details
         ]);
     }
 
