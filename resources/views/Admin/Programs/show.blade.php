@@ -23,7 +23,7 @@
     'table' => [
         'title' => 'Liste des exercices',
         'columns' => ['Name', 'Description'],
-        'routeShow' => 'admin.programs.show',
+        'routeShow' => 'admin.exercises.show',
     ],
 
     'sidebar' => [

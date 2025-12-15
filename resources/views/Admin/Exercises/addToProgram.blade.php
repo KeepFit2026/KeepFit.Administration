@@ -33,7 +33,7 @@
                 />
             </div>
             <h1 class="page-title">
-                 <i class="bi bi-plus-circle"></i> Ajouter <i>"{{ $exercise['data']['name'] }}"</i> à un programme
+                <i class="bi bi-plus-circle"></i> Ajouter <i>"{{ $exercise['data']['name'] }}"</i> à un programme
             </h1>
         </div>
     </div>
@@ -94,12 +94,10 @@
             </div>
         </div>
 
-        <!-- COLONNE DROITE : Options d'ajout -->
         <div class="options-main">
             <form action="" method="POST">
                 @csrf
                 
-                <!-- En-tête -->
                 <div class="options-header">
                     <h2>
                         <i class="bi bi-clipboard-check"></i>
@@ -227,7 +225,6 @@
                             @endforeach
                         </div>
 
-                        <!-- Pagination -->
                         @if(isset($programs['data']->links))
                             <div class="programs-pagination">
                                 {{ $programs['data']->links() }}
@@ -251,7 +248,6 @@
                     @endif
                 </div>
 
-                <!-- Configuration -->
                 <div class="config-section">
                     <h5 class="config-title">
                         <i class="bi bi-gear"></i>
@@ -320,18 +316,20 @@
                     </div>
                 </div>
 
-                <!-- Boutons d'action -->
                 <div class="action-buttons">
                     <a href="{{ route('admin.exercises.show', $exercise['data']['id']) }}" 
                        class="btn-back">
                         <i class="bi bi-arrow-left"></i>
                         Retour à l'exercice
                     </a>
-                    
-                    <button type="submit" class="btn-submit">
-                        <i class="bi bi-check-circle"></i>
-                        Ajouter au programme
-                    </button>
+
+                    <form action="{{ route('admin.exercises.post.addToProgramPage', $exercise['data']['id']) }}" method="POST">
+                        @csrf
+                        <button type="submit">
+                            <i class="bi bi-check-circle"></i>
+                            Ajouter au programme
+                        </button>
+                    </form>
                 </div>
             </form>
         </div>

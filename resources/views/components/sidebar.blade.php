@@ -6,9 +6,8 @@
     <nav class="sidebar-nav">
         <ul>
             @foreach($items as $item)
-
                 @php
-                            $routeName = $item['route'] ?? null;
+                    $routeName = $item['route'] ?? null;
                 @endphp
 
                 <li class="nav-item {{ request()->routeIs($routeName) ? 'active' : '' }}">

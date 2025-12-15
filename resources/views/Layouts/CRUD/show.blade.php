@@ -80,7 +80,7 @@
                                     :rows="$table['columns']"
                                     :data="$programsFromExercise['data']"
                                     :routeShow="$table['routeShow']"
-                                    variant="autre"
+                                    variant="v-card"
                                 />
                             </div>
                         </div>

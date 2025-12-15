@@ -36,13 +36,15 @@ Route::prefix('/admin')
         Route::resource('', AdminController::class);
         Route::resource('/programs', ProgramController::class);
         Route::get('create-account', 'createAccount')->name('create-account');
-        Route::resource('exercises', ExerciseController::class);
 
         Route::prefix('/exercises')
             ->controller(ExerciseController::class)
             ->name('exercises.')
             ->group(function() {
-                Route::get('/{id}/addprogram', 'addToProgramPage')->name('addToProgramPage');
+                Route::post('{id}/addprogram-page', 'addToProgramExecute')->name('post.addToProgramPage');
+                Route::get('/{id}/addprogram-page', 'addToProgramPage')->name('addToProgramPage');
         });
+
+        Route::resource('exercises', ExerciseController::class);
         
     });

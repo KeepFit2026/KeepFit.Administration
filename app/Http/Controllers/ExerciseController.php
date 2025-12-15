@@ -11,10 +11,10 @@ class ExerciseController extends AdminCrudController
 
     public function __construct(
         private ExerciseService $service,
-        private ProgramService $programService,
         private AuthServiceInterface $authService,
         ) {
             parent::__construct($authService);
+
         }
 
     protected function getService()
@@ -22,7 +22,7 @@ class ExerciseController extends AdminCrudController
         return $this->service;
     }
 
-    protected function getViewFolder()
+    protected function getViewFolder(): string
     {
         return 'Admin.Exercises';
     }
@@ -32,7 +32,7 @@ class ExerciseController extends AdminCrudController
         return ExerciseRequest::class;
     }
 
-    protected function getDataKey()
+    protected function getDataKey(): string
     {
         return "exercises";
     }
@@ -41,7 +41,12 @@ class ExerciseController extends AdminCrudController
     {
         return view('Admin.Exercises.addToProgram', [
             'exercise' => $this->service->GetByIdAsync($id),
-            'programs' => $this->programService->GetAllAsync()
+            'programs' => $this->service->filterAvailablePrograms($id)
         ]);
+    }
+
+    public function addToProgramExecute()
+    {
+        return redirect()->route('admin.exercises.index');
     }
 }

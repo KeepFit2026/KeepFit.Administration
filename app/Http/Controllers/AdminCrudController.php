@@ -12,9 +12,9 @@ abstract class AdminCrudController extends Controller
     protected $userAccountId;
 
     abstract protected function getService();      
-    abstract protected function getViewFolder();  
+    abstract protected function getViewFolder(): string;  
     abstract protected function getRequestClass();
-    abstract protected function getDataKey();     
+    abstract protected function getDataKey(): string;     
 
     public function __construct(private AuthServiceInterface $authService)
     {

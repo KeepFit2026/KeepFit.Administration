@@ -20,7 +20,7 @@ class ProgramController extends AdminCrudController
         return $this->service;
     }
 
-    protected function getViewFolder()
+    protected function getViewFolder(): string
     {
         return 'Admin.Programs';
     }
@@ -30,7 +30,7 @@ class ProgramController extends AdminCrudController
         return ExerciseRequest::class;
     }
 
-    protected function getDataKey()
+    protected function getDataKey(): string
     {
         return "programs";
     }

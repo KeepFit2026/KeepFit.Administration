@@ -3,7 +3,6 @@
 @endphp
 
 <div class="table-container-wrapper">
-    @dd($variant->value)
     @if($variant->value == "default")
         <div class="table-container">
             <div class="table-header">
