@@ -29,7 +29,7 @@
 
                 <div class="header-right">
                     <div class="user-menu">
-                        <span class="user-name">{{ $user ?? 'Invité' }}</span>
+                        <span class="user-name">{{ $currentUser ?? 'Invité' }}</span>
                         <div class="user-avatar">
                             <img src="{{ asset('assets/img/pp-default.png') }}" alt="Avatar utilisateur" />
                         </div>
@@ -78,10 +78,6 @@
                                 <p>Commencez par en créer un</p>
                             </div>
                         @else
-                            @php
-                                $table = $table ?? ['title' => 'Liste', 'columns' => []];
-                            @endphp
-
                             <x-table
                                 :tableTitle="$table['title']"
                                 :rows="$table['columns']"

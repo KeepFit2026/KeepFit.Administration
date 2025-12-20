@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Constants\AdminMenu;
-use App\Models\User;
-use Illuminate\Http\Request;
 use App\Contracts\AuthServiceInterface;
 
 abstract class AdminCrudController extends Controller
@@ -14,9 +12,9 @@ abstract class AdminCrudController extends Controller
     protected $userAccountId;
 
     abstract protected function getService();      
-    abstract protected function getViewFolder();  
+    abstract protected function getViewFolder(): string;  
     abstract protected function getRequestClass();
-    abstract protected function getDataKey();     
+    abstract protected function getDataKey(): string;     
 
     public function __construct(private AuthServiceInterface $authService)
     {
@@ -27,19 +25,10 @@ abstract class AdminCrudController extends Controller
         $this->userAccountId = $payload['AccountId'] ?? null;
     }
 
-    protected function adminUser()
-    {
-        if (!$this->userAccountId) {
-            return null;
-        }
-        return User::findNameByAccountId($this->userAccountId);
-    }
-
     protected function render(string $view, array $data = [])
     {
         return view($view, array_merge([
-            'items' => $this->items,
-            'user'  => $this->adminUser()
+            'items' => $this->items
         ], $data));
     }
 
@@ -58,7 +47,7 @@ abstract class AdminCrudController extends Controller
         return $this->render("{$this->getViewFolder()}.create");
     }
 
-    public function store(Request $request)
+    public function store()
     {
         $requestClass = $this->getRequestClass();
         $validated = app($requestClass)->validated();
@@ -70,14 +59,27 @@ abstract class AdminCrudController extends Controller
             : redirect()->back()->with('success', 'Création réussie.');
     }
 
-    public function show(string $id)
+    public function show(string $id, $details = null)
     {
-        $response = $this->getService()->GetByIdAsync($id);
+        $service = $this->getService();
+        $response = $service->GetByIdAsync($id);
+
+        $optionalMethods = [
+            'GetProgramsFromExercise',
+            'getExercisesFromProgram'
+        ];
+
+        foreach($optionalMethods as $method) {
+            if(method_exists($service, $method)) {
+                $details = $service->$method($id);
+                break;
+            }
+        }
 
         return $this->render("{$this->getViewFolder()}.show", [
             $this->getDataKey()     => $response['data'] ?? null,
             'errorMessage'          => $response['error'] ?? null,
-
+            'programsFromExercise'  => $details
         ]);
     }
 

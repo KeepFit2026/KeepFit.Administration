@@ -10,9 +10,9 @@
 
     'table' => [
         'title' => 'Liste des programmes',
-        'columns' => ['Name', 'Description', 'Actions'],
+        'columns' => ['Name', 'Description'],
         'routeShow' => 'admin.programs.show',
-        'routeDelete' => 'admin.programs.destroy'
+        'routeDelete' => 'admin.programs.destroy',
     ],
 
     'stats' => [

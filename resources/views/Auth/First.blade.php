@@ -8,7 +8,7 @@
 
         <div class="form-group">
             <label for="name" class="form-label">Nom d'utilisateur</label>
-            <input type="text" id="name" name="name" class="form-input" placeholder="Pierrick"
+            <input type="text" id="name" name="name" class="form-input" placeholder="Votre Nom"
                 value="{{ old('name') }}" required autofocus>
             @error('name')
                 <span class="form-error">{{ $message }}</span>

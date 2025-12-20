@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Contracts\AuthServiceInterface;
 use App\Http\Requests\ExerciseRequest;
 use App\Services\ExerciseService;
+use App\Services\ProgramService;
 
 class ExerciseController extends AdminCrudController
 {
@@ -13,6 +14,7 @@ class ExerciseController extends AdminCrudController
         private AuthServiceInterface $authService,
         ) {
             parent::__construct($authService);
+
         }
 
     protected function getService()
@@ -20,7 +22,7 @@ class ExerciseController extends AdminCrudController
         return $this->service;
     }
 
-    protected function getViewFolder()
+    protected function getViewFolder(): string
     {
         return 'Admin.Exercises';
     }
@@ -30,8 +32,21 @@ class ExerciseController extends AdminCrudController
         return ExerciseRequest::class;
     }
 
-    protected function getDataKey()
+    protected function getDataKey(): string
     {
         return "exercises";
+    }
+
+    public function addToProgramPage(string $id) 
+    {
+        return view('Admin.Exercises.addToProgram', [
+            'exercise' => $this->service->GetByIdAsync($id),
+            'programs' => $this->service->filterAvailablePrograms($id)
+        ]);
+    }
+
+    public function addToProgramExecute()
+    {
+        return redirect()->route('admin.exercises.index');
     }
 }

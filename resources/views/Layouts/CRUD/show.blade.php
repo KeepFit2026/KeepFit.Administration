@@ -66,10 +66,29 @@
                     </div>
                 </div>
                 @endif
+
+
+                @if(!empty($programsFromExercise))
+                    <div class="info-section">
+                        <div class="section-label">
+                            <i class="bi bi-list-check"></i>{{ $tableTitle }}
+                        </div>
+                        <div class="section-content">
+                            <div class="table-responsive">
+                                <x-table
+                                    :tableTitle="$table['title']"
+                                    :rows="$table['columns']"
+                                    :data="$programsFromExercise['data']"
+                                    :routeShow="$table['routeShow']"
+                                    variant="v-card"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                @endif
             </div>
         </div>
 
-        {{-- Sidebar --}}
         <div class="exercise-info-sidebar">
             @if(!empty($sidebar))
                 @foreach($sidebar as $card)
@@ -84,9 +103,18 @@
                                             {{ $item['label'] }}
                                         </span>
                                     @endif
-                                    <span class="{{ $item['valueClass'] ?? 'info-item-value' }}">
-                                        {!! $item['value'] ?? '' !!}
-                                    </span>
+
+                                    @if(!empty($item['text']))
+                                        <a href="{{ $item['value'] }}" class="action-btn">
+                                            @if(!empty($item['icon']))<i class="{{ $item['icon'] }}"></i>@endif
+                                            {{ $item['text'] }}
+                                        </a>
+                                    @else
+                                        <span class="{{ $item['valueClass'] ?? 'info-item-value' }}">
+                                            {!! $item['value'] ?? '' !!}
+                                        </span>
+                                    @endif
+
                                 </div>
                             @endforeach
                         </div>
@@ -94,7 +122,6 @@
                 @endforeach
             @endif
         </div>
-
     </div>
 </div>
 @endsection

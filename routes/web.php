@@ -20,7 +20,13 @@ Route::controller(AuthController::class)->name('login.')->group(function() {
     });
 });
 
+Route::get('/admin/requestChangePassword', [AdminController::class, 'requestChangePasswordPage'])
+    ->name('admin.requestChangePassword');
 
+Route::post('/admin/requestChangePassword', [AdminController::class, 'postRequestChangePasswordPage'])
+    ->name('post.admin.requestChangePassword');
+
+    
 Route::prefix('/admin')
     ->controller(AdminController::class)
     ->name('admin.')
@@ -28,8 +34,17 @@ Route::prefix('/admin')
     ->group(function() {
 
         Route::resource('', AdminController::class);
-        Route::resource('/exercises', ExerciseController::class);
         Route::resource('/programs', ProgramController::class);
         Route::get('create-account', 'createAccount')->name('create-account');
+
+        Route::prefix('/exercises')
+            ->controller(ExerciseController::class)
+            ->name('exercises.')
+            ->group(function() {
+                Route::post('{id}/addprogram-page', 'addToProgramExecute')->name('post.addToProgramPage');
+                Route::get('/{id}/addprogram-page', 'addToProgramPage')->name('addToProgramPage');
+        });
+
+        Route::resource('exercises', ExerciseController::class);
         
     });

@@ -9,4 +9,10 @@ class ProgramService extends AbstractApiService
     {
         return "programs";
     }
+
+    public function getExercisesFromProgram(string $programId)
+    {
+        return $this->get("/$programId/exercises");
+    }
 }
+

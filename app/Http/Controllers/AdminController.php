@@ -5,21 +5,21 @@ namespace App\Http\Controllers;
 use App\Constants\AdminMenu;
 use App\Contracts\AdminServiceInterface;
 use App\Contracts\AuthServiceInterface;
-use App\Models\User;
+use App\Http\Requests\EmailRequest;
+use App\Models\RequestResetPassword;
 use Illuminate\Http\Request;
+use Str;
 
 class AdminController extends Controller
 {
     public $Items;
-    private $Token;
 
     public function __construct(
         private AdminServiceInterface $adminService,
-        private AuthServiceInterface $authService,
+        private AuthServiceInterface $authService
         )
     {
         $this->Items = AdminMenu::all();
-        $this->Token = session('auth');
     }
 
     /**
@@ -27,12 +27,34 @@ class AdminController extends Controller
     */
     public function index()
     {
-        $user = $this->authService->getTokenPayload($this->Token)['AccountId'];
-
         return view('Admin.index', [
-            'user' => User::findNameByAccountId($user),
             'items' => $this->Items,
         ]);
+    }
+
+    public function requestChangePasswordPage() 
+    {
+        return view('Auth.changePasswordPage');
+    }
+
+    public function postRequestChangePasswordPage(EmailRequest $request)
+    {
+        $validatedEmail = $request->validated();
+        $ifAccountExist = $this->authService->findLogin($validatedEmail['email']);
+
+        //Si le compte existe.
+        if($ifAccountExist->exists) {
+
+            // Génére une chaine aléatoire
+            $chaine = Str::random(64);
+            //Construit l'URL pour reset
+            $resetUrl = url("/reset-password/{$chaine}?email=" . urlencode($validatedEmail['email']));
+
+            RequestResetPassword::create([
+                'accountId' => $ifAccountExist->id,
+                'link' => $resetUrl
+            ]);
+        }
     }
 
 
