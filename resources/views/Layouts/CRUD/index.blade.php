@@ -47,9 +47,10 @@
                         </h1>
 
                         @if(!empty($createButton))
-                            <x-create-button 
+                            <x-generic-btn 
                                 :route="$createButton['route']" 
                                 :name="$createButton['label']"
+                                variant="btn-create"
                             />
                         @endif
                     </div>

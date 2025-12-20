@@ -72,16 +72,12 @@
                             </div>
                         </div>
                     @endforeach
-
                     <div class="form-actions">
-                        <a href="{{ $cancelRoute ?? '#' }}" class="btn btn-cancel">
-                            <i class="bi bi-arrow-left"></i>
-                            {{ $cancelLabel ?? 'Annuler' }}
-                        </a>
-                        <button type="submit" class="btn btn-submit">
-                            <i class="{{ $submitIcon ?? 'bi bi-check-lg' }}"></i>
-                            {{ $submitLabel ?? 'Enregistrer' }}
-                        </button>
+                        <x-generic-btn
+                            name="Retour"
+                            :route="redirect()->back()"
+                            variant="btn-back"
+                        />
                     </div>
                 </div>
             </form>
