@@ -53,7 +53,7 @@ abstract class AbstractApiService implements ApiServiceInterface
             $url = rtrim($this->baseUrl . '/' . $this->endpoint() . $path, '/');
             $response = Http::timeout(5)->get($url);
 
-            return $response->successful() ? $response->json() : [];
+            return $response->json();
         } catch (ConnectionException $e) {
             return ['error' => 'Impossible de contacter l’API.'];
         }

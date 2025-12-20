@@ -6,12 +6,8 @@
     <nav class="sidebar-nav">
         <ul>
             @foreach($items as $item)
-                @php
-                    $routeName = $item['route'] ?? null;
-                @endphp
-
-                <li class="nav-item {{ request()->routeIs($routeName) ? 'active' : '' }}">
-                    <a href="{{ $routeName && Route::has($routeName) ? route($routeName) : '#' }}">
+                <li class="nav-item {{ $item['isActive'] ? 'active' : '' }}">
+                    <a href="{{ $item['url'] }}">
                         <i class="{{ $item['icon'] ?? 'fas fa-dumbbell' }}"></i> {{ $item['title'] }}
                     </a>
                 </li>

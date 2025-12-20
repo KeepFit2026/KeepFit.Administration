@@ -8,18 +8,16 @@ use Illuminate\Support\Facades\Route;
 
 
 Route::controller(AuthController::class)->name('login.')->group(function() {
-
     Route::post('/logout', 'logout')->name('logout');
-
-    Route::prefix('/login')->group(function() {
-        Route::get('first-connexion', 'firstLoginWebPortal')->name('first-connexion');
-        Route::post('first-connexion', 'loginWebPortalWithNewAccount')->name('post.first-connexion');
-
-        Route::get('', 'index')->name('index');
-        Route::post('', 'loginWebPortal')->name('post.loginWebPortal');
-    });
+    Route::get('first-connexion', 'firstLoginWebPortal')->name('first-connexion');
+    Route::post('first-connexion', 'loginWebPortalWithNewAccount')->name('post.first-connexion');
+    Route::get('', 'index')->name('index');
+    Route::post('', 'loginWebPortal')->name('post.loginWebPortal');
 });
 
+/**
+ * Cas Partiel
+*/
 Route::get('/admin/requestChangePassword', [AdminController::class, 'requestChangePasswordPage'])
     ->name('admin.requestChangePassword');
 
@@ -41,8 +39,8 @@ Route::prefix('/admin')
             ->controller(ExerciseController::class)
             ->name('exercises.')
             ->group(function() {
-                Route::post('{id}/addprogram-page', 'addToProgramExecute')->name('post.addToProgramPage');
                 Route::get('/{id}/addprogram-page', 'addToProgramPage')->name('addToProgramPage');
+                Route::post('/{id}/addprogram-page', 'addToProgramExecute')->name('post.addToProgramPage');
         });
 
         Route::resource('exercises', ExerciseController::class);

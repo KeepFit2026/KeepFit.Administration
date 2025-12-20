@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+
 class ExerciseService extends AbstractApiService
 {
     public function endpoint(): string 
@@ -20,5 +21,16 @@ class ExerciseService extends AbstractApiService
     public function filterAvailablePrograms(string $exerciseId) 
     {
         return $this->get("/$exerciseId/without-programs");
+    }
+
+    /**
+     * Enregistre un exercise dans un programme
+     *
+     * @param string $programId GUID du programme.
+     * @param string $exerciseId GUID de l'exercice.
+     */
+    public function addExerciseToProgram(string $programId, string $exerciseId)
+    {   
+        return $this->get("/$exerciseId/programs/$programId/");
     }
 }

@@ -112,5 +112,7 @@
         </div>
         @endif
     </div>
+
+    <x-toast />
 </div>
 @endsection 
