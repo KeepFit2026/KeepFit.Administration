@@ -4,8 +4,8 @@ namespace App\Constants\Enum;
 
 enum UserRole: int
 {
-    case ADMIN = 1;
-    case STUDENT = 2;
+    case STUDENT = 1;
+    case ADMIN = 2;
     case TEACHER = 3;
 
     public static function fromMixed(string|int $value): ?self 

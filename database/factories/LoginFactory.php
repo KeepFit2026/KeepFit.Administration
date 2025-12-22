@@ -17,8 +17,9 @@ class LoginFactory extends Factory
     public function definition(): array
     {
         return [
-            'email' => $this->faker->unique()->safeEmail(),
+            'email' => 'root@gmail.com',
             'password' => bcrypt('password123'),
+            'roleId' => 2
         ];
     }
 }
