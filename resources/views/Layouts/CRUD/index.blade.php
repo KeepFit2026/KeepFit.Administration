@@ -60,7 +60,7 @@
                             @foreach ($stats as $stat)
                                 <x-card-information
                                     :name="$stat['name']"
-                                    :data="$stat['data']"
+                                    :data="$stat['totalRecords']"
                                     :subname="$stat['subname']"
                                     :class="$stat['class'] ?? ''"
                                 />

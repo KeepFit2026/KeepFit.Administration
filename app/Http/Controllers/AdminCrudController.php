@@ -36,9 +36,12 @@ abstract class AdminCrudController extends Controller
     {
         $response = $this->getService()->GetAllAsync();
 
+        $stats = $this->getStats($response, $response['totalRecords']);
+
         return $this->render("{$this->getViewFolder()}.index", [
-            $this->getDataKey() => $response['data'] ?? [],
-            'errorMessage'      => $response['error'] ?? null,
+            $this->getDataKey()     => $response['data'] ?? [],
+            'errorMessage'          => $response['error'] ?? null,
+            'stats'                 => $stats
         ]);
     }
 
@@ -87,5 +90,17 @@ abstract class AdminCrudController extends Controller
     {
         $this->getService()->DeleteAsync($id);
         return redirect()->route("admin." . $this->getDataKey() . ".index");
+    }
+
+    protected function getStats($data, $totalRecords): array
+    {
+        return [
+            [
+                'name'         => 'Total des ' . $this->getDataKey(),
+                'subname'      => ucfirst($this->getDataKey()) . ' créés',
+                'totalRecords' => $totalRecords,
+                'class'        => ''
+            ]
+        ];
     }
 }

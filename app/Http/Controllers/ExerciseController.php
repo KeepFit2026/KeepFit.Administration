@@ -53,4 +53,18 @@ class ExerciseController extends AdminCrudController
         $result = $this->service->addExerciseToProgram($programId, $exerciseId);
         if($result) return redirect()->back()->with('success', 'Exercice ajouté au programme avec succès !');
     }
+
+    protected function getStats($data, $totalRecords): array
+    {
+        $stats = parent::getStats($data, $totalRecords);
+
+        $stats[] = [
+            'name' => 'Exercices terminés',
+            'subname' => 'Terminés',
+            'totalRecords' => 0,
+            'class' => 'success'
+        ];
+
+        return $stats;
+    }
 }
