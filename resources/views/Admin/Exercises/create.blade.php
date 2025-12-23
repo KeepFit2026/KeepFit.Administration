@@ -31,9 +31,7 @@
         ]
     ],
 
-    'cancelRoute' => route('admin.exercises.index'),
-    'cancelLabel' => 'Annuler',
-    'submitLabel' => 'Créer l\'exercice',
+    'createRoute' => 'admin.exercises.store',
     'submitIcon' => 'bi bi-check-lg',
 
     'sidebar' => [

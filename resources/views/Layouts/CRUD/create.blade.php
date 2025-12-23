@@ -23,7 +23,6 @@
     </div>
 
     <div class="exercise-form-container">
-        {{-- Formulaire --}}
         <div class="exercise-form-card">
             <div class="form-card-header">
                 @if(!empty($formBadge))
@@ -35,7 +34,7 @@
                 <h2 class="form-title">{{ $formTitle ?? 'Informations' }}</h2>
             </div>
             
-            <form action="{{ $formAction ?? '#' }}" method="{{ $formMethod ?? 'POST' }}" class="exercise-form">
+            <form action="{{ $formAction ?? '#' }}" method="POST" class="exercise-form">
                 @csrf
                 @if(!empty($formMethod) && strtoupper($formMethod) !== 'POST')
                     @method($formMethod)
@@ -66,24 +65,31 @@
                                            placeholder="{{ $field['placeholder'] ?? '' }}"
                                            @if(!empty($field['required'])) required @endif>
                                 @endif
+                                
                                 @error($field['name'])
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
                     @endforeach
+
                     <div class="form-actions">
                         <x-generic-btn
                             name="Retour"
-                            :route="redirect()->back()"
+                            :route="url()->previous()"
                             variant="btn-back"
+                        />
+
+                        <x-generic-btn
+                            name="Créer"
+                            variant="btn-create"
+                            method="POST"
                         />
                     </div>
                 </div>
             </form>
         </div>
 
-        {{-- Sidebar --}}
         @if(!empty($sidebar))
         <div class="form-sidebar">
             <div class="info-card">
@@ -111,4 +117,4 @@
 
     <x-toast />
 </div>
-@endsection 
+@endsection

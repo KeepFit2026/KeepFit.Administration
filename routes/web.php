@@ -48,9 +48,10 @@ Route::prefix('/admin')
             ->controller(ExerciseController::class)
             ->name('exercises.')
             ->group(function() {
-                Route::resource('', ExerciseController::class);
                 Route::get('/{id}/addprogram-page', 'addToProgramPage')->name('addToProgramPage');
                 Route::post('/{id}/addprogram-page', 'addToProgramExecute')->name('post.addToProgramPage');
         });
-        
+
+        Route::resource('/exercises', ExerciseController::class);
+
     });
