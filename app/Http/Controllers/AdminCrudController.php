@@ -36,7 +36,7 @@ abstract class AdminCrudController extends Controller
     {
         $response = $this->getService()->GetAllAsync();
 
-        $stats = $this->getStats($response, $response['totalRecords']);
+        $stats = $this->getStats($response, $response['totalRecords'] ?? 0);
 
         return $this->render("{$this->getViewFolder()}.index", [
             $this->getDataKey()     => $response['data'] ?? [],

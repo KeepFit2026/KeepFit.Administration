@@ -46,7 +46,7 @@
                             {{ $headerTitle ?? 'Titre' }}
                         </h1>
 
-                        @if(!empty($createButton))
+                        @if(!empty($createButton) && empty($errorMessage))
                             <x-generic-btn 
                                 :route="$createButton['route']" 
                                 :name="$createButton['label']"

@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Middleware\CheckApi;
 use Illuminate\Support\Facades\Route;
 
 
@@ -32,17 +33,24 @@ Route::prefix('/admin')
     ->group(function() {
 
         Route::resource('', AdminController::class);
-        Route::resource('/programs', ProgramController::class);
+        Route::resource('/programs', ProgramController::class)->middleware(CheckApi::class);
+
+        //Temporaire.
         Route::get('create-account', 'createAccount')->name('create-account');
 
+        // Si erreur en lien avec l'API
+        Route::get('/error-api', function() {
+            return response()->view('Error.API', [], 503);
+        })->name('error.api');
+
         Route::prefix('/exercises')
+            ->middleware(CheckApi::class)
             ->controller(ExerciseController::class)
             ->name('exercises.')
             ->group(function() {
+                Route::resource('', ExerciseController::class);
                 Route::get('/{id}/addprogram-page', 'addToProgramPage')->name('addToProgramPage');
                 Route::post('/{id}/addprogram-page', 'addToProgramExecute')->name('post.addToProgramPage');
         });
-
-        Route::resource('exercises', ExerciseController::class);
         
     });
