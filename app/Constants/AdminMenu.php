@@ -13,6 +13,7 @@ class AdminMenu
         [
             'title' => 'Utilisateurs',
             'icon' => 'fas fa-users',
+            'route' => 'admin.users.index'
         ],
         [
             'title' => 'Exercices',

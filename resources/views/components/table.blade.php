@@ -1,7 +1,3 @@
-@php
-    $table = $table ?? ['title' => 'Liste', 'columns' => []];
-@endphp
-
 <div class="table-container-wrapper">
     @if($variant->value == "default")
         <div class="table-container">
@@ -29,47 +25,63 @@
                             <th>Actions</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach($data as $d)
-                            <tr>
-                                <td>
+              <tbody>
+                @foreach($data as $d)
+                    @php 
+                        $itemId = data_get($d, 'id') ?? data_get($d, 'Id'); 
+                    @endphp
+
+                    <tr>
+                        @foreach($rows as $key => $label)
+                            <td>
+                                @if($loop->first)
                                     <div class="entity-name">
                                         <div class="entity-icon">
-                                            <i class="bi bi-activity"></i>
+                                            <i class="{{ $headerIcon ?? 'bi bi-activity' }}"></i>
                                         </div>
                                         <div class="entity-info">
-                                            <div class="entity-title">{{ $d['name'] }}</div>
-                                            <div class="entity-meta">Créé le {{ $d['created_at'] ?? 'N/A' }}</div>
+                                            <div class="entity-title">{{ data_get($d, $key) }}</div>
+                                            
+                                            <div class="entity-meta">
+                                                Créé le {{ data_get($d, 'created_at') ?? data_get($d, 'CreatedAt') ?? 'N/A' }}
+                                            </div>
                                         </div>
                                     </div>
-                                </td>
-                                <td>
+
+                                @else
                                     <div class="entity-description entity-description-truncated">
-                                        {{ $d['description'] }}
+                                        {{ data_get($d, $key) ?? '-' }}
                                     </div>
-                                </td>
-                                <td>
-                                    <div class="entity-actions">
-                                        <a href="{{ route($routeShow, $d['id']) }}" class="btn-action btn-view" title="Voir">
-                                            <i class="bi bi-eye"></i>
-                                        </a>
-                                        <a href="" class="btn-action btn-edit" title="Modifier">
-                                            <i class="bi bi-pencil-square"></i>
-                                        </a>
-                                        @if($routeDelete)
-                                            <form action="{{ route($routeDelete, $d['id']) }}" method="POST" class="d-inline">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn-action btn-delete" title="Supprimer" onclick="return confirm('Supprimer cet élément ?')">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
-                                        @endif
-                                    </div>
-                                </td>
-                            </tr>
+                                @endif
+                            </td>
                         @endforeach
-                    </tbody>
+
+                        <td>
+                            <div class="entity-actions">
+                                @if(isset($routeShow) && $routeShow)
+                                    <a href="{{ route($routeShow, $itemId) }}" class="btn-action btn-view" title="Voir">
+                                        <i class="bi bi-eye"></i>
+                                    </a>
+                                @endif
+
+                                <a href="#" class="btn-action btn-edit" title="Modifier">
+                                    <i class="bi bi-pencil-square"></i>
+                                </a>
+
+                                @if(isset($routeDelete) && $routeDelete)
+                                    <form action="{{ route($routeDelete, $itemId) }}" method="POST" class="d-inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn-action btn-delete" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">
+                                            <i class="bi bi-trash"></i>
+                                        </button>
+                                    </form>
+                                @endif
+                            </div>
+                        </td>
+                    </tr>
+                @endforeach
+            </tbody>
                 </table>
             </div>
         </div>

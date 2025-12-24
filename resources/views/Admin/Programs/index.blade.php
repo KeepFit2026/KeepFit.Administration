@@ -10,7 +10,7 @@
 
     'table' => [
         'title' => 'Liste des programmes',
-        'columns' => ['Name', 'Description'],
+        'columns' => ['name' => 'Nom', 'description' => 'Description'],
         'routeShow' => 'admin.programs.show',
         'routeDelete' => 'admin.programs.destroy',
     ],

@@ -4,9 +4,10 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ProgramController;
+use App\Http\Controllers\UserController;
 use App\Http\Middleware\CheckApi;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
-
 
 Route::controller(AuthController::class)->name('login.')->group(function() {
     Route::post('/logout', 'logout')->name('logout');
@@ -16,15 +17,11 @@ Route::controller(AuthController::class)->name('login.')->group(function() {
     Route::post('', 'loginWebPortal')->name('post.loginWebPortal');
 });
 
-/**
- * Cas Partiel
-*/
 Route::get('/admin/requestChangePassword', [AdminController::class, 'requestChangePasswordPage'])
     ->name('admin.requestChangePassword');
 
 Route::post('/admin/requestChangePassword', [AdminController::class, 'postRequestChangePasswordPage'])
     ->name('post.admin.requestChangePassword');
-
     
 Route::prefix('/admin')
     ->controller(AdminController::class)
@@ -33,25 +30,29 @@ Route::prefix('/admin')
     ->group(function() {
 
         Route::resource('', AdminController::class);
-        Route::resource('/programs', ProgramController::class)->middleware(CheckApi::class);
+        
+        Route::resource('programs', ProgramController::class)
+            ->middleware(CheckApi::class);
 
-        //Temporaire.
         Route::get('create-account', 'createAccount')->name('create-account');
 
-        // Si erreur en lien avec l'API
         Route::get('/error-api', function() {
             return response()->view('Error.API', [], 503);
         })->name('error.api');
 
-        Route::prefix('/exercises')
+        Route::resource('exercises', ExerciseController::class)
+            ->middleware(CheckApi::class);
+
+        Route::resource('users', UserController::class)
+            ->middleware(CheckApi::class);
+
+        Route::controller(ExerciseController::class)
+            ->prefix('exercises')
             ->middleware(CheckApi::class)
-            ->controller(ExerciseController::class)
             ->name('exercises.')
             ->group(function() {
                 Route::get('/{id}/addprogram-page', 'addToProgramPage')->name('addToProgramPage');
                 Route::post('/{id}/addprogram-page', 'addToProgramExecute')->name('post.addToProgramPage');
         });
-
-        Route::resource('/exercises', ExerciseController::class);
 
     });
