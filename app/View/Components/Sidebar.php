@@ -25,21 +25,39 @@ class Sidebar extends Component
     private function prepareMenu(array $menuItems): array
     {
         return array_map(function ($item) {
-            $routeName = $item['route'] ?? null;
-            
-            //Calcul de l'URL (Gestion de la sécurité Route::has)
-            $item['url'] = '#';
-            if ($routeName && Route::has($routeName)) 
-                $item['url'] = route($routeName);
-
-            //Calcul de l'état Actif
             $item['isActive'] = false;
+            $item['url'] = '#';
+
+            // CAS 1 : C'est un groupe
+            if (isset($item['submenu']) && is_array($item['submenu'])) {
+                // On rappelle la fonction sur les enfants (récursivité)
+                $item['submenu'] = $this->prepareMenu($item['submenu']);
+                
+                // Si un des enfants est actif, le parent devient actif (pour rester ouvert)
+                foreach ($item['submenu'] as $subItem) {
+                    if ($subItem['isActive']) {
+                        $item['isActive'] = true;
+                        break;
+                    }
+                }
+            } 
             
-            if ($routeName && $routeName === 'admin.index') {
-                $item['isActive'] = request()->routeIs($routeName);
-            } else {
-                $wildcard = Str::replaceLast('.index', '.*', $routeName);
-                $item['isActive'] = request()->routeIs($wildcard) || request()->routeIs($routeName);
+            // CAS 2 : C'est un lien simple
+            else {
+                $routeName = $item['route'] ?? null;
+                
+                if ($routeName && Route::has($routeName)) {
+                    $item['url'] = route($routeName);
+                }
+
+                if ($routeName) {
+                    if ($routeName === 'admin.index') {
+                        $item['isActive'] = request()->routeIs($routeName);
+                    } else {
+                        $wildcard = Str::replaceLast('.index', '.*', $routeName);
+                        $item['isActive'] = request()->routeIs($wildcard) || request()->routeIs($routeName);
+                    }
+                }
             }
 
             return $item;

@@ -10,15 +10,35 @@ class AdminMenu
             'icon' => 'fas fa-tachometer-alt',
             'route' => 'admin.index'
         ],
+        
         [
             'title' => 'Utilisateurs',
             'icon' => 'fas fa-users',
-            'route' => 'admin.users.index'
+            'submenu' => [
+                [
+                    'title' => 'Liste des utilisateurs',
+                    'route' => 'admin.users.index'
+                ],
+                [
+                    'title' => 'Classes / Groupes',
+                ],
+            ]
         ],
+        
         [
             'title' => 'Exercices',
             'icon' => 'fas fa-running',
-            'route' => 'admin.exercises.index'
+            'route' => 'admin.exercises.index',
+            'submenu' => [
+                [
+                    'title' => 'Listes des exercices',
+                    'route' => 'admin.exercises.index'
+                ],
+                [
+                    'title' => 'Créer',
+                    'route' => 'admin.exercises.create'
+                ]
+            ]
         ],
         [
             'title' => 'Programmes',
@@ -27,7 +47,7 @@ class AdminMenu
         ],
         [
             'title' => 'Séances',
-            'icon' => 'fas fa-calendar-alt',
+            'icon' => 'fas fa-calendar-alt', 
         ],
         [
             'title' => 'Statistiques',
