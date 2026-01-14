@@ -38,6 +38,7 @@
             </header>
 
             <main class="content">
+
                 <div class="container-fluid entity-section">
 
                     <div class="page-header">

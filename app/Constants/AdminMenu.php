@@ -9,18 +9,30 @@ class AdminMenu
             'title' => 'Dashboard',
             'icon' => 'fas fa-tachometer-alt',
             'route' => 'admin.index'
-        ],
-        
+        ], 
         [
             'title' => 'Utilisateurs',
             'icon' => 'fas fa-users',
             'submenu' => [
                 [
+                    'title' => 'Créer un utilisateur',
+                    'route' => 'admin.users.create'
+                ],
+                [
                     'title' => 'Liste des utilisateurs',
                     'route' => 'admin.users.index'
                 ],
+            ]
+        ],
+        [
+            'title' => 'Classes',
+            'icon' => 'fa-chisel fa-regular fa-suitcase',
+            'submenu' => [
                 [
-                    'title' => 'Classes / Groupes',
+                    'title' => 'Créer une classes',
+                ],
+                [
+                    'title' => 'Liste des classes',
                 ],
             ]
         ],

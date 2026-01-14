@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Enum\UserRole;
 use App\Contracts\AuthServiceInterface;
 use App\Http\Requests\UserRequest;
 use App\Services\UserService;
@@ -33,4 +34,22 @@ class UserController extends AdminCrudController
     {
         return 'users';
     }  
+
+    /**
+     * Surcharge de la méthode store du Controller Générique
+     *
+     * @return void
+     */
+    public function store()
+    {
+        $request = $this->getRequestClass();
+        $validated = app($request)->validated();
+
+
+        $result = $this->getService()->registerAccount($validated['email'], $validated['role']);
+        
+        return isset($result['error'])
+            ? back()->withInput()->with('error', 'Erreur lors de la création du login')
+            : redirect()->back()->with('success', 'Création réussie.');
+    }
 }
