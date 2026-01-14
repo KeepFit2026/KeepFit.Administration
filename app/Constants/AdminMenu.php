@@ -43,12 +43,12 @@ class AdminMenu
             'route' => 'admin.exercises.index',
             'submenu' => [
                 [
-                    'title' => 'Listes des exercices',
-                    'route' => 'admin.exercises.index'
+                    'title' => 'Créer un exercices',
+                    'route' => 'admin.exercises.create'
                 ],
                 [
-                    'title' => 'Créer',
-                    'route' => 'admin.exercises.create'
+                    'title' => 'Listes des exercices',
+                    'route' => 'admin.exercises.index'
                 ]
             ]
         ],
