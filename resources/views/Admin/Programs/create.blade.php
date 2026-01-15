@@ -31,10 +31,7 @@
         ]
     ],
 
-    'cancelRoute' => route('admin.programs.index'),
-    'cancelLabel' => 'Annuler',
-    'submitLabel' => 'Créer le programme',
-    'submitIcon' => 'bi bi-check-lg',
+    'createRoute' => 'admin.programs.store',
 
     'sidebar' => [
         'title' => 'Champs requis',

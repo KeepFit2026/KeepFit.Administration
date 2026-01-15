@@ -34,4 +34,18 @@ class ProgramController extends AdminCrudController
     {
         return "programs";
     }
+
+    protected function getStats($data, $totalRecords): array
+    {
+        $stats = parent::getStats($data, $totalRecords);
+
+        $stats[] = [
+            'name' => 'Programmes terminés',
+            'subname' => 'Terminés',
+            'totalRecords' => 0,
+            'class' => 'success'
+        ];
+
+        return $stats;
+    }
 }

@@ -9,6 +9,10 @@
 
 @section('content')
 
+@php
+    $count = $programs['data'] != null ? count($programs['data']) : 0
+@endphp
+
 <div class="container-fluid exercises-section">
     <div class="page-header">
         <div class="page-header-left">
@@ -105,7 +109,7 @@
                     </h2>
                     <span class="options-count">
                         <i class="bi bi-list-check"></i>
-                        {{ count($programs['data']) }} programmes disponibles
+                        {{ $count }} programmes disponibles
                     </span>
                 </div>
 
@@ -150,14 +154,9 @@
                             <i class="bi bi-list-columns text-primary me-2"></i>
                             Liste des programmes
                         </h5>
-                        <div class="list-info">
-                            <span class="text-muted small">
-                                Affichage {{ $programs['from'] ?? 1 }}-{{ $programs['to'] ?? count($programs['data']) }} sur {{ $programs['total'] ?? count($programs['data']) }}
-                            </span>
-                        </div>
                     </div>
                     
-                    @if(count($programs['data']) > 0)
+                    @if( $count > 0)
                         <div class="programs-list">
                             @foreach($programs['data'] as $program)
                                 <label class="program-row" for="program_{{ $program['id'] }}">
@@ -323,7 +322,7 @@
                         Retour à l'exercice
                     </a>
 
-                    <form action="{{ route('admin.exercises.post.addToProgramPage', $exercise['data']['id']) }}" method="POST">
+                    <form action="{{ route('admin.exercises.post.addToProgramPage', $exercise['data']['id'], ) }}" method="POST">
                         @csrf
                         <button type="submit">
                             <i class="bi bi-check-circle"></i>
@@ -334,6 +333,8 @@
             </form>
         </div>
     </div>
+    
+    <x-toast />
 </div>
 
 @endsection

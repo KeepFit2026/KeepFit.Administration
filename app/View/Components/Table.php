@@ -22,7 +22,7 @@ class Table extends Component
     public function __construct(
         string $tableTitle, 
         array $rows, 
-        array $data, 
+        ?array $data, 
         string $routeShow, 
         ?string $routeDelete = null,
         ?String $variant = 'default'
@@ -30,7 +30,7 @@ class Table extends Component
     {
         $this->tableTitle = $tableTitle;
         $this->rows = $rows;
-        $this->data = $data;
+        $this->data = $data ?? [];
         $this->routeShow = $routeShow;
         $this->routeDelete = $routeDelete;
         

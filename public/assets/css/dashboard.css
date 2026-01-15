@@ -334,7 +334,6 @@ body {
     text-decoration: underline;
 }
 
-/* Chart Placeholder */
 .chart-placeholder {
     background: var(--gray-light);
     height: 300px;
@@ -345,7 +344,6 @@ body {
     color: var(--gray);
 }
 
-/* Recent Activity */
 .activity-list {
     list-style: none;
 }
@@ -433,7 +431,6 @@ body {
     border: 2px solid #ddd;
 }
 
-/* Style pour l'élément de navigation actif */
 .nav-item.active {
     background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%);
     margin: 0.25rem 0.5rem;

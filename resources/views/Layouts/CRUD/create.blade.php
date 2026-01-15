@@ -23,7 +23,6 @@
     </div>
 
     <div class="exercise-form-container">
-        {{-- Formulaire --}}
         <div class="exercise-form-card">
             <div class="form-card-header">
                 @if(!empty($formBadge))
@@ -35,7 +34,7 @@
                 <h2 class="form-title">{{ $formTitle ?? 'Informations' }}</h2>
             </div>
             
-            <form action="{{ $formAction ?? '#' }}" method="{{ $formMethod ?? 'POST' }}" class="exercise-form">
+            <form action="{{ $formAction ?? '#' }}" method="POST" class="exercise-form">
                 @csrf
                 @if(!empty($formMethod) && strtoupper($formMethod) !== 'POST')
                     @method($formMethod)
@@ -50,22 +49,45 @@
                                 @if(!empty($field['required'])) <span class="required">*</span> @endif
                             </div>
                             <div class="form-group">
+
+                                {{-- Cas 1 : Textarea --}}
                                 @if(($field['type'] ?? 'text') === 'textarea')
                                     <textarea name="{{ $field['name'] ?? '' }}"
-                                              id="{{ $field['id'] ?? $field['name'] ?? '' }}"
-                                              class="form-control @error($field['name']) is-invalid @enderror"
-                                              rows="{{ $field['rows'] ?? 4 }}"
-                                              placeholder="{{ $field['placeholder'] ?? '' }}"
-                                              @if(!empty($field['required'])) required @endif>{{ old($field['name'], $field['value'] ?? '') }}</textarea>
+                                            id="{{ $field['id'] ?? $field['name'] ?? '' }}"
+                                            class="form-control @error($field['name']) is-invalid @enderror"
+                                            rows="{{ $field['rows'] ?? 4 }}"
+                                            placeholder="{{ $field['placeholder'] ?? '' }}"
+                                            @if(!empty($field['required'])) required @endif>{{ old($field['name'], $field['value'] ?? '') }}</textarea>
+
+                                {{-- Cas 2 : Select --}}
+                                @elseif(($field['type'] ?? 'text') === 'select')
+                                    <select name="{{ $field['name'] ?? '' }}"
+                                            id="{{ $field['id'] ?? $field['name'] ?? '' }}"
+                                            class="form-select form-control @error($field['name']) is-invalid @enderror"
+                                            @if(!empty($field['required'])) required @endif>
+                                        
+                                        <option value="" disabled selected>Sélectionnez une option...</option>
+                                        
+                                        @foreach($field['options'] ?? [] as $optionValue => $optionLabel)
+                                            <option value="{{ $optionValue }}"
+                                                {{-- Vérifie si l'option doit être sélectionnée (via old input ou valeur DB) --}}
+                                                {{ (string)old($field['name'], $field['value'] ?? '') === (string)$optionValue ? 'selected' : '' }}>
+                                                {{ $optionLabel }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+
+                                {{-- Cas 3 : Input standard (text, email, password, etc.) --}}
                                 @else
                                     <input type="{{ $field['type'] ?? 'text' }}"
-                                           name="{{ $field['name'] ?? '' }}"
-                                           id="{{ $field['id'] ?? $field['name'] ?? '' }}"
-                                           class="form-control @error($field['name']) is-invalid @enderror"
-                                           value="{{ old($field['name'], $field['value'] ?? '') }}"
-                                           placeholder="{{ $field['placeholder'] ?? '' }}"
-                                           @if(!empty($field['required'])) required @endif>
+                                        name="{{ $field['name'] ?? '' }}"
+                                        id="{{ $field['id'] ?? $field['name'] ?? '' }}"
+                                        class="form-control @error($field['name']) is-invalid @enderror"
+                                        value="{{ old($field['name'], $field['value'] ?? '') }}"
+                                        placeholder="{{ $field['placeholder'] ?? '' }}"
+                                        @if(!empty($field['required'])) required @endif>
                                 @endif
+                                
                                 @error($field['name'])
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
@@ -74,20 +96,22 @@
                     @endforeach
 
                     <div class="form-actions">
-                        <a href="{{ $cancelRoute ?? '#' }}" class="btn btn-cancel">
-                            <i class="bi bi-arrow-left"></i>
-                            {{ $cancelLabel ?? 'Annuler' }}
-                        </a>
-                        <button type="submit" class="btn btn-submit">
-                            <i class="{{ $submitIcon ?? 'bi bi-check-lg' }}"></i>
-                            {{ $submitLabel ?? 'Enregistrer' }}
-                        </button>
+                        <x-generic-btn
+                            name="Retour"
+                            :route="url()->previous()"
+                            variant="btn-back"
+                        />
+
+                        <x-generic-btn
+                            name="Créer"
+                            variant="btn-create"
+                            method="POST"
+                        />
                     </div>
                 </div>
             </form>
         </div>
 
-        {{-- Sidebar --}}
         @if(!empty($sidebar))
         <div class="form-sidebar">
             <div class="info-card">
@@ -112,5 +136,7 @@
         </div>
         @endif
     </div>
+
+    <x-toast />
 </div>
-@endsection 
+@endsection

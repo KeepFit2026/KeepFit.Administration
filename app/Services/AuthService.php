@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Contracts\AuthServiceInterface;
 use App\Models\Login;
 use App\Models\User;
+use Illuminate\Support\Facades\Log;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
@@ -49,17 +50,18 @@ class AuthService implements AuthServiceInterface
 
             $accountId = $this->getTokenPayload($token)['AccountId'];
 
-
             // Hash du mot de passe avant insertion
             $passwordHash = bcrypt($data['password']);
 
-
             // Création de l'utilisateur dans la base SQL Server
-            User::create([
+            Log::info('Début de la création du User...');
+
+            $user = User::create([
                 'Name' => $data['name'],              
-                'AccountId' => $accountId
+                'AccountId' => $accountId,
             ]);
 
+            Log::info('Succès ! User créé avec ID : ' . $user->getKey());
 
             // Mise à jour du mot de passe dans le login PostgreSQL
             $login = Login::find($accountId);
@@ -71,6 +73,7 @@ class AuthService implements AuthServiceInterface
             $login->save();
 
         } catch (\Exception $e) {
+            Log::error("Erreur Register : " . $e->getMessage());
             throw new \Exception("Impossible de créer le compte : " . $e->getMessage());
         }
     }

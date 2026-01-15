@@ -9,15 +9,48 @@ class AdminMenu
             'title' => 'Dashboard',
             'icon' => 'fas fa-tachometer-alt',
             'route' => 'admin.index'
-        ],
+        ], 
         [
             'title' => 'Utilisateurs',
             'icon' => 'fas fa-users',
+            'submenu' => [
+                [
+                    'title' => 'Créer un utilisateur',
+                    'route' => 'admin.users.create'
+                ],
+                [
+                    'title' => 'Liste des utilisateurs',
+                    'route' => 'admin.users.index'
+                ],
+            ]
         ],
+        [
+            'title' => 'Classes',
+            'icon' => 'fa-chisel fa-regular fa-suitcase',
+            'submenu' => [
+                [
+                    'title' => 'Créer une classes',
+                ],
+                [
+                    'title' => 'Liste des classes',
+                ],
+            ]
+        ],
+        
         [
             'title' => 'Exercices',
             'icon' => 'fas fa-running',
-            'route' => 'admin.exercises.index'
+            'route' => 'admin.exercises.index',
+            'submenu' => [
+                [
+                    'title' => 'Créer un exercices',
+                    'route' => 'admin.exercises.create'
+                ],
+                [
+                    'title' => 'Listes des exercices',
+                    'route' => 'admin.exercises.index'
+                ]
+            ]
         ],
         [
             'title' => 'Programmes',
@@ -26,7 +59,7 @@ class AdminMenu
         ],
         [
             'title' => 'Séances',
-            'icon' => 'fas fa-calendar-alt',
+            'icon' => 'fas fa-calendar-alt', 
         ],
         [
             'title' => 'Statistiques',

@@ -10,23 +10,9 @@
 
     'table' => [
         'title' => 'Liste des programmes',
-        'columns' => ['Name', 'Description'],
+        'columns' => ['name' => 'Nom', 'description' => 'Description'],
         'routeShow' => 'admin.programs.show',
         'routeDelete' => 'admin.programs.destroy',
-    ],
-
-    'stats' => [
-        [
-            'name' => 'Total des programmes',
-            'data' => count($programs),
-            'subname' => 'programmes créés'
-        ],
-        [
-            'name' => 'programmes terminés',
-            'data' => 0,
-            'subname' => 'Terminés',
-            'class' => 'success'
-        ]
     ],
 
     'items' => $programs,
