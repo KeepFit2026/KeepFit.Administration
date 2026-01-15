@@ -59,7 +59,6 @@ class AuthService implements AuthServiceInterface
             $user = User::create([
                 'Name' => $data['name'],              
                 'AccountId' => $accountId,
-                'RoleId' => $this->getTokenPayload($token)['roleId']
             ]);
 
             Log::info('Succès ! User créé avec ID : ' . $user->getKey());
