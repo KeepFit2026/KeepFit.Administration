@@ -6,22 +6,28 @@ use App\Contracts\ApiServiceInterface;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\PendingRequest;
 
-/**
- * Class générique pour les méthodes CRUD.
- */
 abstract class AbstractApiService implements ApiServiceInterface
 {
     protected $baseUrl;
 
     abstract protected function endpoint(): string;
 
-    /**
-     * Create a new class instance.
-    */
     public function __construct()
     {
         $this->baseUrl = config('services.keepfit.base_url');
+    }
+
+    protected function getClient(): PendingRequest
+    {
+        $token = session('auth');
+        $request = Http::timeout(5);
+
+        if ($token) 
+            $request->withToken($token);
+
+        return $request;
     }
 
     public function GetAllAsync(): JsonResponse|array 
@@ -44,14 +50,15 @@ abstract class AbstractApiService implements ApiServiceInterface
         return $this->delete("/$id");
     }
     
-    /**
-     * Méthode interne pour faire le GET et gérer exceptions
-    */
     protected function get(string $path): JsonResponse|array 
     {
         try {
             $url = rtrim($this->baseUrl . '/' . $this->endpoint() . $path, '/');
-            $response = Http::timeout(5)->get($url);
+            $response = $this->getClient()->get($url);
+
+            if ($response->status() === 401) {
+                return ['error' => 'Session expirée, veuillez vous reconnecter.'];
+            }
 
             return $response->json();
         } catch (ConnectionException $e) {
@@ -59,31 +66,33 @@ abstract class AbstractApiService implements ApiServiceInterface
         }
     }
 
-    /**
-     * Méthode interne pour faire le POST et gérer exceptions
-    */
     protected function post(string $path, array $data): JsonResponse|array
     {
         try {
             $url = rtrim($this->baseUrl . '/' . $this->endpoint() . $path, '/');
-            $response = Http::timeout(5)->post($url, $data);
+            $response = $this->getClient()->post($url, $data);
+
+            if ($response->status() === 401) {
+                return ['error' => 'Session expirée.'];
+            }
 
             return $response->successful() ? $response->json() : [
-                'error' => 'Erreur lors de la création de la ressource.'
+                'error' => $response->json()['message'] ?? 'Erreur lors de la création de la ressource.'
             ];
         } catch (ConnectionException $e) {
             return ['error' => 'Impossible de contacter l’API.'];
         }
     }
 
-    /**
-     * Méthode interne pour faire le DELETE et gérer les exceptions
-    */
     protected function delete(string $path): JsonResponse|array|bool
     {
         try {
             $url = rtrim($this->baseUrl . '/' . $this->endpoint() . $path, '/');
-            $response = Http::timeout(5)->delete($url);
+            $response = $this->getClient()->delete($url);
+
+            if ($response->status() === 401) {
+                return ['error' => 'Session expirée.'];
+            }
 
             if ($response->successful()) {
                 return $response->json() ?? ['message' => 'Ressource supprimée avec succès.'];

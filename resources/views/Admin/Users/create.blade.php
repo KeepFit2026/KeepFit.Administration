@@ -40,7 +40,7 @@
         'title' => 'Champs requis',
         'items' => [
             ['label' => 'Email du l\'utilisateur', 'icon' => 'bi bi-check-circle-fill', 'description' => 'Obligatoire', 'icon' => 'bi bi-check-circle-fill'],
-            ['label' => 'role de l\'utilisateur', 'icon' => 'bi bi-check-circle-fill', 'description' => 'Obligatoire', 'icon' => 'bi bi-check-circle-fill'],
+            ['label' => 'role de l\'utilisateur ', 'icon' => 'bi bi-check-circle-fill', 'description' => 'Obligatoire', 'icon' => 'bi bi-check-circle-fill'],
         ]
     ]
 ])

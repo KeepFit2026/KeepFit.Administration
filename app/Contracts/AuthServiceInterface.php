@@ -43,4 +43,25 @@ interface AuthServiceInterface
      * Vérifie si un compte Login existe.
      */
     public function findLogin(string $email): ?Login;
+
+    /**
+     * Récupère le token JWT existant depuis la session ou retourne null si inexistant.
+     *
+     * @return string|null
+     */
+    public function getExistingToken(): ?string;
+
+    /**
+     * Récupère l'AccountId de l'utilisateur connecté à partir du token actuel.
+     * Retourne null si pas de token ou token invalide.
+     * @return integer|null
+     */
+    public function getCurrentAccountId(): ?int;
+
+    /**
+     * Récupère le RoleId de l'utilisateur connecté à partir du token actuel.
+     * Retourne null si pas de token ou token invalide.
+     * @return integer|null
+     */
+    public function getCurrentRoleId(): ?int;
 }

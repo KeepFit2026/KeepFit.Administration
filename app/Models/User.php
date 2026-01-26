@@ -17,6 +17,7 @@ class User extends Model
     protected $fillable = [
         'Name',
         'AccountId',
+        'RoleId'
     ];
 
     public static function ExistingAccount(string $accountId): bool 

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\AdminServiceInterface;
+use App\Contracts\AuthServiceInterface;
 use App\Models\Login;
 
 class AdminService implements AdminServiceInterface

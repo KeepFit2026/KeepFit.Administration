@@ -38,4 +38,13 @@ class Login extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
+    /**
+     * Retourne l'id du Role de l'untilisateur à partir de l'AccountId.
+     */
+    public static function FindRoleByAccountId(string $accountId): ?int 
+    {
+        $role = self::where('id', $accountId)->first();
+        return $role ? $role->roleId : null;
+    }
 }

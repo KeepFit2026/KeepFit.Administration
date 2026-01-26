@@ -8,8 +8,6 @@ use App\Contracts\AuthServiceInterface;
 abstract class AdminCrudController extends Controller
 {
     protected $items;
-    protected $token;
-    protected $userAccountId;
 
     abstract protected function getService();      
     abstract protected function getViewFolder(): string;  
@@ -19,10 +17,16 @@ abstract class AdminCrudController extends Controller
     public function __construct(private AuthServiceInterface $authService)
     {
         $this->items = AdminMenu::all();
-        $this->token = session('auth');
+    }
 
-        $payload = $this->authService->getTokenPayload($this->token) ?? [];
-        $this->userAccountId = $payload['AccountId'] ?? null;
+    protected function getToken(): ?string
+    {
+        return $this->authService->getExistingToken();
+    }
+
+    protected function getUserRoleId(): ?int
+    {
+        return $this->authService->getCurrentRoleId();
     }
 
     protected function render(string $view, array $data = [])

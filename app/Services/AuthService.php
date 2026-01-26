@@ -10,6 +10,8 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
+use function PHPSTORM_META\type;
+
 class AuthService implements AuthServiceInterface
 {
     /**
@@ -34,11 +36,7 @@ class AuthService implements AuthServiceInterface
 
     /**
      * Crée un nouveau compte utilisateur dans la base SQL Server et modifie le mot de passe dans le login PgSQL.
-     *
-     * @param array $data Données validées provenant du formulaire (name, password, etc.)
-     * @return \App\Models\User
-     * @throws \Exception
-    */
+     */
     public function registerUserAccount(array $data): void
     {
         try {
@@ -59,6 +57,7 @@ class AuthService implements AuthServiceInterface
             $user = User::create([
                 'Name' => $data['name'],              
                 'AccountId' => $accountId,
+                'RoleId' => Login::FindRoleByAccountId($accountId)
             ]);
 
             Log::info('Succès ! User créé avec ID : ' . $user->getKey());
@@ -118,12 +117,72 @@ class AuthService implements AuthServiceInterface
     }
 
     /**
+     * Récupère l'AccountId de l'utilisateur connecté à partir du token actuel.
+     * Retourne null si pas de token ou token invalide.
+     */
+    public function getCurrentAccountId(): ?int
+    {
+        $token = $this->getExistingToken();
+
+        if (!$token) {
+            return null;
+        }
+
+        try {
+            $payload = $this->getTokenPayload($token);
+            return $payload['AccountId'] ?? null;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
+     * Récupère le token JWT existant depuis la session ou retourne null si inexistant.
+     */
+    public function getExistingToken(): ?string
+    {
+        try {
+            $token = session('auth');
+
+            if ($token && JWTAuth::setToken($token)->check()) {
+                return $token;
+            }
+
+            return null;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+   /**
+     * Récupère le RoleId de l'utilisateur connecté à partir du token actuel.
+     * Retourne null si pas de token ou token invalide.
+     * @return integer|null
+    */
+    public function getCurrentRoleId(): ?int
+    {
+        $token = $this->getExistingToken();
+
+        if (!$token) {
+            return null;
+        }
+
+        try {
+            $payload = $this->getTokenPayload($token);
+            return $payload['roleId'] ?? null;
+        } catch (\Exception $e) {
+            return null;
+        }
+    }
+
+    /**
      * Vérifie si le login existe dans la base PGSQL.
      */
     public function findLogin(string $email): ?Login
     {
         return Login::where('email', $email)->first();
     }
+
 
     /**
      * Génère un JWT avec claims personnalisés.
@@ -142,24 +201,6 @@ class AuthService implements AuthServiceInterface
         ];
 
         return JWTAuth::claims($claims)->attempt($credentials);
-    }
-
-    /**
-     * Récupère le token JWT existant depuis la session ou retourne null si inexistant.
-    */
-    private function getExistingToken(): ?string
-    {
-        try {
-            $token = session('auth');
-
-            if ($token && JWTAuth::setToken($token)->check()) {
-                return $token;
-            }
-
-            return null;
-        } catch (\Exception $e) {
-            return null;
-        }
     }
 
     /**
