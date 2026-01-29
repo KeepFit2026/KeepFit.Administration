@@ -7,6 +7,7 @@ use App\Contracts\AdminServiceInterface;
 use App\Contracts\AuthServiceInterface;
 use App\Http\Requests\EmailRequest;
 use App\Models\RequestResetPassword;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Str;
 
@@ -15,8 +16,8 @@ class AdminController extends Controller
     public $Items;
 
     public function __construct(
-        private AdminServiceInterface $adminService,
-        private AuthServiceInterface $authService
+        private AuthServiceInterface $authService,
+        private UserService $userService
         )
     {
         $this->Items = AdminMenu::all();
@@ -29,6 +30,18 @@ class AdminController extends Controller
     {
         return view('Admin.index', [
             'items' => $this->Items,
+        ]);
+    }
+
+    public function chat()
+    {
+        $token = $this->authService->getExistingToken();
+        $users = $this->userService->GetAvailableUsers($this->authService->getTokenPayload($token)['AccountId']);
+        $myconv = $this->userService->getMyPrivateConv();
+        
+        return view('Admin.chat', [
+            'users' => $users,
+            'conv' => $myconv
         ]);
     }
 
@@ -57,16 +70,6 @@ class AdminController extends Controller
         }
     }
 
-
-    /**
-     * Temporaire
-     *
-     * @return void
-     */
-    public function CreateAccount() 
-    {
-        return $this->adminService->CreateAccount();
-    }
     
     /**
      * Show the form for creating a new resource.

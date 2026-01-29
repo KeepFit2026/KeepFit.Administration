@@ -34,6 +34,7 @@ class AuthService implements AuthServiceInterface
         return $this->handleAccountExistence($token, $claims);
     }
 
+
     /**
      * Crée un nouveau compte utilisateur dans la base SQL Server et modifie le mot de passe dans le login PgSQL.
      */

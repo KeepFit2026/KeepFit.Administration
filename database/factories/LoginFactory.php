@@ -17,9 +17,9 @@ class LoginFactory extends Factory
     public function definition(): array
     {
         return [
-            'email' => 'matheo@gmail.com',
+            'email' => 'root@gmail.com',
             'password' => bcrypt('password123'),
-            'roleId' => 1
+            'roleId' => 2
         ];
     }
 }

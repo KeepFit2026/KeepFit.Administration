@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\UserController;
@@ -26,13 +27,13 @@ Route::post('/admin/requestChangePassword', [AdminController::class, 'postReques
 Route::prefix('/admin')
     ->controller(AdminController::class)
     ->name('admin.')
-    ->middleware('checkRole:ADMIN')
+    ->middleware(['checkRole:ADMIN', CheckApi::class])
     ->group(function() {
 
         Route::resource('', AdminController::class);
+        Route::get('/chats', 'chat')->name('chat');
         
-        Route::resource('programs', ProgramController::class)
-            ->middleware(CheckApi::class);
+        Route::resource('programs', ProgramController::class);
 
         Route::get('create-account', 'createAccount')->name('create-account');
 
@@ -43,16 +44,21 @@ Route::prefix('/admin')
         Route::resource('exercises', ExerciseController::class)
             ->middleware(CheckApi::class);
 
-        Route::resource('users', UserController::class)
-            ->middleware(CheckApi::class);
+        Route::resource('users', UserController::class);
 
         Route::controller(ExerciseController::class)
             ->prefix('exercises')
-            ->middleware(CheckApi::class)
             ->name('exercises.')
             ->group(function() {
                 Route::get('/{id}/addprogram-page', 'addToProgramPage')->name('addToProgramPage');
                 Route::post('/{id}/addprogram-page', 'addToProgramExecute')->name('post.addToProgramPage');
         });
+
+        Route::controller(ChatController::class)
+            ->prefix('/chat')
+            ->name('chat.')
+            ->group(function() {
+                Route::post('/create', 'createChat')->name('create');
+            });
 
     });

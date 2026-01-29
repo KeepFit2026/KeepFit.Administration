@@ -69,6 +69,12 @@ class AdminMenu
             'title' => 'Paramètres',
             'icon' => 'fas fa-cog',
         ],
+        [
+            'title' => 'Messages',
+            'icon' => 'fas fa-comments',
+            'route' => 'admin.chat'
+        ],
+        
     ];
 
     public static function all(): array

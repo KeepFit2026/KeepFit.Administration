@@ -1,6 +1,7 @@
 <?php
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateLoginRequest;
 use App\Http\Requests\FirstLoginRequest;
 use App\Http\Requests\LoginRequest;
 use App\Response\ApiResponse;

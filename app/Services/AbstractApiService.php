@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Contracts\ApiServiceInterface;
+use App\Contracts\AuthServiceInterface;
 use Illuminate\Http\Client\ConnectionException;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Http;
@@ -11,21 +12,22 @@ use Illuminate\Http\Client\PendingRequest;
 abstract class AbstractApiService implements ApiServiceInterface
 {
     protected $baseUrl;
+    protected $token;
 
     abstract protected function endpoint(): string;
 
-    public function __construct()
+    public function __construct(private AuthServiceInterface $authService)
     {
         $this->baseUrl = config('services.keepfit.base_url');
+        $this->token = $this->authService->getExistingToken();
     }
 
     protected function getClient(): PendingRequest
     {
-        $token = session('auth');
         $request = Http::timeout(5);
 
-        if ($token) 
-            $request->withToken($token);
+        if ($this->token) 
+            $request->withToken($this->token);
 
         return $request;
     }
@@ -59,8 +61,8 @@ abstract class AbstractApiService implements ApiServiceInterface
             if ($response->status() === 401) {
                 return ['error' => 'Session expirée, veuillez vous reconnecter.'];
             }
-
-            return $response->json();
+    
+            return $response->json() ?? [];
         } catch (ConnectionException $e) {
             return ['error' => 'Impossible de contacter l’API.'];
         }
