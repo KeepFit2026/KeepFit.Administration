@@ -61,7 +61,7 @@ abstract class AbstractApiService implements ApiServiceInterface
             if ($response->status() === 401) {
                 return ['error' => 'Session expirée, veuillez vous reconnecter.'];
             }
-    
+
             return $response->json() ?? [];
         } catch (ConnectionException $e) {
             return ['error' => 'Impossible de contacter l’API.'];

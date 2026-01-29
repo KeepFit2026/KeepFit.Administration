@@ -1,46 +1,58 @@
 @include('Layouts.CRUD.show', [
-    'pageTitle' => $users['name'],
-    'customCss' => ['assets/css/exercises/show.css'],
+    'pageTitle' => $users['name'] ?? 'Utilisateur',
 
     'breadcrumb' => [
-        ['route' => 'admin.users.index', 'label' => 'Gestion des utilisateurs', 'icon' => 'bi bi-house-door'],
-        ['label' => $users['name']]
+        ['route' => 'admin.users.index', 'label' => 'Gestion des étudiants', 'icon' => 'bi bi-people'],
+        ['label' => $users['name'] ?? 'Détails']
     ],
 
     'entity' => $users, 
+    
+    'details' => $details ?? [], 
+
+    'tableTitle' => 'CLASSES INSCRITES',
+
+    'table' => [
+        'title' => 'Liste des classes suivies',
+        'icon'  => 'bi bi-easel', 
+        'columns' => [
+            'Nom de la classe' => 'name', 
+        ], 
+        
+        'routeShow' => 'admin.classrooms.show', 
+    ],
 
     'sidebar' => [
         [
-            'title' => 'Informations',
+            'title' => 'Informations personnelles',
             'items' => [
                 [
-                    'label' => 'Statut',
-                    'value' => '<span class="status-badge active"><i class="bi bi-check-circle-fill"></i> Actif</span>',
-                    'icon' => 'bi bi-tag'
+                    'label' => 'Email',
+                    'value' => $users['email'] ?? 'Non renseigné', 
+                    'icon' => 'bi bi-envelope'
                 ],
                 [
-                    'label' => 'role',
-                    'value' => $users['roleName'] ?? 'Non définie',
-                    'icon' => 'bi bi-diagram-3'
+                    'label' => 'Téléphone',
+                    'value' => $users['phone_number'] ?? 'Non renseigné',
+                    'icon' => 'bi bi-telephone'
                 ],
+                [
+                    'label' => 'Rôle',
+                    'value' => '<span class="badge bg-primary">'.($users['roleName'] ?? 'Membre').'</span>',
+                    'icon' => 'bi bi-shield-lock'
+                ]
             ]
         ],
         [
-            'title' => 'Actions rapides',
+            'title' => 'Actions',
             'listClass' => 'quick-actions',
             'items' => [
                 [
                     'label' => '',
-                    'value' => '<a href="#" class="action-btn"><i class="bi bi-files"></i> Modifier l\'utilisateur</a>'
+                    'value' => route('admin.users.addUserToClassroom', $users['id']), 
+                    'icon' => 'bi bi-journal-plus',
+                    'text' => "Inscrire à une nouvelle classe"
                 ],
-                [
-                    'label' => '',
-                    'value' => '<a href="#" class="action-btn"><i class="bi bi-printer"></i> Exporter en PDF</a>'
-                ],
-                [
-                    'label' => '',
-                    'value' => '<a href="#" class="action-btn"><i class="bi bi-trash"></i> Supprimer le l\'utilisateur</a>'
-                ]
             ]
         ]
     ]

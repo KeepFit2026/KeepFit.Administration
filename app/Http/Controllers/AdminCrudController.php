@@ -14,6 +14,11 @@ abstract class AdminCrudController extends Controller
     abstract protected function getRequestClass();
     abstract protected function getDataKey(): string;     
 
+    protected function getDetailMethod(): ?string
+    {
+        return null;
+    }
+
     public function __construct(private AuthServiceInterface $authService)
     {
         $this->items = AdminMenu::all();
@@ -66,27 +71,23 @@ abstract class AdminCrudController extends Controller
             : redirect()->back()->with('success', 'Création réussie.');
     }
 
-    public function show(string $id, $details = null)
+    public function show(string $id)
     {
         $service = $this->getService();
         $response = $service->GetByIdAsync($id);
 
-        $optionalMethods = [
-            'GetProgramsFromExercise',
-            'getExercisesFromProgram'
-        ];
+        $details = null;
+        $methodName = $this->getDetailMethod();
 
-        foreach($optionalMethods as $method) {
-            if(method_exists($service, $method)) {
-                $details = $service->$method($id);
-                break;
-            }
+        if ($methodName && method_exists($service, $methodName)) {
+            $details = $service->$methodName($id);
+            $details = $details['data'] ?? $details; 
         }
 
         return $this->render("{$this->getViewFolder()}.show", [
-            $this->getDataKey()     => $response['data'] ?? null,
-            'errorMessage'          => $response['error'] ?? null,
-            'programsFromExercise'  => $details
+            $this->getDataKey() => $response['data'] ?? null,
+            'errorMessage'      => $response['error'] ?? null,
+            'details'           => $details
         ]);
     }
 

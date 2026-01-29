@@ -19,7 +19,6 @@
         <x-sidebar/>
 
         <div class="main-content">
-
             <header class="top-header">
                 <div class="header-left">
                     <button class="sidebar-toggle">

@@ -30,9 +30,11 @@ class AdminMenu
             'submenu' => [
                 [
                     'title' => 'Créer une classes',
+                    'route' => 'admin.classrooms.create'
                 ],
                 [
                     'title' => 'Liste des classes',
+                    'route' => 'admin.classrooms.index'
                 ],
             ]
         ],

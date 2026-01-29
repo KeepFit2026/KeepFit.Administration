@@ -26,18 +26,17 @@
 
     <div class="exercise-content-grid">
         
-        {{-- Main Card --}}
         <div class="exercise-main-card">
             <div class="exercise-card-header">
                 <h2 class="exercise-name">{{ $entity['name'] ?? 'Nom indisponible' }}</h2>
                 <div class="exercise-meta-info">
                     <div class="meta-info-item">
                         <i class="bi bi-calendar-plus"></i>
-                        <span>Créé le {{ $entity['created_at'] ?? 'N/A' }}</span>
+                        <span>Créé le {{ isset($entity['created_at']) ? \Carbon\Carbon::parse($entity['created_at'])->format('d/m/Y') : 'N/A' }}</span>
                     </div>
                     <div class="meta-info-item">
                         <i class="bi bi-clock-history"></i>
-                        <span>Modifié le {{ $entity['updated_at'] ?? 'N/A' }}</span>
+                        <span>Modifié le {{ isset($entity['updated_at']) ? \Carbon\Carbon::parse($entity['updated_at'])->format('d/m/Y') : 'N/A' }}</span>
                     </div>
                 </div>
             </div>
@@ -67,22 +66,32 @@
                 </div>
                 @endif
 
-
-                @if(!empty($programsFromExercise))
+                @if(!empty($details) && count($details) > 0)
                     <div class="info-section">
                         <div class="section-label">
-                            <i class="bi bi-list-check"></i>{{ $tableTitle }}
+                            <i class="{{ $table['icon'] ?? 'bi bi-list-check' }}"></i>
+                            {{ $tableTitle ?? 'Éléments associés' }}
                         </div>
                         <div class="section-content">
                             <div class="table-responsive">
                                 <x-table
-                                    :tableTitle="$table['title']"
-                                    :rows="$table['columns']"
-                                    :data="$programsFromExercise['data']"
-                                    :routeShow="$table['routeShow']"
+                                    :tableTitle="$table['title'] ?? ''"
+                                    :rows="$table['columns']" 
+                                    :data="$details"
+                                    :routeShow="$table['routeShow'] ?? ''"
                                     variant="v-card"
                                 />
                             </div>
+                        </div>
+                    </div>
+                @elseif(isset($table))
+                    <div class="info-section">
+                        <div class="section-label">
+                            <i class="{{ $table['icon'] ?? 'bi bi-list-check' }}"></i>
+                            {{ $tableTitle ?? 'Éléments associés' }}
+                        </div>
+                        <div class="section-content">
+                            <p class="text-muted fst-italic">Aucun élément associé pour le moment.</p>
                         </div>
                     </div>
                 @endif
@@ -125,5 +134,5 @@
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
 @endsection

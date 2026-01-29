@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ClassroomController;
 use App\Http\Controllers\ExerciseController;
 use App\Http\Controllers\ProgramController;
 use App\Http\Controllers\UserController;
@@ -45,6 +46,15 @@ Route::prefix('/admin')
             ->middleware(CheckApi::class);
 
         Route::resource('users', UserController::class);
+        Route::resource('classrooms', ClassroomController::class);
+
+         Route::controller(UserController::class)
+            ->prefix('users')
+            ->name('users.')
+            ->group(function() {
+                Route::post('{id}/addclassroom-page', 'addUserToClassroomExecute')->name('post.addUserToClassroom');
+                Route::get('{id}/addclassroom-page', 'addUserToClassroom')->name('addUserToClassroom');
+        });
 
         Route::controller(ExerciseController::class)
             ->prefix('exercises')

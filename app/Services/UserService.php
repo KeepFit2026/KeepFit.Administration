@@ -45,4 +45,26 @@ class UserService extends AbstractApiService
     {
         return $this->get('/myconv');
     }
-}
+
+
+    public function filterAvailableClassroom(string $userId) 
+    {
+        return $this->get("/$userId/without-classrooms");
+    }
+
+    /**
+     * Enregistre un exercise dans un programme
+     *
+     * @param string $programId GUID du programme.
+     * @param string $exerciseId GUID de l'exercice.
+     */
+    public function addUserToClassroom(string $classroomId, string $userId)
+    {   
+        return $this->get("/$userId/classrooms/$classroomId/");
+    }
+
+    public function GetClassroomsFromUser(string $id)
+    {
+        return $this->get("/{$id}/classrooms"); 
+    }
+}   
