@@ -25,7 +25,7 @@ Route::get('/admin/requestChangePassword', [AdminController::class, 'requestChan
 Route::post('/admin/requestChangePassword', [AdminController::class, 'postRequestChangePasswordPage'])
     ->name('post.admin.requestChangePassword');
     
-Route::prefix('/admin')
+Route::prefix('/adminn')
     ->controller(AdminController::class)
     ->name('admin.')
     ->middleware(['checkRole:ADMIN', CheckApi::class])
