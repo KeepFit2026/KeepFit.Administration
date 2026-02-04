@@ -10,7 +10,6 @@ use Tymon\JWTAuth\Facades\JWTAuth;
 use Tymon\JWTAuth\Exceptions\JWTException;
 use Tymon\JWTAuth\Exceptions\TokenExpiredException;
 
-use function PHPSTORM_META\type;
 
 class AuthService implements AuthServiceInterface
 {

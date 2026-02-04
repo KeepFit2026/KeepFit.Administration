@@ -2,28 +2,22 @@
     'pageTitle' => $classrooms['name'],
 
     'breadcrumb' => [
-        ['route' => 'admin.classrooms.index', 'label' => 'Gestion des exercices', 'icon' => 'bi bi-house-door'],
+        ['route' => 'admin.classrooms.index', 'label' => 'Gestion des classes', 'icon' => 'bi bi-house-door'],
         ['label' => $classrooms['name']]
     ],
 
     'entity' => $classrooms, 
-    'showAddToProgram' => true,
-
-    'relations' => [
-        'title' => 'Utilisateur incluant cette classe',
-        'icon' => 'bi bi-journal-bookmark-fill',
-        'headers' => ['Nom de l\'utilisateur'],
-        'fields' => ['name'],
-        'data' => $classrooms['users'] ?? [],
-        'base_route' => 'admin.users.show'
-    ],
 
     'tableTitle' => 'UTILISATEURS ASSOCIÉS',
 
     'table' => [
-        'title' => 'Liste des classes',
-        'columns' => ['Name', 'Description'],
-        'routeShow' => 'admin.programs.show',
+        'title' => 'Liste des classes suivies',
+        'icon'  => 'bi bi-easel', 
+        'columns' => [
+            'Nom de la classe' => 'name', 
+        ], 
+        
+        'routeShow' => 'admin.classrooms.show', 
     ],
 
 

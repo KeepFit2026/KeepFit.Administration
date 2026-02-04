@@ -21,7 +21,7 @@
                 <x-page-nav 
                     route-prefix="admin.users"
                     :items="[
-                        ['route' => 'index', 'label' => 'Étudiants', 'icon' => 'bi bi-people'],
+                        ['route' => 'index', 'label' => 'Gestion des utilisateurs', 'icon' => 'bi bi-people'],
                         ['route' => 'show', 'label' => $userName, 'params' => ['user' => $user['data']['id']]],
                         ['label' => 'Inscription classe']
                     ]" 

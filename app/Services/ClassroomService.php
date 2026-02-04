@@ -9,4 +9,9 @@ class ClassroomService extends AbstractApiService
     {
         return "classrooms";
     }
+
+    public function GetUsersFromClassroom(string $userId)
+    {
+        return $this->get("/$userId/exercises");
+    }
 }

@@ -8,8 +8,6 @@
 
     'entity' => $users, 
     
-    'details' => $details ?? [], 
-
     'tableTitle' => 'CLASSES INSCRITES',
 
     'table' => [

@@ -42,7 +42,6 @@ class AdminMenu
         [
             'title' => 'Exercices',
             'icon' => 'fas fa-running',
-            'route' => 'admin.exercises.index',
             'submenu' => [
                 [
                     'title' => 'Créer un exercices',
@@ -57,7 +56,16 @@ class AdminMenu
         [
             'title' => 'Programmes',
             'icon' => 'fas fa-dumbbell',
-            'route' => 'admin.programs.index'
+            'submenu' => [
+                [
+                    'title' => 'Créer un programme',
+                    'route' => 'admin.programs.create'
+                ],
+                [
+                    'title' => 'Listes des programmes',
+                    'route' => 'admin.programs.index'
+                ]
+            ]
         ],
         [
             'title' => 'Séances',

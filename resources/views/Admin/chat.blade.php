@@ -25,7 +25,7 @@
             <div class="conversations-scroller">
                 @if(isset($conv['data']) && count($conv['data']) > 0)
                    @foreach($conv['data'] as $chatItem)
-                        <div class="conversation-card" onclick="console.log('Open chat: {{ $chatItem['id'] }}')">
+                        <div class="conversation-card" onclick="openConversation('{{ $chatItem['id'] }}', '{{ $chatItem['name'] ?? 'Inconnu' }}')">
                             <div class="card-avatar">
                                 <img src="https://ui-avatars.com/api/?name={{ urlencode($chatItem['name'] ?? 'Inconnu') }}&background=random&color=fff" alt="Avatar">
                             </div>
@@ -52,7 +52,7 @@
         </div>
 
         <div class="chat-main-panel">
-            <div style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gray);">
+            <div id="empty-state" style="height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--gray);">
                 <div style="background: white; padding: 2rem; border-radius: 50%; margin-bottom: 1rem; box-shadow: var(--shadow-sm);">
                     <i class="fas fa-paper-plane" style="font-size: 2.5rem; color: var(--primary);"></i>
                 </div>
@@ -61,6 +61,37 @@
                 <button onclick="openNewChatModal()" style="margin-top: 1rem; padding: 0.8rem 1.5rem; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: 600;">
                     Nouvelle conversation
                 </button>
+            </div>
+
+            <div id="conversation-view" style="display: none; height: 100%; flex-direction: column;">
+                <div class="chat-topbar">
+                    <div class="user-details">
+                        <img id="conv-avatar" src="" alt="Avatar">
+                        <div>
+                            <h4 id="conv-name"></h4>
+                            <div class="status">
+                                <i class="fas fa-circle" style="font-size: 0.5rem; margin-right: 5px;"></i> En ligne
+                            </div>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <button class="btn-icon"><i class="fas fa-phone"></i></button>
+                        <button class="btn-icon"><i class="fas fa-video"></i></button>
+                        <button class="btn-icon"><i class="fas fa-ellipsis-v"></i></button>
+                    </div>
+                </div>
+
+                <div class="messages-scroll-area" id="messages-container">
+                </div>
+
+                <div class="chat-input-zone">
+                    <button class="btn-attach"><i class="fas fa-paperclip"></i></button>
+                    <div class="text-input-wrapper">
+                        <input type="text" id="message-input" placeholder="Tapez votre message..." onkeypress="handleKeyPress(event)">
+                        <button class="btn-emoji"><i class="far fa-smile"></i></button>
+                    </div>
+                    <button class="btn-send" onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+                </div>
             </div>
         </div>
     </div>
@@ -75,7 +106,6 @@
             <div class="modal-body">
                 <div class="modal-tabs">
                     <button class="tab-btn active" onclick="switchTab('direct')">Direct</button>
-                    {{-- <button class="tab-btn" onclick="switchTab('group')">Groupe</button> --}}
                 </div>
 
                 <div id="tab-direct" class="tab-content active">
@@ -149,7 +179,104 @@
         </div>
     </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/6.0.1/signalr.min.js"></script>
     <script>
+        let signalRConnection = null;
+        let currentConversationId = null;
+
+        function initSignalR() {
+            signalRConnection = new signalR.HubConnectionBuilder()
+                .withUrl("http://localhost:8081/api/v1/hubs/chat")
+                .withAutomaticReconnect()
+                .build();
+
+            signalRConnection.start()
+                .then(() => console.log("SignalR connecté"))
+                .catch(err => console.error("Erreur SignalR:", err));
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('message-input');
+            const message = input.value.trim();
+            
+            if(!message || !currentConversationId || !signalRConnection) {
+                return;
+            }
+
+            signalRConnection.invoke("SendMessage", currentConversationId, message)
+                .then(() => {
+                    console.log("Message envoyé via SignalR");
+
+                    //Affiche le message envoyé -- temporaire. 
+                    const container = document.getElementById('messages-container');
+                    container.insertAdjacentHTML('beforeend', `
+                        <div class="msg sent">
+                            <div>
+                                <div class="bubble">${message}</div>
+                                <span class="timestamp">${new Date().toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}</span>
+                            </div>
+                        </div>
+                    `);
+                    container.scrollTop = container.scrollHeight;
+
+                    input.value = '';
+                })
+                .catch(err => console.error("Erreur d'envoi:", err));
+        }
+
+        function handleKeyPress(event) {
+            if(event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function openConversation(convId, convName) {
+            document.querySelectorAll('.conversation-card').forEach(card => {
+                card.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+
+            document.getElementById('empty-state').style.display = 'none';
+            document.getElementById('conversation-view').style.display = 'flex';
+
+            document.getElementById('conv-name').textContent = convName;
+            document.getElementById('conv-avatar').src = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(convName) + '&background=random&color=fff';
+
+            currentConversationId = convId;
+
+            const messagesContainer = document.getElementById('messages-container');
+            messagesContainer.innerHTML = `
+                <div class="msg received">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(convName)}&background=random&color=fff" alt="Avatar">
+                    <div>
+                        <div class="bubble">
+                            Bonjour, comment puis-je vous aider aujourd'hui?
+                        </div>
+                        <span class="timestamp">09:30</span>
+                    </div>
+                </div>
+                <div class="msg sent">
+                    <div>
+                        <div class="bubble">
+                            J'aimerais avoir des informations sur mon programme d'entraînement
+                        </div>
+                        <span class="timestamp">09:32 <i class="fas fa-check-double seen-icon"></i></span>
+                    </div>
+                </div>
+                <div class="msg received">
+                    <img src="https://ui-avatars.com/api/?name=${encodeURIComponent(convName)}&background=random&color=fff" alt="Avatar">
+                    <div>
+                        <div class="bubble">
+                            Bien sûr! Je vais vérifier votre programme actuel et vous donner tous les détails.
+                        </div>
+                        <span class="timestamp">09:33</span>
+                    </div>
+                </div>
+            `;
+
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
         function openNewChatModal() {
             document.getElementById('newChatModal').style.display = 'flex';
             document.body.style.overflow = 'hidden';
@@ -244,6 +371,10 @@
                 }
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initSignalR();
+        });
     </script>
 
     <style>

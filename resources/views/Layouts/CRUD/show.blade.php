@@ -9,12 +9,11 @@
         @endforeach
     @else
         <link rel="stylesheet" href="{{ asset('assets/css/exercises/show.css') }}">
-    @endif
+    @endif 
 @endsection
 
 @section('content')
 <div class="container-fluid exercises-section">
-    
     <div class="page-header">
         <div class="page-header-left">
             <div class="breadcrumb-nav">
