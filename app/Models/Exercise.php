@@ -14,6 +14,8 @@ class Exercise extends Model
     protected $connection = 'sqlsrv_auth';
     protected $table = 'exercise';
     public $timestamps = false;
+    protected $keyType = 'string';
+    public $incrementing = false;
 
     protected $fillable = [
         'Name',
@@ -36,5 +38,11 @@ class Exercise extends Model
         $apiService = app(ExerciseService::class);
         $exercises = $apiService->GetAllAsync();
         return $exercises['data'];
+    }
+
+    public function delete()
+    {
+        app(ExerciseService::class)->DeleteAsync($this->id);
+        return parent::delete();
     }
 }

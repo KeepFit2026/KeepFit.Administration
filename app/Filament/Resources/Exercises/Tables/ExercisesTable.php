@@ -41,9 +41,7 @@ class ExercisesTable
                     ->label(''),
             ])
             ->toolbarActions([
-                BulkActionGroup::make([
-                    DeleteBulkAction::make(),
-                ]),
+               
             ]);
     }
 }
