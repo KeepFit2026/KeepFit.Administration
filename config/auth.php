@@ -24,7 +24,7 @@ return [
     'guards' => [
         'api' => [ 
             'driver' => 'jwt', 
-            'provider' => 'login', 
+            'provider' => 'users', 
         ],
     ],
 
@@ -35,7 +35,7 @@ return [
     */
 
     'providers' => [
-        'login' => [
+        'users' => [
             'driver' => 'eloquent',
             'model' => Login::class,
         ],

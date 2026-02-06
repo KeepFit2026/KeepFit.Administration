@@ -5,8 +5,11 @@ namespace App\Models;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
 
-class Login extends Authenticatable implements JWTSubject
+class Login extends Authenticatable implements JWTSubject, FilamentUser, HasName
 {
     use HasFactory;
 
@@ -46,5 +49,15 @@ class Login extends Authenticatable implements JWTSubject
     {
         $role = self::where('id', $accountId)->first();
         return $role ? $role->roleId : null;
+    }
+
+    public function canAccessPanel(Panel $panel): bool
+    {
+        return true;
+    }
+
+    public function getFilamentName(): string
+    {
+        return $this->email;
     }
 }
