@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Exercises\Schemas;
 
+use App\Models\MuscularGroup;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
@@ -21,7 +22,6 @@ class ExerciseForm
                     ->schema([
                         TextInput::make('name')
                             ->label(__('fields.exercise.name'))
-                            ->placeholder('Ex: Bench Press')
                             ->required()
                             ->columnSpan('full'), 
 
@@ -37,26 +37,12 @@ class ExerciseForm
                     ->schema([
                         Grid::make(2)
                             ->schema([
-                                Select::make('muscle_group')
-                                    ->label(__('fields.exercise.muscle_group'))
-                                    ->options([
-                                        'chest' => 'Pectoraux',
-                                        'back' => 'Dos',
-                                        'legs' => 'Jambes',
-                                        'shoulders' => 'Épaules',
-                                        'arms' => 'Bras',
-                                        'abs' => 'Abdominaux',
-                                    ])
-                                    ->native(false), 
-
-                                Select::make('difficulty')
-                                    ->label(__('fields.exercise.difficulty'))
-                                    ->options([
-                                        'beginner' => 'Débutant',
-                                        'intermediate' => 'Intermédiaire',
-                                        'advanced' => 'Avancé',
-                                    ])
-                                    ->native(false),
+                                Select::make('muscle_group_id')
+                                    ->options(MuscularGroup::all()->pluck(['id' => 'name']))
+                                    ->required()
+                                    ->preload()
+                                    ->searchable()
+                                    ->label(__('fields.exercise.muscle_group')),
                             ]),
                     ]),
             ]);

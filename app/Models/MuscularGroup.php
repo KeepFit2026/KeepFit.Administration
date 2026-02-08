@@ -2,33 +2,28 @@
 
 namespace App\Models;
 
-use App\Services\ExerciseService;
+use App\Services\MuscleGroupService;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Http;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Sushi\Sushi;
 
-class Exercise extends Model
+class MuscularGroup extends Model
 {
     use Sushi;
 
     protected $connection = 'sqlsrv_auth';
-    protected $table = 'exercise';
+    protected $table = 'musclegroup';
     public $timestamps = false;
     protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
         'Name',
-        'Description',
-        'muscle_group_id'
     ];
 
     protected $schema = [
         'id' => 'string',
         'name' => 'string',
-        'description' => 'string',
-        'muscle_group_id' => 'integer'
     ];
 
     /**
@@ -37,19 +32,19 @@ class Exercise extends Model
      */
     public function getRows()
     {
-        $apiService = app(ExerciseService::class);
-        $exercises = $apiService->GetAllAsync();
-        return $exercises['data'] ?? [];
+        $apiService = app(MuscleGroupService::class);
+        $groups = $apiService->GetAllAsync();
+        return $groups['data'] ?? [];
     }
 
     public function delete()
     {
-        app(ExerciseService::class)->DeleteAsync($this->id);
+        app(MuscleGroupService::class)->DeleteAsync($this->id);
         return parent::delete();
     }
 
-    public function muscleGroup(): BelongsTo
+    public function exercises(): HasMany
     {
-        return $this->belongsTo(MuscularGroup::class, 'muscle_group_id');
+        return $this->hasMany(Exercise::class, 'muscle_group_id');
     }
 }

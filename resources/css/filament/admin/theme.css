@@ -1,0 +1,116 @@
+@import '../../../../vendor/filament/filament/resources/css/theme.css';
+@source '../../../../app/Filament/**/*';
+@source '../../../../resources/views/filament/**/*';
+
+:root {
+    --primary: #3b82f6;
+    --primary-dark: #2563eb;
+    --secondary: #10b981;
+    --danger: #ef4444;
+    --dark: #1f2937;
+    --gray: #6b7280;
+    --text-inactive: #d1d5db;
+    --text-white: #ffffff;
+    --light-bg: #f9fafb;
+    --light-border: #e5e7eb;
+    --light-text: #111827;
+    --light-hover: #f3f4f6;
+}
+
+.dark {
+    --light-bg: #1f2937;
+    --light-border: #374151;
+    --light-text: #ffffff;
+    --light-hover: #374151;
+}
+
+.fi-topbar nav .fi-logo, 
+.fi-topbar nav .fi-header-heading,
+.fi-topbar .fi-logo,
+.fi-header-heading {
+    display: none !important;
+}
+
+.fi-sidebar {
+    border-right: none !important;
+    box-shadow: 4px 0 15px rgba(0, 0, 0, 0.1) !important;
+    background-color: var(--light-bg) !important;
+    color: var(--light-text) !important;
+}
+
+.fi-sidebar-header {
+    background-color: var(--light-bg) !important;
+    color: var(--light-text) !important;
+    border-bottom: 1px solid var(--light-border) !important;
+    padding: 1.5rem !important;
+    height: auto !important;
+    display: flex;
+    justify-content: center;
+}
+
+.fi-sidebar-header .fi-logo {
+    font-size: 1.25rem !important;
+    color: var(--light-text) !important;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.fi-sidebar-item {
+    padding: 0 0.5rem !important;
+}
+
+.fi-sidebar-item-button {
+    margin: 0.25rem 0 !important;
+    padding: 0.75rem 1rem !important;
+    border-radius: 0.375rem !important;
+    background-color: transparent !important;
+    color: var(--text-inactive) !important;
+    border-left: 3px solid transparent !important;
+    transition: all 0.3s ease !important;
+}
+
+.fi-sidebar-item-icon {
+    color: var(--text-inactive) !important;
+    width: 20px !important;
+    height: 20px !important;
+}
+
+.fi-sidebar-item-button:hover {
+    background-color: var(--light-hover) !important;
+    color: var(--light-text) !important;
+    border-left-color: var(--primary) !important;
+}
+
+.fi-sidebar-item-button:hover .fi-sidebar-item-icon {
+    color: var(--light-text) !important;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-button {
+    background: linear-gradient(90deg, var(--primary) 0%, var(--primary-dark) 100%) !important;
+    color: var(--text-white) !important;
+    font-weight: 500 !important;
+    border-left-color: var(--secondary) !important;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1) !important;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-icon {
+    color: var(--secondary) !important;
+}
+
+.fi-sidebar-item-active .fi-sidebar-item-label {
+    color: var(--text-white) !important;
+}
+
+.fi-sidebar-group-items {
+    margin-left: 12px !important;
+    border-left: 1px solid var(--light-border) !important;
+    padding-left: 4px !important;
+}
+
+.fi-sidebar-group-label span {
+    color: var(--gray) !important;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.05em;
+}
