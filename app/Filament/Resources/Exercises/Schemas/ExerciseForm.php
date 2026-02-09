@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Exercises\Schemas;
 
+use App\Enum\Difficulty;
 use App\Models\MuscularGroup;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -37,12 +38,17 @@ class ExerciseForm
                     ->schema([
                         Grid::make(2)
                             ->schema([
-                                Select::make('muscle_group_id')
-                                    ->options(MuscularGroup::all()->pluck(['id' => 'name']))
+                                Select::make('muscleGroupId')
+                                    ->options(MuscularGroup::all()->pluck('name', 'id'))
                                     ->required()
                                     ->preload()
                                     ->searchable()
                                     ->label(__('fields.exercise.muscle_group')),
+
+                                Select::make('difficulty')
+                                    ->options(Difficulty::class)
+                                    ->required()
+                                    ->label(__('fields.exercise.difficulty'))
                             ]),
                     ]),
             ]);

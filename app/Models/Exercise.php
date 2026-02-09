@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\Difficulty;
 use App\Services\ExerciseService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -21,14 +22,19 @@ class Exercise extends Model
     protected $fillable = [
         'Name',
         'Description',
-        'muscle_group_id'
+        'muscleGroupId'
+    ];
+
+    protected $casts = [
+        'difficulty' => Difficulty::class
     ];
 
     protected $schema = [
         'id' => 'string',
         'name' => 'string',
         'description' => 'string',
-        'muscle_group_id' => 'integer'
+        'muscleGroupId' => 'string',
+        'difficulty' => 'integer'
     ];
 
     /**
@@ -50,6 +56,6 @@ class Exercise extends Model
 
     public function muscleGroup(): BelongsTo
     {
-        return $this->belongsTo(MuscularGroup::class, 'muscle_group_id');
+        return $this->belongsTo(MuscularGroup::class, 'muscleGroupId');
     }
 }

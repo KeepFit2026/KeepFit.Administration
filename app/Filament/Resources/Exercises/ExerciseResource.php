@@ -23,6 +23,8 @@ class ExerciseResource extends Resource
 
     protected static ?string $navigationLabel = 'Exercices';
 
+    protected static ?string $pluralLabel = 'Les exercices';
+
     protected static string|UnitEnum|null $navigationGroup = 'Entrainement';
 
     protected static ?string $recordTitleAttribute = 'Name';
