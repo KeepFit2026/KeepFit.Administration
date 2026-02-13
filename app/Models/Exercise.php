@@ -7,6 +7,7 @@ use App\Services\ExerciseService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use Sushi\Sushi;
 
 class Exercise extends Model
@@ -45,6 +46,7 @@ class Exercise extends Model
     {
         $apiService = app(ExerciseService::class);
         $exercises = $apiService->GetAllAsync();
+        Log::info('Exercises chargés depuis API:', ['count' => count($exercises['data'] ?? [])]);
         return $exercises['data'] ?? [];
     }
 

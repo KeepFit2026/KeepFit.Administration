@@ -57,10 +57,6 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->renderHook(
-                PanelsRenderHook::SIDEBAR_FOOTER,
-                fn (): string => Blade::render('<livewire:SidebarFooter/>')
-            )
             ->authMiddleware([
                 Authenticate::class,
             ]);

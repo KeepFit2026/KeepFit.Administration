@@ -3,16 +3,14 @@
 namespace App\Filament\Resources\Exercises\Tables;
 
 use App\Enum\Difficulty;
-use App\Models\Exercise;
 use App\Models\MuscularGroup;
 use Filament\Actions\Action;
-use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteAction;
-use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
+use Illuminate\Database\Eloquent\Builder;
 
 class ExercisesTable
 {
@@ -24,13 +22,10 @@ class ExercisesTable
                     ->searchable()
                     ->label(__('fields.name')),
 
-                TextColumn::make('description')
-                    ->label(__('fields.description')),
-
                 TextColumn::make('muscleGroup.name')
                     ->label(__('fields.exercise.muscle_group')),
 
-                TextColumn::make('difficulty')
+                TextColumn::make('difficulty.name')
                     ->badge()
                     ->label(__('fields.exercise.difficulty'))
             ])
@@ -45,18 +40,17 @@ class ExercisesTable
                         );
                     }),
 
-                SelectFilter::make('muscleGroup.name')
-                    ->options(MuscularGroup::all()->pluck('name'))
+                SelectFilter::make('muscleGroupId')
+                    ->options(MuscularGroup::pluck('name', 'id'))
                     ->label(__('fields.exercise.muscle_group'))
-                    ->query(function($query, array $data) {
-                        return $query->when(
-                            $data['value'],
-                            fn($query, $value) => $query->where('muscleGroupId', $value)
-                        );
+                    ->query(function (Builder $query, array $data): Builder {
+                        if(!empty($data['value'])) {
+                            return $query->where('muscleGroupId', $data['value']);
+                        }
+                        return $query;
                     })
             ])
-            ->recordActions([
-
+            ->actions([
                  Action::make('view')
                     ->label('')
                     ->icon('heroicon-o-eye')
