@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Services\MuscleGroupService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Support\Facades\Cache;
 use Sushi\Sushi;
 
 class MuscularGroup extends Model
@@ -46,5 +47,10 @@ class MuscularGroup extends Model
     public function exercises(): HasMany
     {
         return $this->hasMany(Exercise::class, 'muscle_group_id');
+    }
+
+    public static function clearCache(): void
+    {
+        Cache::forget(static::class . '_rows');
     }
 }

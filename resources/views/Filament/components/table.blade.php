@@ -9,9 +9,7 @@
                 @if($this->getTable()->isSearchable())
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                            <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                            </svg>
+                            <x-heroicon-o-magnifying-glass class="w-4 h-4 text-gray-400" />
                         </div>
                         <input 
                             type="text"
@@ -25,16 +23,14 @@
                                 type="button"
                                 class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white"
                             >
-                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
-                                </svg>
+                                <x-heroicon-o-x-mark class="w-4 h-4" />
                             </button>
                         @endif
                     </div>
                 @endif
 
                 <button class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors duration-200 border-0 cursor-pointer text-white">
-                    <i class="bi bi-download"></i>
+                    <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
                     <span>Exporter</span>
                 </button>
                 
@@ -43,7 +39,7 @@
                         x-data=""
                         x-on:click="$dispatch('open-modal', { id: 'table-filters' })"
                         class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors duration-200 border-0 cursor-pointer text-white">
-                        <i class="bi bi-funnel"></i>
+                        <x-heroicon-o-funnel class="w-4 h-4" />
                         <span>Filtrer</span>
                     </button>
                 @endif
@@ -116,13 +112,13 @@
                                                 <a href="{{ $resourceClass::getUrl('edit', ['record' => $recordKey]) }}" 
                                                    class="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white transition-all duration-200 no-underline shadow-sm"
                                                    title="Modifier">
-                                                    <i class="bi bi-pencil-square text-sm"></i>
+                                                    <x-heroicon-o-pencil-square class="w-4 h-4" />
                                                 </a>
                                             @else
                                                 <button wire:click="mountTableAction('edit', '{{ $recordKey }}')"
                                                         class="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white transition-all duration-200 border-0 cursor-pointer shadow-sm"
                                                         title="Modifier">
-                                                    <i class="bi bi-pencil-square text-sm"></i>
+                                                    <x-heroicon-o-pencil-square class="w-4 h-4" />
                                                 </button>
                                             @endif
 
@@ -131,7 +127,7 @@
                                                     class="w-8 h-8 flex items-center justify-center rounded-md bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all duration-200 border-0 cursor-pointer shadow-sm"
                                                     title="Supprimer"
                                                     onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet élément ?')">
-                                                <i class="bi bi-trash text-sm"></i>
+                                                <x-heroicon-o-trash class="w-4 h-4" />
                                             </button>
                                         @endif
                                     @endforeach
@@ -142,7 +138,7 @@
                         <tr>
                             <td colspan="100%" class="px-6 py-12 text-center border-0">
                                 <div class="flex flex-col items-center justify-center text-gray-400 text-center">
-                                    <i class="bi bi-inbox text-5xl mb-3 opacity-30 text-center"></i>
+                                    <x-heroicon-o-inbox class="w-12 h-12 mb-3 opacity-30" />
                                     <p class="text-gray-500 text-base italic text-center">Aucun élément trouvé</p>
                                 </div>
                             </td>
