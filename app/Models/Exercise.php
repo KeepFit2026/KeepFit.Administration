@@ -46,7 +46,6 @@ class Exercise extends Model
     {
         $apiService = app(ExerciseService::class);
         $exercises = $apiService->GetAllAsync();
-        Log::info('Exercises chargés depuis API:', ['count' => count($exercises['data'] ?? [])]);
         return $exercises['data'] ?? [];
     }
 

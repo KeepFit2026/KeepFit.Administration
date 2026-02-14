@@ -1,18 +1,18 @@
 <?php
-
 namespace App\Filament\Resources\Exercises\Pages;
 
 use App\Filament\Resources\Exercises\ExerciseResource;
+use App\Filament\Resources\Exercises\Tables\ExercisesTable;
 use App\Livewire\CustomStatCard;
 use App\Models\Exercise;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ListRecords;
-use Termwind\Enums\Color;
+use Filament\Tables\Table;
+use Illuminate\Support\Facades\Log;
 
 class ListExercises extends ListRecords
 {
     protected static string $resource = ExerciseResource::class;
-
     protected string $view = 'Filament.pages.livewire.list-page';
 
     protected function getHeaderActions(): array
@@ -27,9 +27,9 @@ class ListExercises extends ListRecords
         ];
     }
 
-    public function getContentTabLabel(): ?string
+    public function table(Table $table): Table
     {
-        return null;
+        return ExercisesTable::configure($table);
     }
 
     public function getHeaderWidgets(): array

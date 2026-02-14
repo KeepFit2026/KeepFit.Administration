@@ -1,24 +1,52 @@
-{{-- resources/views/filament/tables/custom-generic-table.blade.php --}}
 <div class="table-container-wrapper shadow-sm rounded-xl overflow-hidden border border-gray-200 dark:border-gray-800">
-    <div class="table-container bg-white dark:bg-gray-900">
-        
+    <div class="table-container bg-white dark:bg-gray-900">        
         <div class="bg-[#1f2937] text-white px-6 py-4 flex justify-between items-center">
             <div class="flex items-center gap-2 text-base font-medium">
                 <i class="bi bi-list-ul text-emerald-500"></i>
                 <span>{{ $this->getTable()->getHeading() ?? 'Gestion' }}</span>
             </div>
-            <div class="flex gap-2">
-                {{-- Bouton Exporter --}}
+            <div class="flex gap-2 items-center">
+                @if($this->getTable()->isSearchable())
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                            <svg class="w-4 h-4 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                            </svg>
+                        </div>
+                        <input 
+                            type="text"
+                            wire:model.live.debounce.500ms="tableSearch"
+                            placeholder="Rechercher..."
+                            class="pl-10 pr-10 py-1.5 w-64 bg-gray-700 border border-gray-600 rounded-lg text-sm text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent"
+                        />
+                        @if(!empty($this->tableSearch))
+                            <button 
+                                wire:click="$set('tableSearch', '')"
+                                type="button"
+                                class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white"
+                            >
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        @endif
+                    </div>
+                @endif
+
                 <button class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors duration-200 border-0 cursor-pointer text-white">
                     <i class="bi bi-download"></i>
                     <span>Exporter</span>
                 </button>
                 
-                <button x-on:click="$dispatch('open-table-filters')" 
+                @if($this->getTable()->getFilters() && count($this->getTable()->getFilters()) > 0)
+                    <button 
+                        x-data=""
+                        x-on:click="$dispatch('open-modal', { id: 'table-filters' })"
                         class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors duration-200 border-0 cursor-pointer text-white">
-                    <i class="bi bi-funnel"></i>
-                    <span>Filtrer</span>
-                </button>
+                        <i class="bi bi-funnel"></i>
+                        <span>Filtrer</span>
+                    </button>
+                @endif
             </div>
         </div>
 
@@ -124,7 +152,6 @@
             </table>
         </div>
 
-        {{-- PAGINATION --}}
         @php $records = $this->getTableRecords(); @endphp
         @if($records instanceof \Illuminate\Contracts\Pagination\Paginator && $records->hasPages())
             <div class="bg-white dark:bg-gray-900 px-6 py-4 border-t border-gray-100 dark:border-gray-800">
@@ -133,3 +160,71 @@
         @endif
     </div>
 </div>
+
+{{-- MODAL DE FILTRES DYNAMIQUE --}}
+@if($this->getTable()->getFilters() && count($this->getTable()->getFilters()) > 0)
+    <x-filament::modal id="table-filters" width="2xl">
+        <x-slot name="heading">
+            Filtrer {{ Str::lower($this->getTable()->getHeading() ?? 'les éléments') }}
+        </x-slot>
+
+        <div class="space-y-4">
+            @php
+                $filters = collect($this->getTable()->getFilters())->filter(fn($filter) => $filter->isVisible());
+            @endphp
+            
+            @foreach($filters as $filterKey => $filter)
+                @php
+                    $filterName = $filter->getName();
+                    try {
+                        $options = $filter->getOptions();
+                    } catch (\Exception $e) {
+                        $options = [];
+                    }
+                    
+                    if (!is_array($options) && !($options instanceof \Traversable)) {
+                        $options = [];
+                    }
+                @endphp
+                
+                <div wire:key="filter-{{ $filterKey }}">
+                    <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                        {{ $filter->getLabel() }}
+                    </label>
+                    <select 
+                        wire:model.defer="tableFilters.{{ $filterName }}.value"
+                        class="fi-select-input block w-full border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:border-primary-600 focus:ring-primary-600 dark:bg-gray-800 dark:text-white dark:focus:border-primary-600 py-2 px-3"
+                    >
+                        <option value="">Tout</option>
+                        @foreach($options as $value => $label)
+                            <option value="{{ $value }}">{{ $label }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            @endforeach
+        </div>
+
+        <x-slot name="footerActions">
+            <x-filament::button
+                color="gray"
+                x-on:click="$dispatch('close-modal', { id: 'table-filters' })"
+            >
+                Annuler
+            </x-filament::button>
+            
+            <x-filament::button
+                color="gray"
+                wire:click="resetTableFiltersForm"
+            >
+                Réinitialiser
+            </x-filament::button>
+
+            <x-filament::button
+                wire:click="$refresh"
+                x-on:click="$dispatch('close-modal', { id: 'table-filters' })"
+            >
+                Appliquer
+            </x-filament::button>
+        </x-slot>
+    </x-filament::modal>
+@endif

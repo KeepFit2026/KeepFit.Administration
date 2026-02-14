@@ -10,7 +10,6 @@ use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
 
 class ExercisesTable
 {
@@ -23,32 +22,24 @@ class ExercisesTable
                     ->label(__('fields.name')),
 
                 TextColumn::make('muscleGroup.name')
+                    ->searchable()
                     ->label(__('fields.exercise.muscle_group')),
 
                 TextColumn::make('difficulty.name')
                     ->badge()
+                    ->searchable()
                     ->label(__('fields.exercise.difficulty'))
             ])
             ->filters([
                 SelectFilter::make('difficulty')
                     ->options(Difficulty::class)
                     ->label(__('fields.exercise.difficulty'))
-                    ->query(function($query, array $data) {
-                        return $query->when(
-                            $data['value'],
-                            fn($query, $value) => $query->where('difficulty', $value)
-                        );
-                    }),
+                    ->attribute('difficulty'),
 
                 SelectFilter::make('muscleGroupId')
                     ->options(MuscularGroup::pluck('name', 'id'))
                     ->label(__('fields.exercise.muscle_group'))
-                    ->query(function (Builder $query, array $data): Builder {
-                        if(!empty($data['value'])) {
-                            return $query->where('muscleGroupId', $data['value']);
-                        }
-                        return $query;
-                    })
+                    ->attribute('muscleGroupId')
             ])
             ->actions([
                  Action::make('view')
