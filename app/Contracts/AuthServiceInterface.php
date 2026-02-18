@@ -3,7 +3,6 @@
 namespace App\Contracts;
 
 use App\Models\Login;
-use App\Models\User;
 
 interface AuthServiceInterface
 {

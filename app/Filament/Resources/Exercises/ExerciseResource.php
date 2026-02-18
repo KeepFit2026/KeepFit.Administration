@@ -19,7 +19,7 @@ class ExerciseResource extends Resource
 {
     protected static ?string $model = Exercise::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBolt;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Bolt;
 
     protected static ?string $navigationLabel = 'Exercices';
 

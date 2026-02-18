@@ -2,13 +2,11 @@
 
 namespace App\Models;
 
-use App\Enum\Difficulty;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
-class Exercise extends Model
+class Classroom extends Model
 {
     protected $connection = 'sqlsrv_auth';
-    protected $table = 'dbo.Exercise';
+    protected $table = 'dbo.Classroom';
     public $timestamps = false;
     protected $primaryKey = 'Id';
     protected $keyType = 'string';
@@ -17,18 +15,7 @@ class Exercise extends Model
     protected $fillable = [
         'Id',
         'Name',
-        'Description',
-        'muscleGroupId'
     ];
-
-    protected $casts = [
-        'difficulty' => Difficulty::class
-    ];
-
-    public function muscleGroup(): BelongsTo
-    {
-        return $this->belongsTo(MuscularGroup::class, 'muscleGroupId', 'Id');
-    }
 
     protected static function boot()
     {

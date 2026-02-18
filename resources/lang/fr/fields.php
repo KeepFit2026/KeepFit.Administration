@@ -43,5 +43,9 @@ return [
 
     'login' => [
         'header_action' => 'Créer un compte de connexion',
+    ],
+
+    'classrooms' => [
+        'header_action' => 'Créer une nouvelle classe'
     ]
 ];

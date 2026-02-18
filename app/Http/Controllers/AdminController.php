@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Constants\AdminMenu;
-use App\Contracts\AdminServiceInterface;
 use App\Contracts\AuthServiceInterface;
 use App\Http\Requests\EmailRequest;
 use App\Models\RequestResetPassword;
@@ -38,14 +37,14 @@ class AdminController extends Controller
         $token = $this->authService->getExistingToken();
         $users = $this->userService->GetAvailableUsers($this->authService->getTokenPayload($token)['AccountId']);
         $myconv = $this->userService->getMyPrivateConv();
-        
+
         return view('Admin.chat', [
             'users' => $users,
             'conv' => $myconv
         ]);
     }
 
-    public function requestChangePasswordPage() 
+    public function requestChangePasswordPage()
     {
         return view('Auth.changePasswordPage');
     }
@@ -70,7 +69,7 @@ class AdminController extends Controller
         }
     }
 
-    
+
     /**
      * Show the form for creating a new resource.
      */

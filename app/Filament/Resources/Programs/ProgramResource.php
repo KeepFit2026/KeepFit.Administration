@@ -19,7 +19,7 @@ class ProgramResource extends Resource
 {
     protected static ?string $model = Program::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedFolder;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Folder;
 
     protected static ?string $recordTitleAttribute = 'Name';
 

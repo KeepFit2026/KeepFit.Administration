@@ -17,7 +17,7 @@ class MuscleGroupResource extends Resource
 {
     protected static ?string $model = MuscularGroup::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedBeaker;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::Beaker;
 
     protected static ?string $navigationLabel = 'Groupes musculaires';
 

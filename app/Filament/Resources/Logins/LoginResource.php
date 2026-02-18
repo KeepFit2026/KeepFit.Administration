@@ -11,18 +11,20 @@ use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Table;
+use UnitEnum;
 
 class LoginResource extends Resource
 {
     protected static ?string $model = ModelsLogin::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::OutlinedUserGroup;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::UserGroup;
 
     protected static ?string $recordTitleAttribute = 'email';
 
     protected static ?string $navigationLabel = 'Comptes utilisateur';
-
     protected static ?string $pluralLabel = 'Comptes utilisateur';
+
+    protected static string|UnitEnum|null $navigationGroup = "Académie";
 
     public static function form(Schema $schema): Schema
     {
