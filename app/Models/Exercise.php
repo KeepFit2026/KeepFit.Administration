@@ -6,21 +6,17 @@ use App\Enum\Difficulty;
 use App\Services\ExerciseService;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Support\Facades\Http;
-use Illuminate\Support\Facades\Log;
-use Sushi\Sushi;
-
 class Exercise extends Model
 {
-    use Sushi;
-
     protected $connection = 'sqlsrv_auth';
-    protected $table = 'exercise';
+    protected $table = 'dbo.Exercise';
     public $timestamps = false;
+    protected $primaryKey = 'Id';
     protected $keyType = 'string';
     public $incrementing = false;
 
     protected $fillable = [
+        'Id',
         'Name',
         'Description',
         'muscleGroupId'
@@ -30,33 +26,25 @@ class Exercise extends Model
         'difficulty' => Difficulty::class
     ];
 
-    protected $schema = [
-        'id' => 'string',
-        'name' => 'string',
-        'description' => 'string',
-        'muscleGroupId' => 'string',
-        'difficulty' => 'integer'
-    ];
-
-    /**
-     * A l'aide de 'Sushi', permet de récup les données via l'API
-     * et créer des tables temporaires en mémoire
-     */
-    public function getRows()
-    {
-        $apiService = app(ExerciseService::class);
-        $exercises = $apiService->GetAllAsync();
-        return $exercises['data'] ?? [];
-    }
-
     public function delete()
     {
-        app(ExerciseService::class)->DeleteAsync($this->id);
+        app(ExerciseService::class)->DeleteAsync($this->Id);
         return parent::delete();
     }
 
-    public function muscleGroup(): BelongsTo
-    {
-        return $this->belongsTo(MuscularGroup::class, 'muscleGroupId');
+        public function muscleGroup(): BelongsTo
+        {
+            return $this->belongsTo(MuscularGroup::class, 'muscleGroupId', 'Id');
+        }
+    
+        protected static function boot()
+        {
+            parent::boot();
+            static::creating(function ($model) {
+                if (empty($model->{$model->getKeyName()})) {
+                    $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
+                }
+            });
+        }
     }
-}
+    

@@ -1,50 +1,49 @@
 <?php
-namespace App\Filament\Resources\Exercises\Pages;
 
-use App\Filament\Resources\Exercises\ExerciseResource;
-use App\Filament\Resources\Exercises\Tables\ExercisesTable;
+namespace App\Filament\Resources\Logins\Pages;
+
+use App\Filament\Resources\Logins\LoginResource;
+use App\Filament\Resources\Logins\Tables\LoginsTable;
 use App\Livewire\CustomStatCard;
-use App\Models\Exercise;
+use App\Models\Login;
 use Filament\Actions\CreateAction;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ManageRecords;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Hash;
+use Str;
 
-class ListExercises extends ListRecords
+class ManageLogins extends ManageRecords
 {
-    protected static string $resource = ExerciseResource::class;
+    protected static string $resource = LoginResource::class;
     protected string $view = 'Filament.pages.livewire.list-page';
 
     protected function getHeaderActions(): array
     {
         return [
             CreateAction::make()
+                ->label(__('fields.login.header_action'))
                 ->icon('heroicon-s-plus')
-                ->label(__('fields.exercise.header_btn'))
+                ->mutateDataUsing(function(array $data) {
+                    $data['password'] = Hash::make(Str::random(20));
+                    return $data;
+                })
                 ->extraAttributes([
                     'class' => 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-none shadow-md font-bold tracking-wide',
                 ]),
-
         ];
     }
 
     public function table(Table $table): Table
     {
-        return ExercisesTable::configure($table);
+        return LoginsTable::configure($table);
     }
 
     public function getHeaderWidgets(): array
     {
         return [
             CustomStatCard::make([
-                'title' => 'Exercices',
-                'value' => Exercise::count(),
-                'description' => 'Muscu & cardio',
-                'icon'        => 'bi-lightning-charge',
-                'color'       => 'emerald',
-            ]),
-            CustomStatCard::make([
-                'title' => 'Exercices',
-                'value' => Exercise::count(),
+                'title'       => 'Comptes utilisateur',
+                'value'       => Login::count(),
                 'description' => 'Muscu & cardio',
                 'icon'        => 'bi-lightning-charge',
                 'color'       => 'emerald',

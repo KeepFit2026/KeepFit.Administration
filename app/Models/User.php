@@ -8,7 +8,7 @@ use Str;
 class User extends Model
 {
     protected $connection = 'sqlsrv_auth';
-    protected $table = 'dbo.user';
+    protected $table = 'dbo.User';
     public $timestamps = false;
     protected $primaryKey = 'Id';
     public $incrementing = false;
@@ -20,7 +20,7 @@ class User extends Model
         'RoleId'
     ];
 
-    public static function ExistingAccount(string $accountId): bool 
+    public static function ExistingAccount(string $accountId): bool
     {
         return self::where('AccountId', $accountId)->exists();
     }

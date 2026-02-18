@@ -2,13 +2,12 @@
 
 namespace App\Models;
 
-use App\Services\MuscleGroupService;
+use App\Services\ProgramService;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasMany;
-class MuscularGroup extends Model
+class Program extends Model
 {
     protected $connection = 'sqlsrv_auth';
-    protected $table = 'dbo.MuscleGroup';
+    protected $table = 'FitnessProgram';
     public $timestamps = false;
     protected $primaryKey = 'Id';
     protected $keyType = 'string';
@@ -17,17 +16,18 @@ class MuscularGroup extends Model
     protected $fillable = [
         'Id',
         'Name',
+        'Description',
+        'IsActive'
+    ];
+
+    protected $casts = [
+        'IsActive' => 'boolean',
     ];
 
     public function delete()
     {
-        app(MuscleGroupService::class)->DeleteAsync($this->Id);
+        app(ProgramService::class)->DeleteAsync($this->Id);
         return parent::delete();
-    }
-
-    public function exercises(): HasMany
-    {
-        return $this->hasMany(Exercise::class, 'muscleGroupId', 'Id');
     }
 
     protected static function boot()

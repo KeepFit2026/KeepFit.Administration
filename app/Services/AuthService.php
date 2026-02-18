@@ -34,6 +34,10 @@ class AuthService implements AuthServiceInterface
         return $this->handleAccountExistence($token, $claims);
     }
 
+    public function GetAllAsync()
+    {
+        return Login::paginate(10);
+    }
 
     /**
      * Crée un nouveau compte utilisateur dans la base SQL Server et modifie le mot de passe dans le login PgSQL.
@@ -56,7 +60,7 @@ class AuthService implements AuthServiceInterface
             Log::info('Début de la création du User...');
 
             $user = User::create([
-                'Name' => $data['name'],              
+                'Name' => $data['name'],
                 'AccountId' => $accountId,
                 'RoleId' => Login::FindRoleByAccountId($accountId)
             ]);

@@ -17,18 +17,18 @@ class ExercisesTable
     {
         return $table
             ->columns([
-                TextColumn::make('name')
+                TextColumn::make('Name')
                     ->searchable()
                     ->label(__('fields.name')),
 
-                TextColumn::make('muscleGroup.name')
+                TextColumn::make('muscleGroup.Name')
                     ->searchable()
                     ->label(__('fields.exercise.muscle_group')),
 
                 TextColumn::make('difficulty.name')
                     ->badge()
-                    ->searchable()
                     ->label(__('fields.exercise.difficulty'))
+                    ->getStateUsing(fn($record): string => Difficulty::from($record->Difficulty)->getLabel())
             ])
             ->filters([
                 SelectFilter::make('difficulty')
@@ -37,7 +37,7 @@ class ExercisesTable
                     ->attribute('difficulty'),
 
                 SelectFilter::make('muscleGroupId')
-                    ->options(MuscularGroup::pluck('name', 'id'))
+                    ->options(MuscularGroup::pluck('Name', 'Id'))
                     ->label(__('fields.exercise.muscle_group'))
                     ->attribute('muscleGroupId')
             ])
@@ -57,7 +57,7 @@ class ExercisesTable
                     ->label(''),
             ])
             ->toolbarActions([
-               
+
             ]);
     }
 }

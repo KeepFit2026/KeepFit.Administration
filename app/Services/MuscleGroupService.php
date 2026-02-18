@@ -3,10 +3,11 @@
 namespace App\Services;
 
 
-class MuscleGroupService extends AbstractApiService 
+class MuscleGroupService extends AbstractApiService
 {
-    protected function endpoint(): string
+    public function endpoint(): string
     {
-        return 'groups';
+        return "groups";
     }
+
 }

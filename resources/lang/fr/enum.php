@@ -4,6 +4,12 @@ return [
     'difficulty' => [
         'easy' => 'Facile',
         'medium' => 'Moyen',
-        'hard' => 'Hard'
+        'hard' => 'Difficile'
+    ],
+
+    'role' => [
+        'student' => 'Etudiant',
+        'admin' => 'Administrateur',
+        'teacher' => 'Professeur'
     ]
 ];

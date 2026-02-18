@@ -12,7 +12,7 @@
                     {{ $description }}
                 </p>
             </div>
-            
+
             @php
                 $bgClasses = [
                     'emerald' => 'bg-emerald-500',

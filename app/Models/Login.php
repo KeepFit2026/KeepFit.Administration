@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\UserRole;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -32,9 +33,13 @@ class Login extends Authenticatable implements JWTSubject, FilamentUser, HasName
         'password'
     ];
 
+    protected $cast = [
+        'roleId' => UserRole::class,
+    ];
+
     public function getJWTIdentifier()
     {
-        return $this->getKey(); 
+        return $this->getKey();
     }
 
     public function getJWTCustomClaims()
@@ -45,7 +50,7 @@ class Login extends Authenticatable implements JWTSubject, FilamentUser, HasName
     /**
      * Retourne l'id du Role de l'untilisateur à partir de l'AccountId.
      */
-    public static function FindRoleByAccountId(string $accountId): ?int 
+    public static function FindRoleByAccountId(string $accountId): ?int
     {
         $role = self::where('id', $accountId)->first();
         return $role ? $role->roleId : null;

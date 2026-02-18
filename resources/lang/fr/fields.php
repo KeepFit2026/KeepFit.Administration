@@ -3,6 +3,7 @@
 return [
     'name' => 'Nom',
     'description' => 'Description',
+    'role' => 'Role',
 
     'navigation' => [
         'training' => 'Entrainement'
@@ -22,8 +23,25 @@ return [
         'header_btn' => 'Créer un nouvel exercice'
     ],
 
+    'programs' => [
+        'name' => 'Nom du programme',
+        'description' => 'Description du programme',
+        'isActive' => 'Actif',
+        'header_action' => 'Créer un programme',
+         'sections' => [
+            'general' => 'Informations Générales',
+            'general_desc' => 'Définissez l\'identité de ce programme.',
+            'settings' => 'Détails',
+            'isActive' => 'Est-ce que le programme est actif ?'
+        ],
+    ],
+
     'muscular_group' => [
         'name' => 'Groupe',
         'header_btn' => 'Créer un nouveau groupe'
+    ],
+
+    'login' => [
+        'header_action' => 'Créer un compte de connexion',
     ]
 ];

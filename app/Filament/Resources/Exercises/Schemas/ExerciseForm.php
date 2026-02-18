@@ -21,12 +21,12 @@ class ExerciseForm
                 Section::make(__('fields.exercise.sections.general'))
                     ->description(__('fields.exercise.sections.general_desc'))
                     ->schema([
-                        TextInput::make('name')
+                        TextInput::make('Name')
                             ->label(__('fields.exercise.name'))
                             ->required()
                             ->columnSpan('full'), 
 
-                        Textarea::make('description')
+                        Textarea::make('Description')
                             ->label(__('fields.exercise.description'))
                             ->rows(4)
                             ->required()
@@ -39,7 +39,7 @@ class ExerciseForm
                         Grid::make(2)
                             ->schema([
                                 Select::make('muscleGroupId')
-                                    ->options(MuscularGroup::all()->pluck('name', 'id'))
+                                    ->options(MuscularGroup::all()->pluck('Name', 'Id'))
                                     ->required()
                                     ->preload()
                                     ->searchable()

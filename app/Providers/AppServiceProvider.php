@@ -4,10 +4,8 @@ namespace App\Providers;
 
 use App\Contracts\AdminServiceInterface;
 use App\Contracts\AuthServiceInterface;
-use App\Http\Responses\LogoutResponse;
 use App\Services\AdminService;
 use App\Services\AuthService;
-use Filament\Actions\CreateAction;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -26,6 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-
+        //
     }
 }

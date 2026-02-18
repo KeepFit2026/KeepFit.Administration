@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Filament\Resources\MuscleGroups\Tables;
+
+use Filament\Actions\DeleteAction;
+use Filament\Actions\EditAction;
+use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Table;
+
+class MuscleGroupsTable
+{
+    public static function configure(Table $table): Table
+    {
+        return $table
+            ->recordTitleAttribute('Name')
+            ->columns([
+                TextColumn::make('Name')
+                    ->label(__('fields.name'))
+                    ->searchable(),
+            ])
+            ->filters([
+
+            ])
+            ->recordActions([
+                EditAction::make()->label(''),
+                DeleteAction::make()->label(''),
+            ])
+            ->toolbarActions([
+            ]);
+    }
+}

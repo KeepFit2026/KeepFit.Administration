@@ -64,4 +64,9 @@ interface AuthServiceInterface
      * @return integer|null
      */
     public function getCurrentRoleId(): ?int;
+
+    /**
+     * Récupère tous les login
+     */
+    public function GetAllAsync();
 }
