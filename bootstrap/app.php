@@ -12,10 +12,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        $middleware->alias([
-            'checkRole' => \App\Http\Middleware\CheckRole::class,
-            'checkApiStatus' => \App\Http\Middleware\CheckApi::class,
-        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

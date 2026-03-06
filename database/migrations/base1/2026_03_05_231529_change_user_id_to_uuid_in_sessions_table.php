@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -11,9 +12,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('login', function (Blueprint $table) {
-            $table->integer('roleId')->default(2)->after('password');
-        });
+        DB::statement('ALTER TABLE sessions ALTER COLUMN user_id TYPE uuid USING user_id::text::uuid');
     }
 
     /**
@@ -21,8 +20,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('login', function (Blueprint $table) {
-            $table->dropColumn('roleId');
+        Schema::table('sessions', function (Blueprint $table) {
+            //
         });
     }
 };

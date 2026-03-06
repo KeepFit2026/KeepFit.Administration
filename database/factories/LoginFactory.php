@@ -18,8 +18,7 @@ class LoginFactory extends Factory
     {
         return [
             'email' => 'root@gmail.com',
-            'password' => bcrypt('password123'),
-            'roleId' => 2
+            'password' => bcrypt('password'),
         ];
     }
 }

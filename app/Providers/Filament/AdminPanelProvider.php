@@ -2,6 +2,7 @@
 
 namespace App\Providers\Filament;
 
+use App\Filament\Pages\Auth\LoginPage;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -27,9 +28,9 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->globalSearch(false)
             ->path('admin')
+            ->login(LoginPage::class)
             ->brandName('Keepfit Admin')
             ->viteTheme('resources/css/filament/admin/theme.css')
-            //->login()
             ->colors([
                 'primary' => Color::Emerald,
             ])
