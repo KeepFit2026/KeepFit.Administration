@@ -2,42 +2,34 @@
 
 namespace App\Models;
 
-use App\Enum\Difficulty;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class Exercise extends Model
 {
-    protected $connection = 'sqlsrv_auth';
-    protected $table = 'dbo.Exercise';
-    public $timestamps = false;
-    protected $primaryKey = 'Id';
+    use HasUuids;
+
+    protected $connection = 'pgsql_second';
+    protected $table = 'exercises';
+    protected $primaryKey = 'id';
     protected $keyType = 'string';
-    public $incrementing = false;
 
     protected $fillable = [
-        'Id',
-        'Name',
-        'Description',
-        'muscleGroupId'
-    ];
-
-    protected $casts = [
-        'difficulty' => Difficulty::class
+        'id',
+        'name',
+        'description',
+        'muscular_group_id',
+        'difficulty_id',
     ];
 
     public function muscleGroup(): BelongsTo
     {
-        return $this->belongsTo(MuscularGroup::class, 'muscleGroupId', 'Id');
+        return $this->belongsTo(MuscularGroup::class, 'muscular_group_id');
     }
 
-    protected static function boot()
+    public function difficulty(): BelongsTo
     {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
-            }
-        });
+        return $this->belongsTo(Difficulty::class, 'difficulty_id');
     }
 }
 

@@ -11,7 +11,7 @@ class MuscleGroupForm
     {
         return $schema
             ->components([
-                TextInput::make('Name')
+                TextInput::make('name')
                     ->label(__('fields.muscular_group.name'))
                     ->required()
                     ->maxLength(255),

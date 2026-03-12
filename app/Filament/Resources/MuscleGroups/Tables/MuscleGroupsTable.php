@@ -12,9 +12,9 @@ class MuscleGroupsTable
     public static function configure(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('Name')
+            ->recordTitleAttribute('name')
             ->columns([
-                TextColumn::make('Name')
+                TextColumn::make('name')
                     ->label(__('fields.name'))
                     ->searchable(),
             ])

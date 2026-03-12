@@ -8,6 +8,7 @@ use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Login extends Authenticatable implements FilamentUser, HasName
 {
@@ -34,6 +35,11 @@ class Login extends Authenticatable implements FilamentUser, HasName
         'email_verified_at' => 'datetime',
     ];
 
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'account_id');
+    }
+
     public function canAccessPanel(Panel $panel): bool
     {
         return true;
@@ -41,6 +47,6 @@ class Login extends Authenticatable implements FilamentUser, HasName
 
     public function getFilamentName(): string
     {
-        return $this->email;
+        return $this->user?->name ?? $this->email;
     }
 }

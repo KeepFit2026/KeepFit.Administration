@@ -1,19 +1,17 @@
 <?php
 
-namespace App\Filament\Resources\Programs\Pages;
+namespace App\Filament\Resources\Difficulties\Pages;
 
-use App\Filament\Resources\Programs\ProgramResource;
+use App\Filament\Resources\Difficulties\DifficultiesResource;
 use App\Traits\HasCreateHeaderBtn;
 use App\Traits\HasRessourceWidget;
-use App\Traits\HasToggle;
-use Filament\Resources\Pages\ListRecords;
+use Filament\Resources\Pages\ManageRecords;
 
-class ListPrograms extends ListRecords
+class ManageDifficulties extends ManageRecords
 {
-    use HasToggle, HasRessourceWidget, HasCreateHeaderBtn;
+    use HasRessourceWidget, HasCreateHeaderBtn;
 
-    protected static string $resource = ProgramResource::class;
-
+    protected static string $resource = DifficultiesResource::class;
     protected string $view = 'Filament.pages.livewire.list-page';
 
     protected function getStatIcon(): string
@@ -28,6 +26,6 @@ class ListPrograms extends ListRecords
 
     protected function getButtonName(): string
     {
-        return __('fields.programs.header_action');
+        return __('fields.difficulty.header_action');
     }
 }

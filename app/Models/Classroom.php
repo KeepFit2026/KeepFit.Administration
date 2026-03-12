@@ -2,29 +2,22 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
+
 class Classroom extends Model
 {
-    protected $connection = 'sqlsrv_auth';
-    protected $table = 'dbo.Classroom';
-    public $timestamps = false;
-    protected $primaryKey = 'Id';
+    use HasUuids, SoftDeletes;
+
+    protected $connection = 'pgsql_second';
+    protected $table = 'classrooms';
+    protected $primaryKey = 'id';
     protected $keyType = 'string';
-    public $incrementing = false;
 
     protected $fillable = [
-        'Id',
-        'Name',
+        'id',
+        'name',
     ];
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
-            }
-        });
-    }
 }
 

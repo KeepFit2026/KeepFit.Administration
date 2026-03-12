@@ -2,41 +2,25 @@
 
 namespace App\Models;
 
-use App\Services\MuscleGroupService;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 class MuscularGroup extends Model
 {
-    protected $connection = 'sqlsrv_auth';
-    protected $table = 'dbo.MuscleGroup';
-    public $timestamps = false;
-    protected $primaryKey = 'Id';
+    use HasUuids;
+
+    protected $connection = 'pgsql_second';
+    protected $table = 'muscular_groups';
+    protected $primaryKey = 'id';
     protected $keyType = 'string';
-    public $incrementing = false;
 
     protected $fillable = [
-        'Id',
-        'Name',
+        'id',
+        'name',
     ];
-
-    public function delete()
-    {
-        app(MuscleGroupService::class)->DeleteAsync($this->Id);
-        return parent::delete();
-    }
 
     public function exercises(): HasMany
     {
-        return $this->hasMany(Exercise::class, 'muscleGroupId', 'Id');
-    }
-
-    protected static function boot()
-    {
-        parent::boot();
-        static::creating(function ($model) {
-            if (empty($model->{$model->getKeyName()})) {
-                $model->{$model->getKeyName()} = (string) \Illuminate\Support\Str::uuid();
-            }
-        });
+        return $this->hasMany(Exercise::class, 'muscular_group_id');
     }
 }

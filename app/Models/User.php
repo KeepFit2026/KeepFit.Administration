@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class User extends Model
 {
@@ -17,4 +18,9 @@ class User extends Model
         'name',
         'account_id',
     ];
+
+    public function login(): BelongsTo
+    {
+        return $this->belongsTo(Login::class);
+    }
 }

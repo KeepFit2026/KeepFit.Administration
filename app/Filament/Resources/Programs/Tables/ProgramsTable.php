@@ -14,18 +14,18 @@ class ProgramsTable
     {
         return $table
             ->columns([
-                TextColumn::make('Name')
+                TextColumn::make('name')
                     ->label(__('fields.programs.name'))
                     ->searchable(),
-                ToggleColumn::make('IsActive')
+                ToggleColumn::make('is_active')
                     ->label(__('fields.programs.isActive')),
             ])
             ->filters([
                 //
             ])
             ->recordActions([
-                EditAction::make()->label(''),
-                DeleteAction::make()->label('')
+                EditAction::make()->label('')->tooltip(__('tooltip.edit')),
+                DeleteAction::make()->label('')->tooltip(__('tooltip.delete'))
             ])
             ->toolbarActions([
             ]);

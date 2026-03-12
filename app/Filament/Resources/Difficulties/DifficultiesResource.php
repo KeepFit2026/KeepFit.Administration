@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Filament\Resources\Classrooms;
+namespace App\Filament\Resources\Difficulties;
 
-use App\Filament\Resources\Classrooms\Pages\ManageClassrooms;
-use App\Models\Classroom;
+use App\Filament\Resources\Difficulties\Pages\ManageDifficulties;
+use App\Models\Difficulty;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
@@ -15,18 +15,19 @@ use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
 use UnitEnum;
 
-class ClassroomResource extends Resource
+class DifficultiesResource extends Resource
 {
-    protected static ?string $model = Classroom::class;
+    protected static ?string $model = Difficulty::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::AcademicCap;
+    protected static ?string $navigationLabel = 'Difficultés';
+
+    protected static ?string $pluralLabel = 'Les Difficultés';
+
+    protected static string|UnitEnum|null $navigationGroup = 'Entrainement';
+
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ChartBar;
 
     protected static ?string $recordTitleAttribute = 'name';
-
-    protected static ?string $navigationLabel = 'Classes';
-    protected static ?string $pluralLabel = 'Classes';
-
-    protected static string|UnitEnum|null $navigationGroup = "Académie";
 
     public static function form(Schema $schema): Schema
     {
@@ -45,25 +46,23 @@ class ClassroomResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
-                    ->label(__('fields.name'))
                     ->searchable(),
             ])
             ->filters([
                 //
             ])
             ->recordActions([
-                EditAction::make()->label(''),
-                DeleteAction::make()->label(''),
+                EditAction::make()->label('')->tooltip(__('tooltip.edit')),
+                DeleteAction::make()->label('')->tooltip(__('tooltip.delete')),
             ])
             ->toolbarActions([
-                //
             ]);
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => ManageClassrooms::route('/'),
+            'index' => ManageDifficulties::route('/'),
         ];
     }
 }

@@ -3,39 +3,30 @@
 namespace App\Filament\Resources\Classrooms\Pages;
 
 use App\Filament\Resources\Classrooms\ClassroomResource;
-use App\Livewire\CustomStatCard;
-use App\Models\Classroom;
-use Filament\Actions\CreateAction;
+use App\Traits\HasCreateHeaderBtn;
+use App\Traits\HasRessourceWidget;
 use Filament\Resources\Pages\ManageRecords;
 
 class ManageClassrooms extends ManageRecords
 {
+    use HasCreateHeaderBtn, HasRessourceWidget;
+
     protected static string $resource = ClassroomResource::class;
 
     protected string $view = 'filament.pages.livewire.list-page';
 
-    protected function getHeaderActions(): array
+    protected function getButtonName(): string
     {
-        return [
-            CreateAction::make()
-                ->icon('heroicon-s-plus')
-                ->label(__('fields.classrooms.header_action'))
-                ->extraAttributes([
-                    'class' => 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-none shadow-md font-bold tracking-wide',
-                ]),
-        ];
+        return __('fields.classrooms.header_action');
     }
 
-    public function getHeaderWidgets(): array
+    protected function getStatIcon(): string
     {
-        return [
-            CustomStatCard::make([
-                'title' => 'Classes',
-                'value' => Classroom::count(),
-                'description' => 'Muscu & cardio',
-                'icon'        => 'bi-lightning-charge',
-                'color'       => 'emerald',
-            ]),
-        ];
+        return 'bi-lightnig-charge';
+    }
+
+    protected function getStatColor(): string
+    {
+        return 'emerald';
     }
 }

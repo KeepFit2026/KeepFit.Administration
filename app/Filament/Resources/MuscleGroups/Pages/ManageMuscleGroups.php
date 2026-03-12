@@ -3,16 +3,16 @@ namespace App\Filament\Resources\MuscleGroups\Pages;
 
 use App\Filament\Resources\MuscleGroups\MuscleGroupResource;
 use App\Filament\Resources\MuscleGroups\Tables\MuscleGroupsTable;
-use App\Livewire\CustomStatCard;
-use App\Models\MuscularGroup;
-use App\Services\MuscleGroupService;
+use App\Traits\HasCreateHeaderBtn;
+use App\Traits\HasRessourceWidget;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Model;
 
 class ManageMuscleGroups extends ManageRecords
 {
+    use HasRessourceWidget, HasCreateHeaderBtn;
+
     protected static string $resource = MuscleGroupResource::class;
     protected string $view = 'Filament.pages.livewire.list-page';
 
@@ -26,7 +26,7 @@ class ManageMuscleGroups extends ManageRecords
                     'class' => 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-none shadow-md font-bold tracking-wide',
                 ])
                 ->after(function () {
-                    $this->resetTable(); 
+                    $this->resetTable();
                     $this->dispatch('muscleGroupCreated');
                 }),
         ];
@@ -40,16 +40,18 @@ class ManageMuscleGroups extends ManageRecords
     // Écouter l'événement et rafraîchir
     protected $listeners = ['muscleGroupCreated' => '$refresh'];
 
-    public function getHeaderWidgets(): array
+    protected function getStatIcon(): string
     {
-        return [
-            CustomStatCard::make([
-                'title' => 'Groupes',
-                'value' => MuscularGroup::count(),
-                'description' => 'Muscu & cardio',
-                'icon'        => 'bi-lightning-charge',
-                'color'       => 'emerald',
-            ]),
-        ];
+        return 'bi-lightnig-charge';
+    }
+
+    protected function getStatColor(): string
+    {
+        return 'emerald';
+    }
+
+    protected function getButtonName(): string
+    {
+        return __('fields.exercise.header_btn');
     }
 }

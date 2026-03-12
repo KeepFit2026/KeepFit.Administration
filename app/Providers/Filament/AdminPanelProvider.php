@@ -29,7 +29,7 @@ class AdminPanelProvider extends PanelProvider
             ->globalSearch(false)
             ->path('admin')
             ->login(LoginPage::class)
-            ->brandName('Keepfit Admin')
+            ->brandName(config('app.name'))
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
                 'primary' => Color::Emerald,

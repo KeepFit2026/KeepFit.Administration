@@ -19,24 +19,24 @@ class ProgramForm
                 Section::make(__('fields.programs.sections.general'))
                     ->description(__('fields.programs.sections.general_desc'))
                     ->schema([
-                        TextInput::make('Name')
+                        TextInput::make('name')
                             ->label(__('fields.programs.name'))
                             ->required()
-                            ->columnSpan('full'), 
+                            ->columnSpan('full'),
 
-                        Textarea::make('Description')
+                        Textarea::make('description')
                             ->label(__('fields.programs.description'))
                             ->rows(4)
                             ->required()
                             ->columnSpan('full'),
                     ])
-                    ->columns(2), 
+                    ->columns(2),
 
                 Section::make(__('fields.programs.sections.settings'))
                     ->schema([
-                        Grid::make(2)   
+                        Grid::make(2)
                             ->schema([
-                               Toggle::make('IsActive')
+                               Toggle::make('is_active')
                                     ->label(__('fields.programs.sections.isActive'))
                             ]),
                     ]),

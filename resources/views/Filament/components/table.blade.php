@@ -42,8 +42,10 @@
                     <tr class="bg-[#1f2937] text-white uppercase text-[11px] font-bold tracking-widest border-b border-gray-700">
                         @foreach($this->getTable()->getColumns() as $column)
                             @if($column->isVisible())
-                                <th @if($column->isSortable()) wire:click="sortTable('{{ $column->getName() }}')" @endif
-                                    class="px-6 py-4 text-left border-0 {{ $column->isSortable() ? 'cursor-pointer hover:text-emerald-400 transition-colors' : '' }}">
+                                <th
+                                    @if($column->isSortable()) wire:click="sortTable('{{ $column->getName() }}')" @endif
+                                    class="px-6 py-4 text-left border-0 {{ $column->isSortable() ? 'cursor-pointer hover:text-emerald-400 transition-colors' : '' }}"
+                                >
                                     <div class="flex items-center gap-1">
                                         {{ $column->getLabel() }}
                                         @if($column->isSortable() && $this->getTableSortColumn() === $column->getName())
@@ -70,25 +72,61 @@
                                 @if($column->isVisible())
                                     @php
                                         $column->record($record);
-                                        $columnName = $column->getName();
-                                        $rawValue = $column->getState();
-                                        
-                                        $isInteractive = $column instanceof \Filament\Tables\Columns\ToggleColumn || $column instanceof \Filament\Tables\Columns\SelectColumn;
-                                        $hasBadge = method_exists($column, 'isBadge') && $column->isBadge();
+                                        $columnName     = $column->getName();
+                                        $rawValue       = $column->getState();
+                                        $isToggle       = $column instanceof \Filament\Tables\Columns\ToggleColumn;
+                                        $isSelect       = $column instanceof \Filament\Tables\Columns\SelectColumn;
+                                        $isInteractive  = $isToggle || $isSelect;
+                                        $hasBadge       = method_exists($column, 'isBadge') && $column->isBadge();
                                         $formattedState = !$isInteractive ? $column->formatState($rawValue) : null;
                                     @endphp
 
                                     <td class="px-6 py-5 align-middle border-0 text-left">
-                                        {{-- CAS 1 : COLONNES INTERACTIVES (Toggle/Select) --}}
-                                        @if($isInteractive)
+
+                                        {{-- CAS 1 : TOGGLE COLUMN --}}
+                                        @if($isToggle)
+                                            @php $isEnabled = (bool) $rawValue; @endphp
+                                             <button
+                                                wire:click="toggleColumnState('{{ $columnName }}', {{ Js::from((string) $record->getKey()) }})"
+                                                type="button"
+                                                role="switch"
+                                                aria-checked="{{ $isEnabled ? 'true' : 'false' }}"
+                                                style="
+                                                    position: relative;
+                                                    display: inline-flex;
+                                                    height: 24px;
+                                                    width: 44px;
+                                                    flex-shrink: 0;
+                                                    cursor: pointer;
+                                                    border-radius: 9999px;
+                                                    border: none;
+                                                    background-color: {{ $isEnabled ? '#10b981' : '#d1d5db' }};
+                                                    transition: background-color 0.2s;
+                                                    padding: 0;
+                                                    align-items: center;
+                                                "
+                                            >
+                                                <span style="
+                                                    display: inline-block;
+                                                    height: 18px;
+                                                    width: 18px;
+                                                    border-radius: 9999px;
+                                                    background-color: white;
+                                                    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+                                                    transition: transform 0.2s;
+                                                    transform: translateX({{ $isEnabled ? '22px' : '3px' }});
+                                                "></span>
+                                            </button>
+
+                                        {{-- CAS 2 : SELECT COLUMN --}}
+                                        @elseif($isSelect)
                                             <div class="flex items-center">
                                                 {{ $column }}
                                             </div>
 
-                                        {{-- CAS 2 : PREMIÈRE COLONNE (Identité) --}}
+                                        {{-- CAS 3 : PREMIÈRE COLONNE (Identité) --}}
                                         @elseif($loop->first)
                                             @php
-                                                // Fallback si la valeur est nulle (problème de casse PascalCase/camelCase)
                                                 $displayValue = $formattedState ?: ($record->Name ?? $record->name ?? $record->label ?? $record->title ?? 'N/A');
                                             @endphp
                                             <div class="flex items-center gap-3">
@@ -111,7 +149,7 @@
                                                 </div>
                                             </div>
 
-                                        {{-- CAS 3 : BADGES (Dynamique via Filament) --}}
+                                        {{-- CAS 4 : BADGES --}}
                                         @elseif($hasBadge)
                                             @php
                                                 $color = $column->getColor($rawValue) ?? 'gray';
@@ -129,21 +167,23 @@
                                                 {{ $formattedState }}
                                             </span>
 
-                                        {{-- CAS 4 : TEXTE SIMPLE --}}
+                                        {{-- CAS 5 : TEXTE SIMPLE --}}
                                         @else
                                             <span class="text-sm text-gray-600 dark:text-gray-400">
                                                 {{ $formattedState }}
                                             </span>
                                         @endif
+
                                     </td>
                                 @endif
                             @endforeach
 
+                            {{-- ACTIONS --}}
                             <td class="px-6 py-5 align-middle border-0">
                                 <div class="flex gap-2 justify-end">
-                                    @php 
-                                        $recordKey = $record->getKey(); 
-                                        $resource = $this->getResource();
+                                    @php
+                                        $recordKey   = (string) $record->getKey();
+                                        $resource    = $this->getResource();
                                         $hasEditPage = false;
                                         try {
                                             $hasEditPage = $resource::hasPage('edit');
@@ -151,16 +191,26 @@
                                     @endphp
 
                                     @if($hasEditPage)
-                                        <a href="{{ $resource::getUrl('edit', ['record' => $record]) }}" class="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white transition-all border-0 cursor-pointer shadow-sm">
+                                        <a
+                                            href="{{ $resource::getUrl('edit', ['record' => $record]) }}"
+                                            class="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white transition-all border-0 cursor-pointer shadow-sm"
+                                        >
                                             <x-heroicon-o-pencil-square class="w-4 h-4" />
                                         </a>
                                     @else
-                                        <button wire:click="mountTableAction('edit', '{{ $recordKey }}')" class="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white transition-all border-0 cursor-pointer shadow-sm">
+                                        <button
+                                            wire:click="mountTableAction('edit', {{ Js::from($recordKey) }})"
+                                            class="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white transition-all border-0 cursor-pointer shadow-sm"
+                                        >
                                             <x-heroicon-o-pencil-square class="w-4 h-4" />
                                         </button>
                                     @endif
 
-                                    <button wire:click="mountTableAction('delete', '{{ $recordKey }}')" class="w-8 h-8 flex items-center justify-center rounded-md bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all border-0 cursor-pointer shadow-sm" onclick="return confirm('Confirmer la suppression ?')">
+                                    <button
+                                        wire:click="mountTableAction('delete', {{ Js::from($recordKey) }})"
+                                        wire:confirm="Confirmer la suppression ?"
+                                        class="w-8 h-8 flex items-center justify-center rounded-md bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all border-0 cursor-pointer shadow-sm"
+                                    >
                                         <x-heroicon-o-trash class="w-4 h-4" />
                                     </button>
                                 </div>
@@ -168,7 +218,9 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="100%" class="px-6 py-12 text-center border-0 text-gray-400 italic">Aucun élément trouvé</td>
+                            <td colspan="100%" class="px-6 py-12 text-center border-0 text-gray-400 italic">
+                                Aucun élément trouvé
+                            </td>
                         </tr>
                     @endforelse
                 </tbody>
@@ -195,8 +247,13 @@
         <div class="space-y-4">
             @foreach(collect($this->getTable()->getFilters())->filter(fn($f) => $f->isVisible()) as $filter)
                 <div>
-                    <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">{{ $filter->getLabel() }}</label>
-                    <select wire:model.live="tableFilters.{{ $filter->getName() }}.value" class="block w-full border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-emerald-500 dark:bg-gray-800 dark:text-white py-2 px-3">
+                    <label class="block text-sm font-medium text-gray-900 dark:text-white mb-2">
+                        {{ $filter->getLabel() }}
+                    </label>
+                    <select
+                        wire:model.live="tableFilters.{{ $filter->getName() }}.value"
+                        class="block w-full border-gray-300 dark:border-gray-600 rounded-lg shadow-sm focus:ring-emerald-500 dark:bg-gray-800 dark:text-white py-2 px-3"
+                    >
                         <option value="">Tout</option>
                         @foreach($filter->getOptions() as $val => $lab)
                             <option value="{{ $val }}">{{ $lab }}</option>
@@ -206,8 +263,16 @@
             @endforeach
         </div>
         <x-slot name="footerActions">
-            <x-filament::button color="gray" x-on:click="$dispatch('close-modal', { id: 'table-filters' })">Annuler</x-filament::button>
-            <x-filament::button wire:click="$refresh" x-on:click="$dispatch('close-modal', { id: 'table-filters' })" class="bg-emerald-600">Appliquer</x-filament::button>
+            <x-filament::button color="gray" x-on:click="$dispatch('close-modal', { id: 'table-filters' })">
+                Annuler
+            </x-filament::button>
+            <x-filament::button
+                wire:click="$refresh"
+                x-on:click="$dispatch('close-modal', { id: 'table-filters' })"
+                class="bg-emerald-600"
+            >
+                Appliquer
+            </x-filament::button>
         </x-slot>
     </x-filament::modal>
 @endif

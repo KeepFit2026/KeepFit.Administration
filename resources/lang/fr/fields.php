@@ -47,5 +47,9 @@ return [
 
     'classrooms' => [
         'header_action' => 'Créer une nouvelle classe'
+    ],
+
+    'difficulty' => [
+        'header_action' => 'Créer une nouvelle difficulté'
     ]
 ];

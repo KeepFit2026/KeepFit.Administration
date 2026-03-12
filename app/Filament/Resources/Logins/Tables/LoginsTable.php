@@ -17,11 +17,6 @@ class LoginsTable
             ->columns([
                 TextColumn::make('email')
                     ->searchable(),
-                TextColumn::make('roleId')
-                    ->label(__('fields.role'))
-                    ->badge()
-                    ->formatStateUsing(fn ($state) => UserRole::from((int) $state)->getLabel())
-                    ->color(fn ($state) => UserRole::from((int) $state)->getColor())
             ])
             ->filters([
                 //

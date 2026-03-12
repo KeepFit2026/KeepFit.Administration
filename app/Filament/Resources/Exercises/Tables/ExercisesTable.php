@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Exercises\Tables;
 
 use App\Enum\Difficulty;
+use App\Models\Difficulty as ModelsDifficulty;
 use App\Models\MuscularGroup;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
@@ -17,29 +18,26 @@ class ExercisesTable
     {
         return $table
             ->columns([
-                TextColumn::make('Name')
+                TextColumn::make('name')
                     ->searchable()
                     ->label(__('fields.name')),
 
-                TextColumn::make('muscleGroup.Name')
+                TextColumn::make('muscleGroup.name')
                     ->searchable()
                     ->label(__('fields.exercise.muscle_group')),
 
                 TextColumn::make('difficulty.name')
                     ->badge()
                     ->label(__('fields.exercise.difficulty'))
-                    ->getStateUsing(fn($record): string => Difficulty::from($record->Difficulty)->getLabel())
             ])
             ->filters([
-                SelectFilter::make('difficulty')
-                    ->options(Difficulty::class)
-                    ->label(__('fields.exercise.difficulty'))
-                    ->attribute('difficulty'),
+                SelectFilter::make('difficulty_id')
+                    ->options(fn() => ModelsDifficulty::pluck('name', 'id'))
+                    ->label(__('fields.exercise.difficulty')),
 
-                SelectFilter::make('muscleGroupId')
-                    ->options(MuscularGroup::pluck('Name', 'Id'))
-                    ->label(__('fields.exercise.muscle_group'))
-                    ->attribute('muscleGroupId')
+                SelectFilter::make('muscular_group_id')
+                    ->options(fn() => MuscularGroup::pluck('name', 'id'))
+                    ->label(__('fields.exercise.muscle_group')),
             ])
             ->actions([
                  Action::make('view')
