@@ -9,10 +9,11 @@ use Filament\Models\Contracts\HasName;
 use Filament\Panel;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Spatie\Permission\Traits\HasRoles;
 
 class Login extends Authenticatable implements FilamentUser, HasName
 {
-    use HasFactory, HasUuids;
+    use HasFactory, HasUuids, HasRoles;
 
     protected $connection = 'pgsql';
     protected $table = 'login';

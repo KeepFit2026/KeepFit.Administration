@@ -4,50 +4,43 @@ namespace App\Filament\Resources\Logins\Pages;
 
 use App\Filament\Resources\Logins\LoginResource;
 use App\Filament\Resources\Logins\Tables\LoginsTable;
-use App\Livewire\CustomStatCard;
-use App\Models\Login;
-use Filament\Actions\CreateAction;
+use App\Traits\HasCreateHeaderBtn;
+use App\Traits\HasRessourceWidget;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Tables\Table;
-use Illuminate\Support\Facades\Hash;
-use Str;
+use Illuminate\Database\Eloquent\Model;
 
 class ManageLogins extends ManageRecords
 {
+    use HasCreateHeaderBtn, HasRessourceWidget;
+
     protected static string $resource = LoginResource::class;
     protected string $view = 'Filament.pages.livewire.list-page';
-
-    protected function getHeaderActions(): array
-    {
-        return [
-            CreateAction::make()
-                ->label(__('fields.login.header_action'))
-                ->icon('heroicon-s-plus')
-                ->mutateDataUsing(function(array $data) {
-                    $data['password'] = Hash::make(Str::random(20));
-                    return $data;
-                })
-                ->extraAttributes([
-                    'class' => 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-600 hover:to-teal-700 text-white border-none shadow-md font-bold tracking-wide',
-                ]),
-        ];
-    }
 
     public function table(Table $table): Table
     {
         return LoginsTable::configure($table);
     }
 
-    public function getHeaderWidgets(): array
+    protected function getButtonName(): string
     {
-        return [
-            CustomStatCard::make([
-                'title'       => 'Comptes utilisateur',
-                'value'       => Login::count(),
-                'description' => 'Muscu & cardio',
-                'icon'        => 'bi-lightning-charge',
-                'color'       => 'emerald',
-            ]),
-        ];
+        return __('fields.login.header_action');
+    }
+
+    protected function getStatIcon(): string
+    {
+        return 'bi-lightnig-charge';
+    }
+
+    protected function getStatColor(): string
+    {
+        return 'emerald';
+    }
+
+    protected function afterCreateHook(Model $record, array $data): void
+    {
+        if(isset($data['roles']) && !empty($data['roles'])) {
+            $record->assignRole($data['roles']);
+        }
     }
 }

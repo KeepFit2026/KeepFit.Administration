@@ -2,6 +2,7 @@
 
 return [
     'name' => 'Nom',
+    'email' => 'Email',
     'description' => 'Description',
     'role' => 'Role',
 
@@ -51,5 +52,9 @@ return [
 
     'difficulty' => [
         'header_action' => 'Créer une nouvelle difficulté'
+    ],
+
+    'roles' => [
+        'header_action' => 'Créer un nouveau rôle'
     ]
 ];

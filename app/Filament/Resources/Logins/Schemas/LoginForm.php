@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Logins\Schemas;
 
-use App\Enum\UserRole;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Schemas\Schema;
@@ -17,10 +16,10 @@ class LoginForm
                     ->required()
                     ->email(true)
                     ->maxLength(255),
-                Select::make('roleId')
+                Select::make('roles')
                     ->label(__('fields.role'))
+                    ->relationship('roles', 'name')
                     ->required()
-                    ->options(UserRole::class)
             ]);
     }
 }

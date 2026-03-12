@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Login;
 use Illuminate\Database\Seeder;
+use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
@@ -12,6 +13,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Login::factory(1)->create();
+        $admin = Login::factory()->create();
+        $adminRole = Role::create(['name' => 'admin']);
+
+        Role::create(['name' => 'teacher']);
+        Role::create(['name' => 'user']);
+
+        $admin->assignRole($adminRole);
     }
 }
