@@ -2,16 +2,21 @@
 
 namespace App\Models;
 
-use Tymon\JWTAuth\Contracts\JWTSubject;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Filament\Models\Contracts\FilamentUser;
+use Filament\Models\Contracts\HasName;
+use Filament\Panel;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Login extends Authenticatable implements JWTSubject
+class Login extends Authenticatable implements FilamentUser, HasName
 {
-    use HasFactory;
+    use HasFactory, HasUuids;
 
     protected $connection = 'pgsql';
     protected $table = 'login';
+    protected $keyType = 'string';
 
     /**
      * The attributes that are mass assignable.
@@ -22,29 +27,26 @@ class Login extends Authenticatable implements JWTSubject
         'id',
         'email',
         'password',
-        'roleId'
+        'email_verified_at'
     ];
 
-    protected $hidden = [
-        'password'
+    protected $casts = [
+        'password' => 'hashed',
+        'email_verified_at' => 'datetime',
     ];
 
-    public function getJWTIdentifier()
+    public function user(): BelongsTo
     {
-        return $this->getKey(); 
+        return $this->belongsTo(User::class, 'account_id');
     }
 
-    public function getJWTCustomClaims()
+    public function canAccessPanel(Panel $panel): bool
     {
-        return [];
+        return true;
     }
 
-    /**
-     * Retourne l'id du Role de l'untilisateur à partir de l'AccountId.
-     */
-    public static function FindRoleByAccountId(string $accountId): ?int 
+    public function getFilamentName(): string
     {
-        $role = self::where('id', $accountId)->first();
-        return $role ? $role->roleId : null;
+        return $this->user?->name ?? $this->email;
     }
 }

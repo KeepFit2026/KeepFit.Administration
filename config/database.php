@@ -83,36 +83,24 @@ return [
             ]) : [],
         ],
 
-        'pgsql' => [
+        'pgsql' => [ // Connexion par défaut (Base 1)
             'driver' => 'pgsql',
-            'url' => env('DB_URL'),
             'host' => env('DB_HOST', '127.0.0.1'),
             'port' => env('DB_PORT', '5432'),
-            'database' => env('DB_DATABASE', 'laravel'),
-            'username' => env('DB_USERNAME', 'root'),
+            'database' => env('DB_DATABASE', 'forge'),
+            'username' => env('DB_USERNAME', 'forge'),
             'password' => env('DB_PASSWORD', ''),
-            'charset' => env('DB_CHARSET', 'utf8'),
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'search_path' => 'public',
-            'sslmode' => 'prefer',
+            // ...
         ],
-        
-        'sqlsrv_auth' => [
-            'driver' => 'sqlsrv',
-            'host' => env('DB_SQLSRV_HOST', 'localhost'),
-            'port' => env('DB_SQLSRV_PORT', '1433'),
-            'database' => env('DB_SQLSRV_DATABASE', 'auth_db'),
-            'username' => env('DB_SQLSRV_USERNAME', 'sa'),
-            'password' => env('DB_SQLSRV_PASSWORD', ''),
-            'charset' => 'utf8',
-            'prefix' => '',
-            'prefix_indexes' => true,
-            'encrypt' => env('DB_SQLSRV_ENCRYPT', 'no'),
-            'trust_server_certificate' => env('DB_SQLSRV_TRUST_CERT', 'true'),
 
-            // Indiquer directement le driver
-            'odbc_driver' => '/opt/homebrew/lib/libmsodbcsql.18.dylib',
+        'pgsql_second' => [ // Connexion secondaire (Base 2)
+            'driver' => 'pgsql',
+            'host' => env('DB_HOST_SECOND', '127.0.0.1'),
+            'port' => env('DB_PORT_SECOND', '5432'),
+            'database' => env('DB_DATABASE_SECOND', 'forge'),
+            'username' => env('DB_USERNAME_SECOND', 'forge'),
+            'password' => env('DB_PASSWORD_SECOND', ''),
+            // ...
         ],
 
     ],

@@ -1,39 +1,41 @@
 @extends('Layouts.login')
 
 @section('form')
-    <form method="POST" action="{{ route('login.post.loginWebPortal') }}" class="login-form">
+    <form method="POST" action="{{ route('login.login')}}" class="text-left">
         @csrf
 
-        <div class="form-group">
-            <label for="email" class="form-label">Adresse email</label>
-            <input type="email" id="email" name="email" class="form-input" placeholder="votre@email.com"
+        <div class="mb-6">
+            <label for="email" class="block mb-2 font-medium text-dark">Adresse email</label>
+            <input type="email" id="email" name="email"
+                class="w-full px-4 py-3 bg-light border border-gray-200 rounded-lg text-base text-dark shadow-sm transition-all duration-300 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-3 focus:ring-blue-500/10 focus:bg-white"
+                placeholder="votre@email.com"
                 value="{{ old('email') }}" required autofocus>
             @error('email')
-                <span class="form-error">{{ $message }}</span>
+                <span class="text-danger text-sm mt-1 block">{{ $message }}</span>
             @enderror
         </div>
 
-        <div class="form-group">
-            <label for="password" class="form-label">Mot de passe</label>
-            <input type="password" id="password" name="password" class="form-input" placeholder="Votre mot de passe"
+        <div class="mb-6">
+            <label for="password" class="block mb-2 font-medium text-dark">Mot de passe</label>
+            <input type="password" id="password" name="password"
+                class="w-full px-4 py-3 bg-light border border-gray-200 rounded-lg text-base text-dark shadow-sm transition-all duration-300 placeholder-gray-400 focus:outline-none focus:border-primary focus:ring-3 focus:ring-blue-500/10 focus:bg-white"
+                placeholder="Votre mot de passe"
                 required>
             @error('password')
-                <span class="form-error">{{ $message }}</span>
+                <span class="text-danger text-sm mt-1 block">{{ $message }}</span>
             @enderror
         </div>
 
-        <div class="form-options">
-            <div class="remember-me">
-                <input type="checkbox" id="remember" name="remember">
-                <label for="remember">Se souvenir de moi</label>
+        <div class="flex justify-between items-center mb-6">
+            <div class="flex items-center gap-2">
+                <input type="checkbox" id="remember" name="remember" class="w-4 h-4 accent-primary">
+                <label for="remember" class="text-sm text-gray-500 cursor-pointer">Se souvenir de moi</label>
             </div>
 
-            <a href="{{ route('admin.requestChangePassword') }}" class="forgot-password">
-                Mot de passe oublié?
-            </a>
-        </div>
+            </div>
 
-        <button type="submit" class="btn">
+        <button type="submit"
+            class="inline-block w-full py-3.5 px-6 bg-primary text-white rounded-lg text-base font-medium text-center shadow-sm transition-all duration-300 hover:bg-primary-dark hover:-translate-y-0.5 hover:shadow-md active:translate-y-0">
             Se connecter
         </button>
     </form>

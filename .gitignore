@@ -24,3 +24,5 @@ Homestead.yaml
 Thumbs.db
 docker-compose.yml
 Dockerfile
+.agents
+.gemini
