@@ -6,6 +6,7 @@ use App\Models\Login;
 use Filament\Actions\CreateAction;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ImportAction;
+use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
 use Str;
@@ -60,6 +61,7 @@ trait HasCreateHeaderBtn
         // Bouton d'export (Toujours présent si tu le souhaites)
         $actions[] = ExportAction::make('export') // L'ID doit être 'export' pour ton Blade
             ->exporter("App\\Filament\\Exports\\{$modelName}Exporter")
+            ->authGuard('web')
             ->label('Exporter');
 
         // Bouton d'import (Optionnel via ton booléen)

@@ -29,6 +29,10 @@
     z-index: 1000 !important;
 }
 
+.fi-topbar-ctn {
+    background: red !important;
+}
+
 .fi-sidebar-header {
     background-color: var(--dark) !important;
     border-bottom: 1px solid var(--light-border) !important;
@@ -122,4 +126,4 @@
 .fi-header-heading {
     display: block !important;
     color: inherit;
-}   
+}

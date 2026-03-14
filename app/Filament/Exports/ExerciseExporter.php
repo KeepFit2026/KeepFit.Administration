@@ -6,6 +6,8 @@ use App\Models\Exercise;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
+use Filament\Forms\Components\TextInput;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Number;
 
 class ExerciseExporter extends Exporter
@@ -53,11 +55,26 @@ class ExerciseExporter extends Exporter
 
     public function getOwner(): ?\Illuminate\Contracts\Auth\Authenticatable
     {
-        return auth()->user() ?? \App\Models\Login::first(); // Debug uniquement
+        return Auth::user();
     }
 
     public function getFileDisk(): string
     {
         return 'public';
+    }
+
+    public static function getOptionsFormComponents(): array
+    {
+        return [
+            TextInput::make('fileName')
+                ->label('Nom du fichier')
+                ->placeholder('exercices-export')
+                ->required(),
+        ];
+    }
+
+    public function getFileName(Export $export): string
+    {
+        return $this->options['fileName'] ?? 'exercices-' . now()->format('Y-m-d');
     }
 }

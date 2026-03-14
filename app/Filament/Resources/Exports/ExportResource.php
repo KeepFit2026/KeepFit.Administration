@@ -1,37 +1,37 @@
 <?php
 
-namespace App\Filament\Resources\Roles;
+namespace App\Filament\Resources\Exports;
 
-use App\Filament\Resources\Roles\Pages\ManageRoles;
+use App\Filament\Resources\Exports\Pages\ManageExports;
 use BackedEnum;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\Exports\Models\Export;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Resource;
 use Filament\Schemas\Schema;
 use Filament\Support\Icons\Heroicon;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Table;
-use Spatie\Permission\Models\Role;
 use UnitEnum;
 
-class RolesResource extends Resource
+class ExportResource extends Resource
 {
-    protected static ?string $model = Role::class;
+    protected static ?string $model = Export::class;
 
-    protected static string|BackedEnum|null $navigationIcon = Heroicon::ShieldCheck;
+    protected static string|BackedEnum|null $navigationIcon = Heroicon::ArrowDownTray;
 
     protected static string|UnitEnum|null $navigationGroup = 'Administration';
 
-    protected static ?string $recordTitleAttribute = 'name';
+    protected static ?string $recordTitleAttribute = 'file_name';
 
     public static function form(Schema $schema): Schema
     {
         return $schema
             ->components([
-                TextInput::make('name')
-                    ->label(__('fields.name'))
-                    ->required()
+                TextInput::make('file_name')
+                    ->label(__('fields.export.name'))
+                    ->nullable()
                     ->maxLength(255),
             ]);
     }
@@ -39,10 +39,10 @@ class RolesResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
-            ->recordTitleAttribute('name')
+            ->recordTitleAttribute('file_name')
             ->columns([
-                TextColumn::make('name')
-                    ->label(__('fields.name'))
+                TextColumn::make('file_name')
+                    ->label(__('fields.export.name'))
                     ->searchable(),
             ])
             ->filters([
@@ -59,7 +59,7 @@ class RolesResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => ManageRoles::route('/'),
+            'index' => ManageExports::route('/'),
         ];
     }
 }

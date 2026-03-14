@@ -57,5 +57,9 @@ return [
 
     'roles' => [
         'header_action' => 'Créer un nouveau rôle'
+    ],
+
+    'export' => [
+        'name' => 'Nom du fichier'
     ]
 ];

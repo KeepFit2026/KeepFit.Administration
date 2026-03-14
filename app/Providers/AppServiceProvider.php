@@ -5,7 +5,7 @@ namespace App\Providers;
 use App\Contracts\AuthServiceInterface;
 use App\Models\Login;
 use App\Services\AuthService;
-use Filament\Actions\Exports\Jobs\ExportCsv;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -16,6 +16,9 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(AuthServiceInterface::class, AuthService::class);
+
+        // Indique à Laravel / Filament que le modèle authentifiable par défaut est Login
+        $this->app->bind(Authenticatable::class, Login::class);
     }
 
     /**

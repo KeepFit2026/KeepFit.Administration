@@ -3,11 +3,13 @@
 namespace App\Filament\Resources\Exercises\Tables;
 
 use App\Enum\Difficulty;
+use App\Filament\Exports\ExerciseExporter;
 use App\Models\Difficulty as ModelsDifficulty;
 use App\Models\MuscularGroup;
 use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
+use Filament\Actions\ExportAction;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
@@ -28,7 +30,13 @@ class ExercisesTable
 
                 TextColumn::make('difficulty.name')
                     ->badge()
-                    ->label(__('fields.exercise.difficulty'))
+                    ->label(__('fields.exercise.difficulty')),
+
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(ExerciseExporter::class)
+                    ->fileName(fn (array $options): string => $options['fileName'] ?? 'TEST'),
             ])
             ->filters([
                 SelectFilter::make('difficulty_id')
