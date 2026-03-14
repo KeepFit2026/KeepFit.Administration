@@ -17,7 +17,8 @@ class ListExercises extends ListRecords
 
     public function table(Table $table): Table
     {
-        return ExercisesTable::configure($table);
+        return ExercisesTable::configure($table)
+            ->headerActions($this->getTableExtraActions());
     }
 
     protected function getStatIcon(): string
@@ -33,5 +34,10 @@ class ListExercises extends ListRecords
     protected function getButtonName(): string
     {
         return __('fields.exercise.header_btn');
+    }
+
+    protected function getImportedBtn(): bool
+    {
+        return true;
     }
 }

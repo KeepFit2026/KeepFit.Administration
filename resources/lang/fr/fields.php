@@ -5,6 +5,7 @@ return [
     'email' => 'Email',
     'description' => 'Description',
     'role' => 'Role',
+    'created_at' => 'Date de création',
 
     'navigation' => [
         'training' => 'Entrainement'

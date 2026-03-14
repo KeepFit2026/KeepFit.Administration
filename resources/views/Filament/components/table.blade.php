@@ -21,7 +21,11 @@
                     </div>
                 @endif
 
-                <button class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors duration-200 border-0 cursor-pointer text-white">
+                <button
+                    class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors duration-200 border-0 cursor-pointer text-white"
+                    wire:click="mountTableAction('export')"
+                    type="button"
+                >
                     <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
                     <span>Exporter</span>
                 </button>
