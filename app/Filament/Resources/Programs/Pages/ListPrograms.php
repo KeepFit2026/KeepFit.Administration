@@ -5,12 +5,12 @@ namespace App\Filament\Resources\Programs\Pages;
 use App\Filament\Resources\Programs\ProgramResource;
 use App\Traits\HasCreateHeaderBtn;
 use App\Traits\HasRessourceWidget;
-use App\Traits\HasToggle;
+use App\Traits\HasTable;
 use Filament\Resources\Pages\ListRecords;
 
 class ListPrograms extends ListRecords
 {
-    use HasToggle, HasRessourceWidget, HasCreateHeaderBtn;
+    use HasTable, HasRessourceWidget, HasCreateHeaderBtn;
 
     protected static string $resource = ProgramResource::class;
 

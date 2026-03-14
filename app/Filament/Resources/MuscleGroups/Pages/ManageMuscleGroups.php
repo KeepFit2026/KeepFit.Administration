@@ -5,13 +5,14 @@ use App\Filament\Resources\MuscleGroups\MuscleGroupResource;
 use App\Filament\Resources\MuscleGroups\Tables\MuscleGroupsTable;
 use App\Traits\HasCreateHeaderBtn;
 use App\Traits\HasRessourceWidget;
+use App\Traits\HasTable;
 use Filament\Actions\CreateAction;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Tables\Table;
 
 class ManageMuscleGroups extends ManageRecords
 {
-    use HasRessourceWidget, HasCreateHeaderBtn;
+    use HasRessourceWidget, HasCreateHeaderBtn, HasTable;
 
     protected static string $resource = MuscleGroupResource::class;
     protected string $view = 'Filament.pages.livewire.list-page';

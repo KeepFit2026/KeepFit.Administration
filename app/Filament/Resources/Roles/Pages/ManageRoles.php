@@ -5,11 +5,12 @@ namespace App\Filament\Resources\Roles\Pages;
 use App\Filament\Resources\Roles\RolesResource;
 use App\Traits\HasCreateHeaderBtn;
 use App\Traits\HasRessourceWidget;
+use App\Traits\HasTable;
 use Filament\Resources\Pages\ManageRecords;
 
 class ManageRoles extends ManageRecords
 {
-    use HasCreateHeaderBtn, HasRessourceWidget;
+    use HasCreateHeaderBtn, HasRessourceWidget, HasTable;
     protected static string $resource = RolesResource::class;
     protected string $view = 'Filament.pages.livewire.list-page';
 

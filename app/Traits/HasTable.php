@@ -2,8 +2,17 @@
 
 namespace App\Traits;
 
-trait HasToggle
+trait HasTable
 {
+    /**
+     * Définit si le tableau à la possiblité d'exporter les données.
+     * @return boolean
+     */
+    protected function hasExport(): bool
+    {
+        return true;
+    }
+
     /**
      * Méthode custom pour 'toggle' le status du programme (actif/inactif)
      * @param string $uuid Id du programme

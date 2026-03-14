@@ -6,13 +6,14 @@ use App\Filament\Resources\Logins\LoginResource;
 use App\Filament\Resources\Logins\Tables\LoginsTable;
 use App\Traits\HasCreateHeaderBtn;
 use App\Traits\HasRessourceWidget;
+use App\Traits\HasTable;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
 
 class ManageLogins extends ManageRecords
 {
-    use HasCreateHeaderBtn, HasRessourceWidget;
+    use HasCreateHeaderBtn, HasRessourceWidget, HasTable;
 
     protected static string $resource = LoginResource::class;
     protected string $view = 'Filament.pages.livewire.list-page';

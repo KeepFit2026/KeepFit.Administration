@@ -21,14 +21,16 @@
                     </div>
                 @endif
 
-                <button
-                    class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors duration-200 border-0 cursor-pointer text-white"
-                    wire:click="mountTableAction('export')"
-                    type="button"
-                >
-                    <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
-                    <span>Exporter</span>
-                </button>
+                @if($this->hasExport())
+                    <button
+                        class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors duration-200 border-0 cursor-pointer text-white"
+                        wire:click="mountTableAction('export')"
+                        type="button"
+                    >
+                        <x-heroicon-o-arrow-down-tray class="w-4 h-4" />
+                        <span>Exporter</span>
+                    </button>
+                @endif
 
                 @if($this->getTable()->getFilters() && count($this->getTable()->getFilters()) > 0)
                     <button x-data="" x-on:click="$dispatch('open-modal', { id: 'table-filters' })" class="bg-gray-700 hover:bg-gray-600 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 transition-colors duration-200 border-0 cursor-pointer text-white">
@@ -182,41 +184,72 @@
                                 @endif
                             @endforeach
 
-                            {{-- ACTIONS --}}
+                           {{-- ACTIONS --}}
                             <td class="px-6 py-5 align-middle border-0">
                                 <div class="flex gap-2 justify-end">
                                     @php
-                                        $recordKey   = (string) $record->getKey();
-                                        $resource    = $this->getResource();
-                                        $hasEditPage = false;
-                                        try {
-                                            $hasEditPage = $resource::hasPage('edit');
-                                        } catch (\Exception $e) {}
+                                        $recordKey = (string) $record->getKey();
+                                        $actions   = $this->getTable()->getRecordActions();
                                     @endphp
 
-                                    @if($hasEditPage)
-                                        <a
-                                            href="{{ $resource::getUrl('edit', ['record' => $record]) }}"
-                                            class="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white transition-all border-0 cursor-pointer shadow-sm"
-                                        >
-                                            <x-heroicon-o-pencil-square class="w-4 h-4" />
-                                        </a>
-                                    @else
-                                        <button
-                                            wire:click="mountTableAction('edit', {{ Js::from($recordKey) }})"
-                                            class="w-8 h-8 flex items-center justify-center rounded-md bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white transition-all border-0 cursor-pointer shadow-sm"
-                                        >
-                                            <x-heroicon-o-pencil-square class="w-4 h-4" />
-                                        </button>
-                                    @endif
+                                    @foreach($actions as $action)
+                                        @php
+                                            $action->record($record);
+                                            $actionName = $action->getName();
+                                            $tooltip    = $action->getTooltip() ?? $action->getLabel() ?? $actionName;
 
-                                    <button
-                                        wire:click="mountTableAction('delete', {{ Js::from($recordKey) }})"
-                                        wire:confirm="Confirmer la suppression ?"
-                                        class="w-8 h-8 flex items-center justify-center rounded-md bg-red-50 text-red-600 hover:bg-red-600 hover:text-white transition-all border-0 cursor-pointer shadow-sm"
-                                    >
-                                        <x-heroicon-o-trash class="w-4 h-4" />
-                                    </button>
+                                            // Gestion icon : string ou BackedEnum
+                                            $rawIcon = $action->getIcon();
+                                            $icon = match(true) {
+                                                $rawIcon instanceof \BackedEnum => $rawIcon->value,
+                                                is_string($rawIcon)             => $rawIcon,
+                                                default                         => match($actionName) {
+                                                    'edit'     => 'heroicon-o-pencil-square',
+                                                    'delete'   => 'heroicon-o-trash',
+                                                    'download' => 'heroicon-o-arrow-down-tray',
+                                                    'view'     => 'heroicon-o-eye',
+                                                    default    => 'heroicon-o-ellipsis-horizontal',
+                                                },
+                                            };
+
+                                            $rawColor = $action->getColor() ?? 'gray';
+                                            $color = $rawColor instanceof \BackedEnum ? $rawColor->value : (string) $rawColor;
+
+
+                                            $colorClasses = match($color) {
+                                                'danger'  => 'bg-red-50 text-red-600 hover:bg-red-600 hover:text-white',
+                                                'info'    => 'bg-blue-50 text-blue-600 hover:bg-blue-600 hover:text-white',
+                                                'success' => 'bg-emerald-50 text-emerald-600 hover:bg-emerald-600 hover:text-white',
+                                                'warning' => 'bg-orange-50 text-amber-600 hover:bg-amber-600 hover:text-white',
+                                                default   => 'bg-gray-100 text-gray-600 hover:bg-gray-600 hover:text-white',
+                                            };
+
+                                            $url = $action->getUrl();
+                                        @endphp
+
+
+                                        @if($url)
+                                            <a
+                                                href="{{ $url }}"
+                                                title="{{ $tooltip }}"
+                                                x-data
+                                                x-tooltip.raw="{{ $tooltip }}"
+                                                class="w-8 h-8 flex items-center justify-center rounded-md transition-all border-0 shadow-sm"
+                                            >
+                                                <x-dynamic-component :component="$icon" class="w-4 h-4" />
+                                            </a>
+                                        @else
+                                            <button
+                                                wire:click="mountTableAction('{{ $actionName }}', {{ Js::from($recordKey) }})"
+                                                title="{{ $tooltip }}"
+                                                x-data
+                                                x-tooltip.raw="{{ $tooltip }}"
+                                                class="w-8 h-8 flex items-center justify-center rounded-md transition-all border-0 cursor-pointer shadow-sm {{ $colorClasses }}"
+                                            >
+                                                <x-dynamic-component :component="$icon" class="w-4 h-4" />
+                                            </button>
+                                        @endif
+                                    @endforeach
                                 </div>
                             </td>
                         </tr>

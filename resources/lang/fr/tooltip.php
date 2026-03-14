@@ -1,7 +1,8 @@
-<?php 
+<?php
 
 return [
     'edit' => 'modifier',
     'delete' => 'supprimer',
-    'view' => 'voir'
+    'view' => 'voir',
+    'download' => 'Télécharger'
 ]; 

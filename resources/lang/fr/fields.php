@@ -60,6 +60,10 @@ return [
     ],
 
     'export' => [
-        'name' => 'Nom du fichier'
+        'name' => 'Nom du fichier',
+        'resource' => [
+            'name' => 'Ressource',
+            'exercises' => 'Exercice'
+        ]
     ]
 ];

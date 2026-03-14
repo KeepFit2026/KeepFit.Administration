@@ -5,12 +5,13 @@ use App\Filament\Resources\Exercises\ExerciseResource;
 use App\Filament\Resources\Exercises\Tables\ExercisesTable;
 use App\Traits\HasCreateHeaderBtn;
 use App\Traits\HasRessourceWidget;
+use App\Traits\HasTable;
 use Filament\Resources\Pages\ListRecords;
 use Filament\Tables\Table;
 
 class ListExercises extends ListRecords
 {
-    use HasRessourceWidget, HasCreateHeaderBtn;
+    use HasRessourceWidget, HasCreateHeaderBtn, HasTable;
 
     protected static string $resource = ExerciseResource::class;
     protected string $view = 'Filament.pages.livewire.list-page';
