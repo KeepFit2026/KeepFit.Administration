@@ -49,6 +49,10 @@ class AdminPanelProvider extends PanelProvider
             ->widgets([
                 AccountWidget::class,
             ])
+            ->navigationGroups([
+                NavigationGroup::make('Entrainement')
+                    ->collapsed(false)
+            ])
             ->middleware([
                 EncryptCookies::class,
                 AddQueuedCookiesToResponse::class,

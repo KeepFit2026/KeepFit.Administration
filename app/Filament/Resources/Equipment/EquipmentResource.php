@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Equipment;
 
+use App\Filament\Clusters\Training\TrainingCluster;
 use App\Filament\Resources\Equipment\Pages\ManageEquipment;
 use App\Models\Equipment;
 use BackedEnum;
@@ -28,7 +29,6 @@ class EquipmentResource extends Resource
     protected static ?string $navigationLabel = 'Equipements';
 
     protected static ?string $pluralLabel = 'Les equipements';
-
     protected static string|UnitEnum|null $navigationGroup = 'Entrainement';
 
     public static function form(Schema $schema): Schema

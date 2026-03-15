@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Exercises;
 
+use App\Filament\Clusters\Training\TrainingCluster;
 use App\Filament\Resources\Exercises\Pages\CreateExercise;
 use App\Filament\Resources\Exercises\Pages\EditExercise;
 use App\Filament\Resources\Exercises\Pages\ListExercises;
