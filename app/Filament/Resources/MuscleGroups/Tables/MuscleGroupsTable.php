@@ -17,6 +17,10 @@ class MuscleGroupsTable
                 TextColumn::make('name')
                     ->label(__('fields.name'))
                     ->searchable(),
+
+                    TextColumn::make('exercises_count')
+                        ->label(__('fields.muscular_group.exercises_count'))
+                        ->sortable(),
             ])
             ->filters([
 

@@ -23,4 +23,9 @@ class MuscularGroup extends Model
     {
         return $this->hasMany(Exercise::class, 'muscular_group_id');
     }
+
+    public function getExercisesCountAttribute(): int
+    {
+        return $this->exercises()->count();
+    }
 }

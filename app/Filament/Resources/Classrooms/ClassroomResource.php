@@ -47,6 +47,9 @@ class ClassroomResource extends Resource
                 TextColumn::make('name')
                     ->label(__('fields.name'))
                     ->searchable(),
+                TextColumn::make('users_count')
+                    ->label(__('fields.classrooms.user_count'))
+                    ->sortable()
             ])
             ->filters([
                 //

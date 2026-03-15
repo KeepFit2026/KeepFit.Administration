@@ -46,7 +46,12 @@ class DifficultiesResource extends Resource
             ->recordTitleAttribute('name')
             ->columns([
                 TextColumn::make('name')
+                    ->label(__('fields.name'))
                     ->searchable(),
+
+                TextColumn::make('exercises_count')
+                    ->label(__('fields.difficulty.exercises_count'))
+                    ->sortable()
             ])
             ->filters([
                 //

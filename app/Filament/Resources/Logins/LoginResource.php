@@ -3,6 +3,7 @@
 namespace App\Filament\Resources\Logins;
 
 use App\Filament\Resources\Logins\Pages\ManageLogins;
+use App\Filament\Resources\Logins\Pages\UserDetails;
 use App\Filament\Resources\Logins\Schemas\LoginForm;
 use App\Filament\Resources\Logins\Tables\LoginsTable;
 use App\Models\Login as ModelsLogin;
@@ -40,6 +41,7 @@ class LoginResource extends Resource
     {
         return [
             'index' => ManageLogins::route('/'),
+            'view'  => UserDetails::route('/{record}'),
         ];
     }
 }

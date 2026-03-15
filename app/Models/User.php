@@ -23,4 +23,9 @@ class User extends Model
     {
         return $this->belongsTo(Login::class);
     }
+
+    public function classroom(): BelongsTo
+    {
+        return $this->belongsTo(Classroom::class);
+    }
 }

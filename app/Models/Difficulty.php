@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 class Difficulty extends Model
 {
     use HasUuids;
-    
+
     protected $connection = 'pgsql_second';
     protected $table = 'difficulties';
     protected $primaryKey = 'id';
@@ -23,5 +23,10 @@ class Difficulty extends Model
     public function exercices(): HasMany
     {
         return $this->hasMany(Exercise::class, 'difficulty_id');
+    }
+
+    public function getExercisesCountAttribute(): int
+    {
+        return $this->exercices()->count();
     }
 }

@@ -40,7 +40,8 @@ return [
 
     'muscular_group' => [
         'name' => 'Groupe',
-        'header_btn' => 'Créer un nouveau groupe'
+        'header_btn' => 'Créer un nouveau groupe',
+        'exercises_count' => 'Nb Exercices'
     ],
 
     'login' => [
@@ -48,11 +49,13 @@ return [
     ],
 
     'classrooms' => [
-        'header_action' => 'Créer une nouvelle classe'
+        'header_action' => 'Créer une nouvelle classe',
+        'user_count' => 'Nb Etudiant(s)'
     ],
 
     'difficulty' => [
-        'header_action' => 'Créer une nouvelle difficulté'
+        'header_action' => 'Créer une nouvelle difficulté',
+        'exercises_count' => 'Nb Exercices'
     ],
 
     'roles' => [

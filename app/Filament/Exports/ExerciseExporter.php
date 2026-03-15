@@ -17,9 +17,6 @@ class ExerciseExporter extends Exporter
     public static function getColumns(): array
     {
         return [
-            ExportColumn::make('id')
-                ->label('ID'),
-
             ExportColumn::make('name')
                 ->label(__('fields.name')),
 

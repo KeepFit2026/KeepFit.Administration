@@ -2,7 +2,8 @@
 
 namespace App\Filament\Resources\Logins\Tables;
 
-use App\Enum\UserRole;
+use App\Filament\Resources\Logins\LoginResource;
+use Filament\Actions\Action;
 use Filament\Actions\DeleteAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
@@ -40,10 +41,18 @@ class LoginsTable
                 //
             ])
             ->recordActions([
+                self::viewAction(),
                 EditAction::make()->label(''),
                 DeleteAction::make()->label(''),
             ])
             ->toolbarActions([
             ]);
+    }
+
+    protected static function viewAction(): Action
+    {
+        return Action::make('view')
+            ->tooltip(__('tooltip.view'))
+            ->url(fn($record) => LoginResource::getUrl('view', ['record' => $record]));
     }
 }
