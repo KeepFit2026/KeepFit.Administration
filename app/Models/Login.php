@@ -34,7 +34,7 @@ class Login extends Authenticatable implements FilamentUser, HasName
         'email_verified_at'
     ];
 
-    protected $appends = ['username'];
+    protected $appends = ['username', 'role'];
 
     protected $casts = [
         'password' => 'hashed',
@@ -46,6 +46,17 @@ class Login extends Authenticatable implements FilamentUser, HasName
      * @return Attribute
      */
     public function username(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => null
+        );
+    }
+
+     /**
+     * Pour que Login reconnait role meme s'il n'existe pas dans une table (pour LoginExporter)
+     * @return Attribute
+     */
+    public function role(): Attribute
     {
         return Attribute::make(
             get: fn() => null

@@ -19,7 +19,7 @@ class LoginExporter extends Exporter
 
     public static function getEloquentQuery(): Builder
     {
-        return Login::on('pgsql')->query();
+        return Login::on('pgsql')->with('roles')->query();
     }
 
     public static function getColumns(): array
@@ -30,10 +30,14 @@ class LoginExporter extends Exporter
         return [
             ExportColumn::make('email')
                 ->label(__('fields.email')),
-                
+
             ExportColumn::make('username')
                 ->label(__('fields.profile.name'))
                 ->getStateUsing(fn (Login $record): ?string => $users[$record->id] ?? null),
+
+            ExportColumn::make('role')
+                ->label(__('fields.role'))
+                ->getStateUsing(fn (Login $record): ?string => $record->roles->pluck('name')->implode(', ')),
         ];
     }
 
