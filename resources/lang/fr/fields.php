@@ -19,7 +19,9 @@ return [
         'name' => 'Nom de l\'exercice',
         'description' => 'Description',
         'muscle_group' => 'Groupe musculaire',
-        'difficulty' => 'Niveau de difficulté',
+        'difficulty' => 'Niv. de difficulté',
+        'equipment' => 'Equipement',
+        'equipment_count' => 'Nb Equipement possible',
         'sections' => [
             'general' => 'Informations Générales',
             'general_desc' => 'Définissez l\'identité de cet exercice.',
@@ -73,5 +75,9 @@ return [
             'exercises' => 'Exercice',
             'login' => 'Login'
         ]
+    ],
+
+    'equipment' => [
+        'header_btn' => 'Créer un équipement'
     ]
 ];

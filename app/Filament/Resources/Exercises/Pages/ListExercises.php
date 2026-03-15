@@ -36,9 +36,4 @@ class ListExercises extends ListRecords
     {
         return __('fields.exercise.header_btn');
     }
-
-    protected function getImportedBtn(): bool
-    {
-        return true;
-    }
 }

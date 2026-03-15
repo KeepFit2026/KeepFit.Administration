@@ -11,12 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::connection('pgsql_second')->
-        create('exercises', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->foreignUuid('muscular_group_id')->constrained('muscular_groups');
+        Schema::create('exercise_equipments', function (Blueprint $table) {
+            $table->foreignUuid('exercise_id')->constrained('exercises')->cascadeOnDelete();
+            $table->foreignUuid('equipment_id')->constrained('equipments')->cascadeOnDelete();
+            $table->primary(['exercise_id', 'equipment_id']);
             $table->timestamps();
         });
     }
@@ -26,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('exercises');
+        Schema::dropIfExists('exercise_equipments');
     }
 };

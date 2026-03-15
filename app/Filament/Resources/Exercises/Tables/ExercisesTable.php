@@ -2,7 +2,6 @@
 
 namespace App\Filament\Resources\Exercises\Tables;
 
-use App\Enum\Difficulty;
 use App\Filament\Exports\ExerciseExporter;
 use App\Models\Difficulty as ModelsDifficulty;
 use App\Models\MuscularGroup;
@@ -30,7 +29,13 @@ class ExercisesTable
 
                 TextColumn::make('difficulty.name')
                     ->badge()
+                    ->sortable()
                     ->label(__('fields.exercise.difficulty')),
+
+                TextColumn::make('equipments_count')
+                    ->sortable()
+                    ->counts('equipments') // Relation dans le model.
+                    ->label(__('fields.exercise.equipment_count')),
 
             ])
             ->headerActions([

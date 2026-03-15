@@ -4,6 +4,7 @@ namespace App\Filament\Resources\Exercises\Schemas;
 
 use App\Enum\Difficulty;
 use App\Models\Difficulty as ModelsDifficulty;
+use App\Models\Equipment;
 use App\Models\MuscularGroup;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
@@ -49,7 +50,14 @@ class ExerciseForm
                                     ->relationship('difficulty', 'name')
                                     ->options(fn() => ModelsDifficulty::pluck('name', 'id'))
                                     ->required()
-                                    ->label(__('fields.exercise.difficulty'))
+                                    ->label(__('fields.exercise.difficulty')),
+
+                                Select::make('equipments')
+                                    ->relationship('equipments', 'name')
+                                    ->multiple()
+                                    ->preload()
+                                    ->searchable()
+                                    ->label(__('fields.exercise.equipment')),
                             ]),
                     ]),
             ]);
