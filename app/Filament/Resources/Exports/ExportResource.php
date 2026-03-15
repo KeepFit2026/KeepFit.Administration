@@ -2,7 +2,9 @@
 
 namespace App\Filament\Resources\Exports;
 
+use App\Enums\ExporterFilter;
 use App\Filament\Exports\ExerciseExporter;
+use App\Filament\Exports\LoginExporter;
 use App\Filament\Resources\Exports\Pages\ManageExports;
 use BackedEnum;
 use Filament\Actions\Action;
@@ -50,22 +52,20 @@ class ExportResource extends Resource
                     ->label(__('fields.export.name'))
                     ->searchable(),
 
-                TextColumn::make('resource')
+                TextColumn::make('exporter')
                     ->label(__('fields.export.resource.name'))
                     ->formatStateUsing(fn($state)
                         => match($state) {
                             ExerciseExporter::class => __('fields.export.resource.exercises'),
-                            default =>  __('fields.export.resource.exercises'),
+                            LoginExporter::class => __('fields.export.resource.login'),
+                            default => "Valeur inconnue : " . $state,
                         })
                     ->badge()
                     ->color('info')
             ])
             ->filters([
                 SelectFilter::make(__('filters.resource'))
-                    ->options([
-                        ExerciseExporter::class => 'Exercice',
-                        // Autre plus tard
-                        ])
+                    ->options(ExporterFilter::class)
                     ->query(fn($query, $data) => $data['value']
                         ? $query->where('exporter', $data['value'])
                         : $query

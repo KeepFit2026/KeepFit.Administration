@@ -2,11 +2,13 @@
 
 namespace App\Filament\Resources\Logins\Pages;
 
+use App\Filament\Exports\LoginExporter;
 use App\Filament\Resources\Logins\LoginResource;
 use App\Filament\Resources\Logins\Tables\LoginsTable;
 use App\Traits\HasCreateHeaderBtn;
 use App\Traits\HasRessourceWidget;
 use App\Traits\HasTable;
+use Filament\Actions\ExportAction;
 use Filament\Resources\Pages\ManageRecords;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Model;
@@ -20,7 +22,12 @@ class ManageLogins extends ManageRecords
 
     public function table(Table $table): Table
     {
-        return LoginsTable::configure($table);
+        return LoginsTable::configure($table)
+             ->headerActions([
+                ...$this->getTableExtraActions(),
+                ExportAction::make()
+                    ->exporter(LoginExporter::class)
+        ]);
     }
 
     protected function getButtonName(): string

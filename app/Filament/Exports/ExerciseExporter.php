@@ -3,15 +3,17 @@
 namespace App\Filament\Exports;
 
 use App\Models\Exercise;
+use App\Traits\HasExport;
 use Filament\Actions\Exports\ExportColumn;
 use Filament\Actions\Exports\Exporter;
 use Filament\Actions\Exports\Models\Export;
-use Filament\Forms\Components\TextInput;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Number;
 
 class ExerciseExporter extends Exporter
 {
+    use HasExport;
+
     protected static ?string $model = Exercise::class;
 
     public static function getColumns(): array
@@ -45,33 +47,8 @@ class ExerciseExporter extends Exporter
         return $body;
     }
 
-    public static function getPolymorphicPrefix(): string
-    {
-        return 'export';
-    }
-
     public function getOwner(): ?\Illuminate\Contracts\Auth\Authenticatable
     {
         return Auth::user();
-    }
-
-    public function getFileDisk(): string
-    {
-        return 'public';
-    }
-
-    public static function getOptionsFormComponents(): array
-    {
-        return [
-            TextInput::make('fileName')
-                ->label('Nom du fichier')
-                ->placeholder('exercices-export')
-                ->required(),
-        ];
-    }
-
-    public function getFileName(Export $export): string
-    {
-        return $this->options['fileName'] ?? 'exercices-' . now()->format('Y-m-d');
     }
 }

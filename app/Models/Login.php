@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Filament\Models\Contracts\FilamentUser;
 use Filament\Models\Contracts\HasName;
 use Filament\Panel;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
 use Spatie\Permission\Traits\HasRoles;
 
@@ -32,14 +34,27 @@ class Login extends Authenticatable implements FilamentUser, HasName
         'email_verified_at'
     ];
 
+    protected $appends = ['username'];
+
     protected $casts = [
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
 
-    public function user(): BelongsTo
+    /**
+     * Pour que Login reconnait username meme s'il n'existe pas dans une table (pour LoginExporter)
+     * @return Attribute
+     */
+    public function username(): Attribute
     {
-        return $this->belongsTo(User::class, 'account_id');
+        return Attribute::make(
+            get: fn() => null
+        );
+    }
+
+    public function user(): HasOne
+    {
+        return $this->hasOne(User::class, 'account_id');
     }
 
     public function canAccessPanel(Panel $panel): bool

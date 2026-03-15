@@ -7,6 +7,10 @@ return [
     'role' => 'Role',
     'created_at' => 'Date de création',
 
+    'profile' => [
+        'name' => "Nom de l'utilisateur",
+    ],
+
     'navigation' => [
         'training' => 'Entrainement'
     ],
@@ -66,7 +70,8 @@ return [
         'name' => 'Nom du fichier',
         'resource' => [
             'name' => 'Ressource',
-            'exercises' => 'Exercice'
+            'exercises' => 'Exercice',
+            'login' => 'Login'
         ]
     ]
 ];
