@@ -81,6 +81,11 @@ trait HasCreateHeaderBtn
         return false;
     }
 
+    protected function afterImport(): void
+    {
+        $this->resetTable();
+    }
+
     /**
      * Créer un mot de passe aléatoire
      * @return string Le mot de passe

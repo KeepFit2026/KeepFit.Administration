@@ -51,4 +51,9 @@ class ManageLogins extends ManageRecords
             $record->assignRole($data['roles']);
         }
     }
+
+    protected function getImportedBtn(): bool
+    {
+        return true;
+    }
 }
