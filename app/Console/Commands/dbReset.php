@@ -31,7 +31,10 @@ class dbReset extends Command
         $this->warn('Migration de la Base 1...');
         $this->call('migrate:fresh', [
             '--database' => 'pgsql',
-            '--path'     => 'database/migrations/base1',
+            '--path'     => [
+                'database/migrations/base1',
+                'database/migrations',
+            ]
         ]);
 
         // 2. Fresh & Migrate pour la Base 2

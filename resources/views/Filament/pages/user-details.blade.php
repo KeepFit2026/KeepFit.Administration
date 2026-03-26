@@ -1,5 +1,5 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
- <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
 {{-- Force light mode indépendamment de Filament --}}
 <div class="light" style="color-scheme:light;">
@@ -22,7 +22,7 @@
                 <div>
                     <div class="flex items-center gap-2.5 flex-wrap">
                         <h1 class="text-[22px] font-black text-gray-900 m-0 tracking-tight">
-                            {{ $record->name ?? 'Utilisateur' }}
+                            {{ $record->user->name ?? 'Utilisateur' }}
                         </h1>
                         @if($record->login && $record->login->roles->isNotEmpty())
                             @foreach($record->login->roles as $role)

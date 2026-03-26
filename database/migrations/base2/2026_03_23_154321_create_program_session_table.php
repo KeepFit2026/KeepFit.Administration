@@ -11,11 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('programs', function (Blueprint $table) {
-            $table->uuid('id')->primary();
-            $table->string('name');
-            $table->text('description')->nullable();
-            $table->boolean('is_active')->default(true);
+        Schema::create('program_session', function (Blueprint $table) {
+            $table->foreignUuid('program_id')->constrained('programs')->cascadeOnDelete();
+            $table->foreignUuid('session_id')->constrained('sessions')->cascadeOnDelete();
+            $table->primary(['program_id', 'session_id']);
             $table->timestamps();
         });
     }
@@ -25,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('programs');
+        Schema::dropIfExists('program_session');
     }
 };
