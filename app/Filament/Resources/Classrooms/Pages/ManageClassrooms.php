@@ -30,4 +30,9 @@ class ManageClassrooms extends ManageRecords
     {
         return 'emerald';
     }
+
+    protected function getImportedBtn(): bool
+    {
+        return true;
+    }
 }

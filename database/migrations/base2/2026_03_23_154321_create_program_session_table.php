@@ -11,10 +11,17 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('program_session', function (Blueprint $table) {
+        Schema::create('program_sessions', function (Blueprint $table) {
             $table->foreignUuid('program_id')->constrained('programs')->cascadeOnDelete();
             $table->foreignUuid('session_id')->constrained('sessions')->cascadeOnDelete();
             $table->primary(['program_id', 'session_id']);
+            $table->timestamps();
+        });
+
+        Schema::create('exercise_sessions', function (Blueprint $table) {
+            $table->foreignUuid('exercise_id')->constrained('exercises')->cascadeOnDelete();
+            $table->foreignUuid('session_id')->constrained('sessions')->cascadeOnDelete();
+            $table->primary(['exercise_id', 'session_id']);
             $table->timestamps();
         });
     }

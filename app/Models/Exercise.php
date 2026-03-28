@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\Activitylog\LogOptions;
 use Spatie\Activitylog\Traits\LogsActivity;
 
@@ -34,6 +35,11 @@ class Exercise extends Model
     public function difficulty(): BelongsTo
     {
         return $this->belongsTo(Difficulty::class, 'difficulty_id');
+    }
+
+    public function sessions(): BelongsToMany
+    {
+        return $this->belongsToMany(Session::class, 'exercise_sessions');
     }
 
     public function equipments(): BelongsToMany

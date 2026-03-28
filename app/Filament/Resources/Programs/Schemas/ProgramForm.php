@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Programs\Schemas;
 
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Toggle;
@@ -37,7 +38,14 @@ class ProgramForm
                         Grid::make(2)
                             ->schema([
                                Toggle::make('is_active')
-                                    ->label(__('fields.programs.sections.isActive'))
+                                    ->label(__('fields.programs.sections.isActive')),
+
+                                Select::make('sessions')
+                                    ->relationship('sessions', 'name')
+                                    ->multiple()
+                                    ->preload()
+                                    ->searchable()
+                                    ->label(__('fields.sessions.programs_name')),
                             ]),
                     ]),
             ]);
