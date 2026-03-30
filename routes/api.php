@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +19,8 @@ Route::get('docs/{jsonFile?}', function ($jsonFile = null) {
 })->name('l5-swagger.default.docs');
 
 Route::get('/admin/pdf/{id}', [UserController::class, 'generateUserPdf']);
+
+/**
+ * Authentification
+ */
+Route::post('/login', [AuthController::class, 'login'])->name('post.login');
