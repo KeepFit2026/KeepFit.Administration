@@ -16,7 +16,15 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            $redirect = $user->roles->contains('name', 'admin') ? env('APP_URL') . '/admin' : env('FRONTEND_URL') . '/dashboard';
+            if($user->roles->contains('name', 'admin')) {
+                $redirect = env('APP_URL') . '/admin';
+
+            } else {
+                $redirect = $user->onboarding_completed || $user->roles->contains('name', 'teacher')
+                    ? env('FRONTEND_URL') . '/dashboard'
+                    : env('FRONTEND_URL') . '/onboarding'; //si l'utilisateur à le role 'user'
+            }
+
 
             return response()->json([
                 'message'   => 'Login réussi',

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\UserController;
 use App\Http\Resources\UserResource;
 use App\Models\Login;
@@ -31,16 +32,13 @@ Route::controller(AuthController::class)->middleware(['web'])->group(function() 
     Route::post('/logout', 'logout')->name('logout');
 });
 
-Route::middleware(['auth:sanctum', 'web'])->get('/user', function (Request $request) {
-    return response()->json(new UserResource($request->user()));
-});
+Route::middleware(['auth:sanctum', 'web'])->group(function() {
 
-Route::get('/profile-tempo', function() {
-    $login = Login::with('user', 'roles')->skip(1)->first();
+    //Onboarding
+    Route::post('/onboarding', [OnboardingController::class, 'store']);
 
-    return response()->json([
-        'login' => $login,
-        'roles' => $login->roles->pluck('name'),
-        'user' => $login->user,
-    ]);
+    //Current user
+    Route::get('/user', function (Request $request) {
+        return response()->json(new UserResource($request->user()));
+    });
 });

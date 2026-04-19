@@ -16,6 +16,12 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('name');
             $table->uuid('account_id');
+
+            $table->string('school')->nullable()->comment('Établissement scolaire');
+            $table->string('grade')->nullable()->comment('Niveau ou classe');
+            $table->string('sports_profile')->nullable()->comment('eps_only, unss, club, section');
+            $table->string('primary_goal')->nullable()->comment('exam, competition, decompress, discovery');
+
             $table->timestamps();
         });
     }

@@ -19,6 +19,7 @@ class LoginFactory extends Factory
         return [
             'email' => 'root@gmail.com',
             'password' => bcrypt('password'),
+            'onboarding_completed' => true
         ];
     }
 }

@@ -5,10 +5,8 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
-use Spatie\Permission\Models\Role;
 
 class User extends Model
 {
@@ -19,8 +17,12 @@ class User extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
-        'name',
         'account_id',
+        'name',
+        'school',
+        'grade',
+        'sports_profile',
+        'primary_goal',
     ];
 
     public function login(): BelongsTo
