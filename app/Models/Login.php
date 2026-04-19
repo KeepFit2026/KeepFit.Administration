@@ -81,7 +81,7 @@ class Login extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return $this->hasRole('admin');
     }
 
     public function getFilamentName(): string

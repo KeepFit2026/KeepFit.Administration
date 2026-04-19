@@ -2,6 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\UserController;
+use App\Http\Resources\UserResource;
+use App\Models\Login;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -23,4 +26,21 @@ Route::get('/admin/pdf/{id}', [UserController::class, 'generateUserPdf']);
 /**
  * Authentification
  */
-Route::post('/login', [AuthController::class, 'login'])->name('post.login');
+Route::controller(AuthController::class)->middleware(['web'])->group(function() {
+    Route::post('/login', 'login')->name('post.login');
+    Route::post('/logout', 'logout')->name('logout');
+});
+
+Route::middleware(['auth:sanctum', 'web'])->get('/user', function (Request $request) {
+    return response()->json(new UserResource($request->user()));
+});
+
+Route::get('/profile-tempo', function() {
+    $login = Login::with('user', 'roles')->skip(1)->first();
+
+    return response()->json([
+        'login' => $login,
+        'roles' => $login->roles->pluck('name'),
+        'user' => $login->user,
+    ]);
+});

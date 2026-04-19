@@ -16,16 +16,8 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi(); // Active le support SPA (comme Next.js)
 
-        $middleware->validateCsrfTokens(except: [
-            '/api/login'
-        ]);
-
         $middleware->api(prepend: [
             HandleCors::class, //
-        ]);
-
-        $middleware->encryptCookies(except: [
-            'XSRF-TOKEN'
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
