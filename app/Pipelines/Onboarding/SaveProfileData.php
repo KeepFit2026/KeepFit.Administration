@@ -14,7 +14,6 @@ class SaveProfileData
             User::updateOrCreate(
                 ['account_id' => $data['user']->id], // Condition de recherche
                 [
-                    'name'           => $data['user']->name ?? 'Élève',
                     'school'         => $data['request']['school'],
                     'grade'          => $data['request']['grade'],
                     'sports_profile' => $data['request']['sports_profile'],
