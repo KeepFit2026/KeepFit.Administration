@@ -23,6 +23,8 @@ class User extends Model
         'grade',
         'sports_profile',
         'primary_goal',
+        'current_level',
+        'current_xp'
     ];
 
     public function login(): BelongsTo

@@ -1,15 +1,30 @@
 <?php
 namespace Database\Seeders;
+
+use App\Models\Level;
 use App\Models\Login;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
+use Str;
 
 class DatabaseSeeder extends Seeder
 {
     public function run(): void
     {
+        $currentXp = 50;
+
+        for ($i = 1; $i <= 20; $i++) {
+            Level::create([
+                'id'          => Str::uuid(),
+                'number'      => $i,
+                'required_xp' => $currentXp,
+            ]);
+
+            $currentXp += ($i * 100);
+        }
+
         $adminRole   = Role::firstOrCreate(['name' => 'admin']);
         $teacherRole = Role::firstOrCreate(['name' => 'teacher']);
         $userRole    = Role::firstOrCreate(['name' => 'user']);

@@ -17,6 +17,11 @@ return new class extends Migration
             $table->string('name');
             $table->uuid('account_id');
 
+            //Gamification
+            $table->integer('current_xp')->default(0);
+            $table->integer('current_level')->default(0);
+
+            //Onboarding
             $table->string('school')->nullable()->comment('Établissement scolaire');
             $table->string('grade')->nullable()->comment('Niveau ou classe');
             $table->string('sports_profile')->nullable()->comment('eps_only, unss, club, section');
