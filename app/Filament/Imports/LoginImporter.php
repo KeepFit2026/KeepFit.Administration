@@ -9,7 +9,6 @@ use Filament\Actions\Imports\ImportColumn;
 use Filament\Actions\Imports\Importer;
 use Filament\Actions\Imports\Models\Import;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Number;
 use Str;
 
@@ -31,6 +30,7 @@ class LoginImporter extends Importer
 
             ImportColumn::make('role')
                 ->fillRecordUsing(function() {})
+                ->guess(['Role', 'role', 'Rôle', 'rôle'])
                 ->label(__('fields.role')),
         ];
     }

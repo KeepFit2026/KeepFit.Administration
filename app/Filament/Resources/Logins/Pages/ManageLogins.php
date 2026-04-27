@@ -35,6 +35,19 @@ class ManageLogins extends ManageRecords
         return __('fields.login.header_action');
     }
 
+    protected function afterCreateHook(Model $record, array $data): void
+    {
+        if(isset($data['roles']) && !empty($data['roles'])) {
+            $record->assignRole($data['roles']);
+        }
+
+        if(isset($data['user'])) {
+            $record->user()->create([
+                'name' => $data['user'],
+            ]);
+        }
+    }
+
     protected function getStatIcon(): string
     {
         return 'bi-lightnig-charge';
@@ -45,12 +58,6 @@ class ManageLogins extends ManageRecords
         return 'emerald';
     }
 
-    protected function afterCreateHook(Model $record, array $data): void
-    {
-        if(isset($data['roles']) && !empty($data['roles'])) {
-            $record->assignRole($data['roles']);
-        }
-    }
 
     protected function getImportedBtn(): bool
     {

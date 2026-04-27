@@ -6,10 +6,8 @@ use App\Models\Login;
 use Filament\Actions\CreateAction;
 use Filament\Actions\ExportAction;
 use Filament\Actions\ImportAction;
-use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Hash;
-use Str;
 
 trait HasCreateHeaderBtn
 {
@@ -52,14 +50,14 @@ trait HasCreateHeaderBtn
     /**
      * Actions pour le Header du Tableau (Import / Export)
      * À appeler dans ton fichier Table
-     */
+    */
     public function getTableExtraActions(): array
     {
         $actions = [];
         $modelName = class_basename(static::getModel());
 
         // Bouton d'export (Toujours présent si tu le souhaites)
-        $actions[] = ExportAction::make('export') // L'ID doit être 'export' pour ton Blade
+        $actions[] = ExportAction::make('export') // L'ID doit être 'export'
             ->exporter("App\\Filament\\Exports\\{$modelName}Exporter")
             ->authGuard('web')
             ->label('Exporter');
@@ -92,7 +90,7 @@ trait HasCreateHeaderBtn
      */
     private function generatePassword(array $data, ?int $lenght = 8): array
     {
-        $data['password'] = Hash::make(Str::random($lenght));
+        $data['password'] = Hash::make('password');
         return $data;
     }
 

@@ -19,6 +19,9 @@ class ProgramsTable
                     ->searchable(),
                 ToggleColumn::make('is_active')
                     ->label(__('fields.programs.isActive')),
+
+                TextColumn::make('sessions_count')
+                    ->label(__('fields.programs.sessions_count'))
             ])
             ->filters([
                 //

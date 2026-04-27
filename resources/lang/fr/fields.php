@@ -15,6 +15,13 @@ return [
         'training' => 'Entrainement'
     ],
 
+    'sessions' => [
+        'header_btn' => 'Créer une Séance',
+        'difficulty' => 'Difficulté',
+        'exercises_name' => 'Ajouter un exercice',
+        'programs_name' => 'Ajouter une ou des séance(s) au programme'
+    ],
+
     'exercise' => [
         'name' => 'Nom de l\'exercice',
         'description' => 'Description',
@@ -36,7 +43,8 @@ return [
         'description' => 'Description du programme',
         'isActive' => 'Actif',
         'header_action' => 'Créer un programme',
-         'sections' => [
+        'sessions_count' => 'Nb séance(s)',
+        'sections' => [
             'general' => 'Informations Générales',
             'general_desc' => 'Définissez l\'identité de ce programme.',
             'settings' => 'Détails',

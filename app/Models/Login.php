@@ -11,11 +11,13 @@ use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Activitylog\LogOptions;
+use Spatie\Activitylog\Traits\LogsActivity;
 use Spatie\Permission\Traits\HasRoles;
 
 class Login extends Authenticatable implements FilamentUser, HasName
 {
-    use HasFactory, HasUuids, HasRoles, Notifiable;
+    use HasFactory, HasUuids, HasRoles, Notifiable, LogsActivity;
 
     protected $connection = 'pgsql';
     protected $table = 'login';
@@ -30,7 +32,8 @@ class Login extends Authenticatable implements FilamentUser, HasName
         'id',
         'email',
         'password',
-        'email_verified_at'
+        'email_verified_at',
+        'onboarding_completed'
     ];
 
     protected $appends = ['username', 'role'];
@@ -39,6 +42,14 @@ class Login extends Authenticatable implements FilamentUser, HasName
         'password' => 'hashed',
         'email_verified_at' => 'datetime',
     ];
+
+    public function getActivitylogOptions(): LogOptions
+    {
+        return LogOptions::defaults()
+            ->logOnly(['email']) // colonnes à surveiller
+            ->logOnlyDirty()     // log uniquement ce qui change
+            ->dontSubmitEmptyLogs();
+    }
 
     /**
      * Pour que Login reconnait username meme s'il n'existe pas dans une table (pour LoginExporter)
@@ -69,7 +80,7 @@ class Login extends Authenticatable implements FilamentUser, HasName
 
     public function canAccessPanel(Panel $panel): bool
     {
-        return true;
+        return $this->hasRole('admin');
     }
 
     public function getFilamentName(): string

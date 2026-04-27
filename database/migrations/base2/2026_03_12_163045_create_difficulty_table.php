@@ -2,7 +2,9 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -16,6 +18,13 @@ return new class extends Migration
             $table->string('name');
             $table->timestamps();
         });
+
+        // Valeur par défaut dans la table difficulties
+        DB::table('difficulties')->insert([
+            ['id' => Str::uuid(), 'name' => 'Débutant', 'created_at' => now(), 'updated_at' => now()],
+            ['id' => Str::uuid(), 'name' => 'Intermédiaire', 'created_at' => now(), 'updated_at' => now()],
+            ['id' => Str::uuid(), 'name' => 'Expert', 'created_at' => now(), 'updated_at' => now()],
+        ]);
 
         Schema::table('exercises', function(Blueprint $table) {
             $table->foreignUuid('difficulty_id')->constrained('difficulties');

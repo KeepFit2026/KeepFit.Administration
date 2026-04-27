@@ -25,6 +25,11 @@ class Difficulty extends Model
         return $this->hasMany(Exercise::class, 'difficulty_id');
     }
 
+    public function sessions(): HasMany
+    {
+        return $this->hasMany(Session::class, 'difficulty_id');
+    }
+
     public function getExercisesCountAttribute(): int
     {
         return $this->exercices()->count();

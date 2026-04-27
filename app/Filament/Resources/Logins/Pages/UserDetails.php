@@ -7,7 +7,6 @@ use App\Models\User;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
-use Illuminate\Support\Facades\Log;
 
 class UserDetails extends ViewRecord
 {
@@ -35,7 +34,6 @@ class UserDetails extends ViewRecord
 
     public function generateUserPdf()
     {
-        Log::info('oui');
         $user = User::where('account_id', $this->record->id)->first();
         $pdf = Pdf::loadView('filament.pages.user-pdf', [
             'record' => $this->record,

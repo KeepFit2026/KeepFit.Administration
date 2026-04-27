@@ -2,7 +2,7 @@
 
 namespace App\Providers\Filament;
 
-use App\Filament\Pages\Auth\LoginPage;
+use App\Http\Middleware\FilamentAuth;
 use Filament\Http\Middleware\Authenticate;
 use Filament\Http\Middleware\AuthenticateSession;
 use Filament\Http\Middleware\DisableBladeIconComponents;
@@ -29,7 +29,6 @@ class AdminPanelProvider extends PanelProvider
             ->id('admin')
             ->globalSearch(false)
             ->path('admin')
-            ->login(LoginPage::class)
             ->brandName(config('app.name'))
             ->viteTheme('resources/css/filament/admin/theme.css')
             ->colors([
@@ -65,7 +64,7 @@ class AdminPanelProvider extends PanelProvider
                 DispatchServingFilamentEvent::class,
             ])
             ->authMiddleware([
-                Authenticate::class,
+                FilamentAuth::class,
             ]);
     }
 }

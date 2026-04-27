@@ -19,7 +19,12 @@ class LoginForm
                 Select::make('roles')
                     ->label(__('fields.role'))
                     ->relationship('roles', 'name')
-                    ->required()
+                    ->required(),
+
+                TextInput::make('user')
+                    ->label("Nom de l'utilidsateur")
+                    ->required(),
+
             ]);
     }
 }

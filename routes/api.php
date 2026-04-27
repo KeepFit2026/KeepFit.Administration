@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,3 +20,22 @@ Route::get('docs/{jsonFile?}', function ($jsonFile = null) {
 })->name('l5-swagger.default.docs');
 
 Route::get('/admin/pdf/{id}', [UserController::class, 'generateUserPdf']);
+
+/**
+ * Authentification
+ */
+Route::controller(AuthController::class)->middleware(['web'])->group(function() {
+    Route::post('/login', 'login')->name('post.login');
+    Route::post('/logout', 'logout')->name('logout');
+});
+
+Route::middleware(['auth:sanctum', 'web'])->group(function() {
+
+    //Onboarding
+    Route::post('/onboarding', [OnboardingController::class, 'store']);
+
+    Route::controller(UserController::class)->group(function() {
+        Route::get('/user', 'user');
+        Route::get('/addXp', 'addXp');
+    });
+});
