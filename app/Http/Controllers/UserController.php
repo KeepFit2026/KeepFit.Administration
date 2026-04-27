@@ -43,7 +43,7 @@ class UserController extends Controller
      * @param integer|null $nbXp Nombre d'xp pour l'utilisateur
      * @return void
      */
-    public function addXp(?int $nbXp = 10)
+    public function addXp(?int $nbXp = 100)
     {
         return $this->service->addXp($nbXp);
     }

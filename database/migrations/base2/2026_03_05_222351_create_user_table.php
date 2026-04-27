@@ -19,7 +19,7 @@ return new class extends Migration
 
             //Gamification
             $table->integer('current_xp')->default(0);
-            $table->integer('current_level')->default(1);
+            $table->integer('current_level')->default(0);
 
             //Onboarding
             $table->string('school')->nullable()->comment('Établissement scolaire');

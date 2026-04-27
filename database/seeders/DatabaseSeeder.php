@@ -11,18 +11,20 @@ use Str;
 
 class DatabaseSeeder extends Seeder
 {
+    private function calculateRequiredXp(int $level): int
+    {
+        $baseXp = 100;
+        return (int) round($baseXp * pow($level, 1.5));
+    }
+
     public function run(): void
     {
-        $currentXp = 50;
-
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 3; $i++) {
             Level::create([
                 'id'          => Str::uuid(),
                 'number'      => $i,
-                'required_xp' => $currentXp,
+                'required_xp' => $this->calculateRequiredXp($i),
             ]);
-
-            $currentXp += ($i * 100);
         }
 
         $adminRole   = Role::firstOrCreate(['name' => 'admin']);
