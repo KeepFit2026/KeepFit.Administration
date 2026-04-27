@@ -3,9 +3,6 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\UserController;
-use App\Http\Resources\UserResource;
-use App\Models\Login;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /**
@@ -37,8 +34,8 @@ Route::middleware(['auth:sanctum', 'web'])->group(function() {
     //Onboarding
     Route::post('/onboarding', [OnboardingController::class, 'store']);
 
-    //Current user
-    Route::get('/user', function (Request $request) {
-        return response()->json(new UserResource($request->user()));
+    Route::controller(UserController::class)->group(function() {
+        Route::get('/user', 'user');
+        Route::get('/addXp', 'addXp');
     });
 });
