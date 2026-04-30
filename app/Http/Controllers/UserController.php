@@ -11,7 +11,8 @@ use Illuminate\Http\Request;
 class UserController extends Controller
 {
 
-    public function __construct(private UserService $service) {}
+    public function __construct(private UserService $service ) {}
+
     /**
      * Genère un PDF sur un utilisateur (avec la table 'Profile' et 'Login')
      * @param string $uuid Id de l'utilisateur
@@ -30,7 +31,6 @@ class UserController extends Controller
 
     /**
      * Récupère l'utilisateur connecté
-     * @param Request $request
      * @return void
      */
     public function user()
@@ -40,11 +40,11 @@ class UserController extends Controller
 
     /**
      * Ajoute de l'xp à l'utilisateur
-     * @param integer|null $nbXp Nombre d'xp pour l'utilisateur
-     * @return void
+     * @param Request $request récupère le nombre d'xp
      */
-    public function addXp(?int $nbXp = 100)
+    public function addXp(Request $request)
     {
+        $nbXp = $request->input('nbXp', 10);
         return $this->service->addXp($nbXp);
     }
 }

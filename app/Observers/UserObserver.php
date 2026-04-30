@@ -4,9 +4,14 @@ namespace App\Observers;
 
 use App\Models\Level;
 use App\Models\User;
+use App\Services\UserService;
 
 class UserObserver
 {
+    public function __construct(private UserService $service)
+    {
+
+    }
     /**
      * Handle the User "created" event.
      */
@@ -21,22 +26,19 @@ class UserObserver
     public function updated(User $user): void
     {
         if($user->wasChanged('current_level')) {
-            $next_level_number = $user->current_level + 1; // On récup le niveau suivant.
 
-            //Si le prochain niveau n'existe pas encore
-            if(!(Level::where('number', $next_level_number))->exists()) {
+            $current_level_number = $user->level?->number ?? 0;
+            $next_level_number = $current_level_number + 2;
+
+            // Si le prochain niveau n'existe pas encore en base
+            if(!Level::where('number', $next_level_number)->exists()) {
                 Level::create([
+                    'id'          => (string) \Str::uuid(),
                     'number'      => $next_level_number,
-                    'required_xp' => $this->calculateRequiredXp($next_level_number)
+                    'required_xp' => $this->service->calculateRequiredXp($next_level_number)
                 ]);
             }
         }
-    }
-
-    private function calculateRequiredXp(int $level): int
-    {
-        $baseXp = 100;
-        return (int) round($baseXp * pow($level, 1.5));
     }
 
     /**

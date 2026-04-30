@@ -36,6 +36,6 @@ Route::middleware(['auth:sanctum', 'web'])->group(function() {
 
     Route::controller(UserController::class)->group(function() {
         Route::get('/user', 'user');
-        Route::get('/addXp', 'addXp');
+        Route::post('/addXp', 'addXp');
     });
 });

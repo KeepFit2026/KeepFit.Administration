@@ -12,6 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
+        Schema::create('levels', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->integer('number');
+            $table->integer('required_xp');
+            $table->timestamps();
+        });
+
         Schema::connection('pgsql_second')->create('users', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('name');
@@ -19,7 +26,7 @@ return new class extends Migration
 
             //Gamification
             $table->integer('current_xp')->default(0);
-            $table->integer('current_level')->default(0);
+            $table->foreignUuid('current_level')->constrained('levels');
 
             //Onboarding
             $table->string('school')->nullable()->comment('Établissement scolaire');

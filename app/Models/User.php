@@ -39,4 +39,9 @@ class User extends Model
     {
         return $this->belongsTo(Classroom::class);
     }
+
+    public function level(): BelongsTo
+    {
+        return $this->belongsTo(Level::class, 'current_level');
+    }
 }

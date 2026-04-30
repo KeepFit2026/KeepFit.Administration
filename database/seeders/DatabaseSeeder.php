@@ -4,6 +4,7 @@ namespace Database\Seeders;
 use App\Models\Level;
 use App\Models\Login;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Role;
@@ -11,27 +12,32 @@ use Str;
 
 class DatabaseSeeder extends Seeder
 {
-    private function calculateRequiredXp(int $level): int
+    public function __construct(private UserService $service)
     {
-        $baseXp = 100;
-        return (int) round($baseXp * pow($level, 1.5));
     }
 
     public function run(): void
     {
+        Level::create([
+            'id'          => Str::uuid(),
+            'number'      => 0,
+            'required_xp' => 0,
+        ]);
+
         for ($i = 1; $i <= 3; $i++) {
             Level::create([
                 'id'          => Str::uuid(),
                 'number'      => $i,
-                'required_xp' => $this->calculateRequiredXp($i),
+                'required_xp' => $this->service->calculateRequiredXp($i),
             ]);
         }
+
+        $defaultLevel = Level::where('number', 0)->first();
 
         $adminRole   = Role::firstOrCreate(['name' => 'admin']);
         $teacherRole = Role::firstOrCreate(['name' => 'teacher']);
         $userRole    = Role::firstOrCreate(['name' => 'user']);
 
-        // Admin
         $admin = Login::factory()->create([
             'email'    => 'admin@keepfit.fr',
             'password' => Hash::make('password'),
@@ -43,12 +49,12 @@ class DatabaseSeeder extends Seeder
             'password' => Hash::make('password'),
             'onboarding_completed' => true,
         ]);
-
         $prof->assignRole($teacherRole);
 
         User::on('pgsql_second')->create([
-            'account_id' => $prof->id,
-            'name'       => 'Mme Martin',
+            'account_id'    => $prof->id,
+            'name'          => 'Mme Martin',
+            'current_level' => $defaultLevel->id,
         ]);
 
         $eleves = [
@@ -66,8 +72,9 @@ class DatabaseSeeder extends Seeder
 
             $login->assignRole($userRole);
             User::on('pgsql_second')->create([
-                'account_id' => $login->id,
-                'name'       => $eleve['name'],
+                'account_id'    => $login->id,
+                'name'          => $eleve['name'],
+                'current_level' => $defaultLevel->id,
             ]);
         }
     }
