@@ -34,4 +34,14 @@ class Difficulty extends Model
     {
         return $this->exercices()->count();
     }
+
+    public function quizzes(): HasMany
+    {
+        return $this->hasMany(Quizz::class);
+    }
+
+    public function questions(): HasMany
+    {
+        return $this->hasMany(Question::class);
+    }
 }

@@ -18,6 +18,11 @@ class DatabaseSeeder extends Seeder
 
     public function run(): void
     {
+        $this->call([
+            DifficultySeeder::class,
+            SportQuizSeeder::class
+        ]);
+
         Level::create([
             'id'          => Str::uuid(),
             'number'      => 0,

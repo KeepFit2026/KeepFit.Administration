@@ -52,5 +52,4 @@ class UserService
         $baseXp = 100;
         return (int) round($baseXp * pow($level, 1.5));
     }
-
 }

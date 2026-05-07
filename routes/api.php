@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\OnboardingController;
+use App\Http\Controllers\QuizzController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -38,4 +39,8 @@ Route::middleware(['auth:sanctum', 'web'])->group(function() {
         Route::get('/user', 'user');
         Route::post('/addXp', 'addXp');
     });
+});
+
+Route::controller(QuizzController::class)->prefix('/quizz')->group(function() {
+    Route::get('/today', 'showToday');
 });
