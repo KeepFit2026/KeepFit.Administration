@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->foreignUuid('difficulty_id')->constrained('difficulties');
             $table->boolean('is_published')->default(false);
+            $table->integer('xp_reward')->default(10);
             $table->timestamps();
         });
 

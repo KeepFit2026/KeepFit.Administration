@@ -3,13 +3,12 @@
 namespace App\Services;
 
 use App\Contracts\IQuizzService;
-use App\Http\Resources\DailyQuizzResource;
 use App\Models\DailyQuizz;
 use Carbon\Carbon;
 
 class QuizzService implements IQuizzService
 {
-    public function getDailyQuizz(): ?DailyQuizzResource
+    public function getDailyQuizz()
     {
         // On charge toutes les relations du quizz.
         $quizz = DailyQuizz::with([
@@ -20,10 +19,26 @@ class QuizzService implements IQuizzService
         ->whereDate('scheduled_date', Carbon::now())
         ->first();
 
-        if(!$quizz) {
+        return $quizz;
+    }
+
+    public function getQuizzByDate(string $date)
+    {
+        try {
+            $dataTime = Carbon::parse($date);
+        } catch(\Exception $e) {
             return null;
         }
 
-        return new DailyQuizzResource($quizz);
+        // On charge toutes les relations du quizz.
+        $quizz = DailyQuizz::with([
+            'quizz.difficulty',
+            'quizz.questions.answers',
+            'quizz.questions.difficulty'
+        ])
+        ->whereDate('scheduled_date', $dataTime)
+        ->first();
+
+        return $quizz;
     }
 }

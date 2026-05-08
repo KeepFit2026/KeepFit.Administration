@@ -20,6 +20,7 @@ class QuizzResource extends JsonResource
             'description' => $this->description,
             'difficulty' => new DifficultyResource($this->whenLoaded('difficulty')),
             'questions' => QuestionResource::collection($this->whenLoaded('questions')),
+            'xp_reward' => $this->xp_reward,
         ];
     }
 }

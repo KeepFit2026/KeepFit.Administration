@@ -71,6 +71,7 @@ class SportQuizSeeder extends Seeder
                 'title' => $quizData['title'],
                 'description' => $quizData['description'],
                 'difficulty_id' => $quizData['difficulty_id'],
+                'xp_reward' => 100,
             ]);
 
             foreach ($quizData['questions'] as $questionData) {
