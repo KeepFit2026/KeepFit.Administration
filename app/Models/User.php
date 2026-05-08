@@ -44,4 +44,14 @@ class User extends Model
     {
         return $this->belongsTo(Level::class, 'current_level');
     }
+
+    /**
+     * Les quiz quotidiens terminés par l'utilisateur
+     */
+    public function completedDailyQuizzes()
+    {
+        return $this->belongsToMany(DailyQuizz::class, 'daily_quizz_users')
+                    ->withPivot(['time_spent', 'score', 'xp_earned'])
+                    ->withTimestamps();
+    }
 }

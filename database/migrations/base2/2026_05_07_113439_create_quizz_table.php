@@ -42,12 +42,22 @@ return new class extends Migration
             $table->timestamps();
         });
 
-
         Schema::create('daily_quizzes', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->date('scheduled_date')->unique();
             $table->foreignUuid('quizz_id')->constrained('quizzes');
             $table->timestamps();
+        });
+
+        Schema::create('daily_quizz_users', function (Blueprint $table) {
+            $table->foreignUuid('user_id')->constrained('users');
+            $table->foreignUuid('daily_quizz_id')->constrained('daily_quizzes');
+            $table->integer('time_spent'); // Le temps passé à faire le quizz en minutes
+            $table->integer('score')->default(0);
+            $table->integer('xp_earned')->default(0);
+            $table->timestamps();
+
+            $table->primary(['user_id', 'daily_quizz_id']);
         });
     }
 
@@ -61,5 +71,6 @@ return new class extends Migration
         Schema::dropIfExists('question_quizzes');
         Schema::dropIfExists('answers');
         Schema::dropIfExists('daily_quizzes');
+        Schema::dropIfExists('daily_quizz_users');
     }
 };

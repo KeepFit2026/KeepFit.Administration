@@ -44,4 +44,6 @@ Route::middleware(['auth:sanctum', 'web'])->group(function() {
 Route::controller(QuizzController::class)->prefix('/quizz')->group(function() {
     Route::get('/today', 'showToday');
     Route::get('', 'getQuizzByDate');
+    Route::get('/{uuid}', 'show');
+    Route::post('/{uuid}/submit', 'submitQuizz');
 });

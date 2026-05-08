@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\QuizzRequest;
 use App\Services\QuizzService;
 use App\Http\Resources\DailyQuizzResource;
 use Illuminate\Http\JsonResponse;
@@ -46,5 +47,29 @@ class QuizzController extends Controller
         }
 
         return new DailyQuizzResource($quizz);
+    }
+
+    public function show(string $uuid): JsonResponse|DailyQuizzResource
+    {
+        $quizz = $this->service->getQuizzById($uuid);
+
+        if(!$quizz) {
+            return response()->json([
+                'message' => "Aucun Quizz"
+            ], 404);
+        }
+
+        return new DailyQuizzResource($quizz);
+    }
+
+    public function submitQuizz(QuizzRequest $request, string $dailyQuizzId)
+    {
+        $validated = $request->validated();
+        $result = $this->service->submitQuizz($request->user(), $dailyQuizzId, $validated);
+
+        return response()->json([
+            'status' => 'success',
+            'data' => $result
+        ], 201);
     }
 }
