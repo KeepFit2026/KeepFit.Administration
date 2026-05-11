@@ -11,6 +11,6 @@ class FilamentAuth extends Middleware
      */
     protected function redirectTo($request): ?string
     {
-        return env('APP_LOGIN_APP', 'http://login.keepfit.test');
+        return env('APP_LOGIN_APP');
     }
 }
