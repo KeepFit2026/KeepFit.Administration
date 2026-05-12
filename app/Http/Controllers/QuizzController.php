@@ -72,4 +72,23 @@ class QuizzController extends Controller
             'data' => $result
         ], 201);
     }
+
+    public function monthlyStatus(Request $request): JsonResponse
+    {
+        $request->validate([
+            'month' => 'required|integer|between:1,12',
+            'year'  => 'required|integer',
+        ]);
+
+        $ids = $this->service->getFinishedQuizzesIdsForMonth(
+            $request->user(),
+            $request->query('month'),
+            $request->query('year')
+        );
+
+        return response()->json([
+            'status' => 'success',
+            'finished_ids' => $ids
+        ]);
+    }
 }

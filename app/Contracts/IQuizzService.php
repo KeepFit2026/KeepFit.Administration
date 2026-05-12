@@ -4,6 +4,7 @@ namespace App\Contracts;
 
 use App\Http\Resources\DailyQuizzResource;
 use App\Models\Login;
+use Illuminate\Support\Facades\Date;
 
 interface IQuizzService
 {
@@ -33,4 +34,9 @@ interface IQuizzService
      * @param array $data les statistiques / Les réponses de l'utilisateur
      */
     public function submitQuizz(Login $login, string $dailyQuizzId, array $data);
+
+    /**
+     * Récupère la liste des Ids des Quizz déjà fait dans le mois en cours.
+     */
+    public function getFinishedQuizzesIdsForMonth(Login $login, int $month, int $year): array;
 }

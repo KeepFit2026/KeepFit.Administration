@@ -5,7 +5,9 @@ namespace App\Services;
 use App\Contracts\IQuizzService;
 use App\Models\Answer;
 use App\Models\DailyQuizz;
+use App\Models\DailyQuizzUser;
 use App\Models\Login;
+use App\Models\User;
 use Carbon\Carbon;
 
 class QuizzService implements IQuizzService
@@ -101,6 +103,15 @@ class QuizzService implements IQuizzService
             'total' => $totalQuestions,
             'xp'    => $reward
         ];
+    }
+
+   public function getFinishedQuizzesIdsForMonth(Login $login, int $month, int $year): array
+    {
+        return DailyQuizzUser::where('user_id', $login->user->id)
+            ->whereYear('created_at', $year)
+            ->whereMonth('created_at', $month)
+            ->pluck('daily_quizz_id')
+            ->toArray();
     }
 
     /**

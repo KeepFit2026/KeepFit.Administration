@@ -46,4 +46,5 @@ Route::controller(QuizzController::class)->prefix('/quizz')->group(function() {
     Route::get('', 'getQuizzByDate');
     Route::get('/{uuid}', 'show');
     Route::post('/{uuid}/submit', 'submitQuizz');
+    Route::post('/quizz/check', 'monthlyStatus');
 });
